@@ -26,7 +26,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {AesTest} from './AesTest';
+import {AesCryptorTest} from './AesCryptorTest';
 
 const Section: React.FC<{
   title: string;
@@ -75,7 +75,7 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">Hello</Section>
-          <AesTest />
+          <AesCryptorTest />
           <Section title="See Your Changes">
             <ReloadInstructions />
           </Section>
