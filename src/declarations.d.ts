@@ -1,1 +1,1 @@
-declare module 'react-native-rncryptor';
+declare module 'react-native-rncryptor'
