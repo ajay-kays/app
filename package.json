@@ -3,9 +3,14 @@
   "version": "1.16.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
+    "android": "npx react-native run-android",
+    "android:release": "npx react-native run-android --variant=release",
+    "android:build": "cd android && ./gradlew bundleRelease",
+    "android:build-apk": "cd android && ./gradlew app:assembleRelease",
+    "android:buildmove": "yarn android:build && mv ./android/app/build/outputs/bundle/release/app-release.aab ~/Desktop",
+    "android:clean": "cd android && ./gradlew clean",
+    "ios": "npx react-native run-ios",
+    "start": "npx react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {

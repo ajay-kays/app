@@ -1,4 +1,4 @@
-package com.zion;
+package com.getzion.zion;
 
 import com.facebook.react.ReactActivity;
 
