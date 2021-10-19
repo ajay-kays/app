@@ -1,18 +1,22 @@
-import React, { useEffect } from 'react'
-import { Button, Text, View } from 'react-native'
-import { skipLogin } from 'dev/skipLogin'
+import React, { useEffect, useState } from 'react'
+import { RootStore, RootStoreProvider, setupRootStore } from 'stores'
+import { HomePlaceholder } from 'views/home-placeholder'
 
 const App = () => {
+  const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
+
   useEffect(() => {
-    skipLogin()
+    ;(async () => {
+      setupRootStore().then(setRootStore)
+    })()
   }, [])
+
+  if (!rootStore) return null
+
   return (
-    <View
-      style={{ flex: 1, backgroundColor: '#222', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <Text style={{ color: 'white', marginBottom: 30, fontSize: 24 }}>Zion</Text>
-      <Button title='Log in' />
-    </View>
+    <RootStoreProvider value={rootStore}>
+      <HomePlaceholder />
+    </RootStoreProvider>
   )
 }
 
