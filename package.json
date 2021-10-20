@@ -11,14 +11,17 @@
     "android:clean": "cd android && ./gradlew clean",
     "ios": "npx react-native run-ios",
     "start": "npx react-native start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "t": "bash -c 'yarn tsc --noEmit -p ./tsconfig.json'"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.15.9",
     "base-64": "1.0.0",
     "buffer": "6.0.3",
     "mobx": "6.3.5",
+    "mobx-react-lite": "3.2.1",
     "mobx-state-tree": "5.0.3",
+    "moment": "2.29.1",
     "react": "17.0.2",
     "react-native": "0.66.1",
     "react-native-dotenv": "3.2.0",

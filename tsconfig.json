@@ -44,7 +44,7 @@
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */
-    "skipLibCheck": false /* Skip type checking of declaration files. */,
+    "skipLibCheck": true /* Skip type checking of declaration files. */,
     "resolveJsonModule": true /* Allows importing modules with a ‘.json’ extension, which is a common practice in node projects. */,
 
     /* Source Map Options */
@@ -66,8 +66,8 @@
       "lib/*": ["src/lib/*"],
       "services": ["src/services"],
       "services/*": ["src/services/*"],
-      "stores": ["src/stores"],
-      "stores/*": ["src/stores/*"],
+      "store": ["src/store"],
+      "store/*": ["src/store/*"],
       "views": ["src/views"],
       "views/*": ["src/views/*"]
     }

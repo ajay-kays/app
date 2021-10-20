@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { RootStore, RootStoreProvider, setupRootStore } from 'stores'
+import { RootStore, RootStoreProvider, setupRootStore } from 'store'
 import { HomePlaceholder } from 'views/home-placeholder'
 
 const App = () => {

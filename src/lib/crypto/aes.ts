@@ -6,7 +6,7 @@ export async function encrypt(txt, pwd): Promise<string> {
   try {
     const encryptedbase64 = await RNCryptor.encrypt(txt, pwd)
     return encryptedbase64
-  } catch (e: any) {
+  } catch (e) {
     reportError(e)
     return ''
   }

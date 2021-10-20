@@ -10,7 +10,7 @@ module.exports = {
           dev: './src/dev',
           lib: './src/lib',
           services: './src/services',
-          stores: './src/stores',
+          store: './src/store',
           views: './src/views',
         },
       },

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
-import * as aes from '../crypto/aes'
+import * as aes from 'lib/crypto/aes'
 
 export const AesCryptorTest = () => {
   const [sayenc, setEnc] = useState('')

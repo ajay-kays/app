@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { reportError } from 'lib/errorHelper'
 
 type RelayMethod = (url: string, data?: any, encoding?: string, options?: APIOptions) => any
