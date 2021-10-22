@@ -17,7 +17,10 @@ export const generateToken = async (self: UserStore, pwd: string) => {
     const r = await api.relay?.post(`contacts/tokens?pwd=${pwd}`, {
       token,
     })
-    if (!r) return console.log('=> FAILED TO REACH RELAY')
+    if (!r) {
+      console.log('failed to reach relay')
+      return 'error'
+    }
     if (r.id) self.setMyID(r.id)
     self.setAuthToken(token)
     api.instantiateRelay(
@@ -29,6 +32,6 @@ export const generateToken = async (self: UserStore, pwd: string) => {
     return token
   } catch (e) {
     console.log(e)
-    return e.message
+    return 'error'
   }
 }

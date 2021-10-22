@@ -12,7 +12,7 @@ export const InviteModel = types.model('Invite').props({
 })
 
 export const ContactModel = types.model('Contact').props({
-  alias: types.string,
+  alias: types.optional(types.string, ''),
   auth_token: types.maybeNull(types.string),
   contact_key: types.maybeNull(types.string),
   created_at: types.string,

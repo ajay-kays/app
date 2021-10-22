@@ -4,7 +4,7 @@ import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 import { normalizeChat, normalizeContact } from 'store/normalize'
 import { ContactsStore } from '../contacts-store'
-import { display, log } from 'lib/logging'
+import { display } from 'lib/logging'
 
 export const getContacts = async (self: ContactsStore) => {
   const root = getRoot(self) as RootStore
@@ -13,23 +13,24 @@ export const getContacts = async (self: ContactsStore) => {
   const userStore = root.user
   try {
     const r = await relay?.get('contacts')
-    display({
-      name: 'getContacts',
-      preview: `Returned with...`,
-      value: { r },
-    })
+    // display({
+    //   name: 'getContacts',
+    //   preview: `Returned with...`,
+    //   value: { r },
+    // })
 
     if (!r) return
     if (r.contacts) {
       const contactsToSave: any = []
       r.contacts.forEach((contact) => {
         const normalizedContact = normalizeContact(contact)
-        contactsToSave.push(normalizedContact)
+        if (normalizedContact) {
+          contactsToSave.push(normalizedContact)
+        }
       })
       self.setContacts(contactsToSave)
 
       const me = r.contacts.find((c) => c.is_owner)
-
       if (me) {
         userStore.setMyID(me.id)
         userStore.setAlias(me.alias)
@@ -45,7 +46,9 @@ export const getContacts = async (self: ContactsStore) => {
       const chatsToSave: any = []
       r.chats.forEach((chat) => {
         const normalizedChat = normalizeChat(chat)
-        chatsToSave.push(normalizedChat)
+        if (normalizedChat) {
+          chatsToSave.push(normalizedChat)
+        }
       })
       chatStore.setChats(chatsToSave)
     }

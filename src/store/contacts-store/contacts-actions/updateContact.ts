@@ -8,12 +8,14 @@ export const updateContact = async (self: ContactsStore, id: any, v: any) => {
   try {
     const r = await relay?.put(`contacts/${id}`, v)
     const contact = normalizeContact(r)
-    self.setContact(contact)
-    display({
-      name: 'updateContact',
-      preview: 'Updated contact:',
-      value: contact,
-    })
+    if (contact) {
+      self.setContact(contact)
+      display({
+        name: 'updateContact',
+        preview: 'Updated contact:',
+        value: contact,
+      })
+    }
     return true
   } catch (e) {
     console.log(e)

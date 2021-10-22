@@ -42,8 +42,10 @@ export const createTribe = async (self: ChatsStore, params: CreateTribeParams) =
     feed_url: feed_url || '',
   })
   if (!r) return
-  const normalizedChat = normalizeChat(r)
-  self.gotChat(normalizedChat)
+  const chat = normalizeChat(r)
+  if (chat) {
+    self.gotChat(chat)
+  }
   return r
 }
 

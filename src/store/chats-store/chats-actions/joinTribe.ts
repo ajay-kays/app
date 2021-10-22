@@ -45,8 +45,11 @@ export const joinTribe = async (
   try {
     const r = await relay?.post('tribe', params)
     if (!r) return
-    self.gotChat(normalizeChat(r))
-    if (amount) root.details.addToBalance(amount * -1)
+    const chat = normalizeChat(r)
+    if (chat) {
+      self.gotChat(chat)
+      if (amount) root.details.addToBalance(amount * -1)
+    }
     return r
   } catch (e) {
     console.log(e)

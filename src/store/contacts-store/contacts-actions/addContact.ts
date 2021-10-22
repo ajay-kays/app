@@ -11,12 +11,14 @@ export const addContact = async (self: ContactsStore, v: any) => {
   try {
     const r = await relay?.post('contacts', { ...v, status: 1 })
     const contact = normalizeContact(r)
-    self.setContact(contact)
-    display({
-      name: 'addContact',
-      preview: 'Added contact:',
-      value: contact,
-    })
+    if (contact) {
+      self.setContact(contact)
+      display({
+        name: 'addContact',
+        preview: 'Added contact:',
+        value: contact,
+      })
+    }
     return contact
   } catch (e) {
     console.log(e)
