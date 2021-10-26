@@ -1,25 +1,20 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { display } from 'lib/logging'
 import { useStores } from 'store'
-import { Text, View } from 'react-native'
+import { MsgList } from '../MsgList'
+import { useRoute } from '@react-navigation/core'
 
-const ChatroomFC = (props) => {
-  const chatId = props.route?.params?.chatId
-  const { msg } = useStores()
-  const msgs = msg.messages2.get(chatId)
-  // display({ name: 'Chatroom', preview: `Chat ID ${chatId}`, value: { props, chatId, msgs } })
-  return (
-    <View>
-      {msgs?.map((message) => (
-        <View key={message.id} style={{ marginVertical: 3 }}>
-          <Text>
-            {message.id} - {message.type} - {message.message_content}
-          </Text>
-        </View>
-      ))}
-    </View>
+const ChatroomFC = () => {
+  const route = useRoute<any>() // ChatRouteProp
+  const chatID = route.params.chatId
+  const { chats, msg } = useStores()
+  const msgs = msg.messages2.get(chatID)
+  const chat = useMemo(
+    () => chats.chatsArray.find((c) => c.id === chatID) || route.params,
+    [chatID, chats.chats, route.params]
   )
+  const [pricePerMessage, setPricePerMessage] = useState(0)
+  return <MsgList chat={chat} msgs={msgs} pricePerMessage={pricePerMessage} />
 }
 
 export const Chatroom = observer(ChatroomFC)

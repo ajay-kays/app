@@ -110,9 +110,9 @@ export const sendMessage = async (
 }
 
 export interface SendMessageParams {
-  contact_id: number // | null
+  contact_id: number | null
   text: string
-  chat_id: number // | null
+  chat_id: number | null
   amount: number
   reply_uuid: string
   boost?: boolean

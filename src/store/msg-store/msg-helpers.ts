@@ -48,7 +48,11 @@ export const showToastIfContactKeyError = (error: Error) => {
 
 export async function makeRemoteTextMap(
   root: RootStore,
-  { contact_id, text, chat_id }: { contact_id: number; text: string; chat_id: number },
+  {
+    contact_id,
+    text,
+    chat_id,
+  }: { contact_id: number | null; text: string; chat_id: number | null },
   includeSelf?: boolean
 ) {
   const idToKeyMap: any = {}
@@ -74,7 +78,8 @@ export async function makeRemoteTextMap(
       })
       contactsInChat.forEach((c) => (idToKeyMap[c.id] = c?.contact_key ?? ''))
     }
-  } else {
+  } else if (contact_id) {
+    // TODO: need else statement now this has a null check?
     const contact = root.contacts.contacts.get(contact_id.toString())
     if (contact) idToKeyMap[contact_id] = contact?.contact_key ?? ''
   }

@@ -14,7 +14,7 @@ const MSGS_PER_CHAT = 50
 // (While building separate mediaMessages array for tribes(?))
 // Decode+normalize only those messages.
 // Store in MST via 'map of arrays' structure.
-export const getMessages = async (self: MsgStore) => {
+export const getMessages = async (self: MsgStore, forceMore: boolean = false) => {
   /**
    * FETCH RECENT MESSAGES
    */
