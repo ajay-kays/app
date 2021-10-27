@@ -9,6 +9,7 @@ module.exports = {
           api: './src/api',
           dev: './src/dev',
           lib: './src/lib',
+          nav: './src/nav',
           services: './src/services',
           store: './src/store',
           views: './src/views',
@@ -27,5 +28,6 @@ module.exports = {
         verbose: false,
       },
     ],
+    'react-native-reanimated/plugin',
   ],
 }

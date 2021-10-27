@@ -5,7 +5,7 @@ import { RootStore } from 'store'
 
 export const invoicePaid = async (self: MsgStore, m: any) => {
   if (m.chat_id) {
-    const msgs = self.messages[m.chat_id]
+    const msgs = self.msgsForChatroom(m.chat_id)
     if (msgs) {
       const invoice = msgs.find((c) => c.payment_hash === m.payment_hash)
       if (invoice) {

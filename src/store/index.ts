@@ -1,6 +1,6 @@
-import React from 'react'
 import { useStores } from './root-store/root-store-context'
 
+export * from './hooks'
 export * from './extensions/with-environment'
 export * from './extensions/with-root-store'
 export * from './root-store/root-store'

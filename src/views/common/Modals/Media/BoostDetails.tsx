@@ -1,16 +1,14 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-
-import { useStores, useTheme } from '../../../../store'
-import { useBoostSender } from '../../../../store/hooks/msg'
+import { useBoostSender, useStores, useTheme } from 'store'
 import CustomIcon from 'lib/customIcons'
-import Typography from '../../../common/Typography'
-import AvatarsRow from '../../../chat/msg/avatarsRow'
+import Typography from 'views/common/Typography'
+import AvatarsRow from 'views/chat/msg/avatarsRow'
 
 export default function BoostRow(props) {
   const { contacts } = useStores()
   const theme = useTheme()
-  const isMe = props.sender === props.myid
+  const isMe = props.sender === props.myid // ?
 
   const theBoosts: any[] = []
   if (props.boosts) {

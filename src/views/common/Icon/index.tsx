@@ -1,5 +1,4 @@
 import React from 'react'
-
 import * as Svg from '../../../assets/Icons'
 
 const Icon = ({
@@ -9,12 +8,11 @@ const Icon = ({
   fill = null,
 }: {
   name: string
-  color: string
+  color?: string
   size?: number | null | undefined
-  fill: string | null | undefined
+  fill?: string | null | undefined
 }) => {
   const SvgIcon = Svg[name]
-
   return <SvgIcon width={size} height={size} color={color} fill={fill} />
 }
 

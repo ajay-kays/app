@@ -22,6 +22,7 @@ export default {
     } else {
       await ARP.startPlayer(source).catch(() => {})
     }
+    // @ts-ignore
     ARP.addPlayBackListener(callback)
   },
   seekTo: function (s: number) {

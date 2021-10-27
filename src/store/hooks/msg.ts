@@ -3,6 +3,7 @@ import { constants, constantCodes } from 'lib/constants'
 import { reportError } from 'lib/errorHelper'
 import { parseLDAT, urlBase64FromAscii } from 'lib/ldat'
 import { display } from 'lib/logging'
+import { values } from 'mobx'
 import moment from 'moment'
 import { useStores } from 'store'
 import { Contact } from 'store/contacts-store'
@@ -46,7 +47,12 @@ export function useMsgs(chat, limit?: number) {
     ) // this is the problem
     if (theChat) theID = theChat.id // new chat pops in, from first message confirmation!
   }
-  const msgs = msg.messages2.get(theID) // TODO: revert to LOL
+
+  // Handle no messages - can't convert nothin to values
+  const gotmsgs = msg.messages.get(theID)
+  if (!gotmsgs) return []
+  // const msgs = values(gotmsgs) // TODO: revert to LOL
+  const msgs = gotmsgs // ??
 
   const shownMsgs = msgs && msgs.slice(0, limit || 1000)
 
@@ -54,11 +60,11 @@ export function useMsgs(chat, limit?: number) {
 
   const msgsWithDates = msgs && injectDates(messages)
   const ms: any = msgsWithDates || []
-  display({
-    name: 'useMsgs',
-    preview: `with chat id ${chat && chat.id}, limit ${limit ?? 'none'} - RETURNING:`,
-    value: { chat, limit, initialMsgs: msgs, theID, returningMsgs: ms },
-  })
+  // display({
+  //   name: 'useMsgs',
+  //   preview: `with chat id ${chat && chat.id}, limit ${limit ?? 'none'} - RETURNING:`,
+  //   value: { chat, limit, initialMsgs: msgs, theID, returningMsgs: ms },
+  // })
   return ms
 }
 

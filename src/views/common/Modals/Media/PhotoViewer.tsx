@@ -5,24 +5,20 @@ import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Swiper from 'react-native-swiper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
-import { ActivityIndicator } from 'react-native-paper'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import ViewMoreText from 'react-native-view-more-text'
 import Toast from 'react-native-simple-toast'
-
-import { useStores, useTheme } from '../../../../store'
+import { useStores, useTheme } from 'store'
 import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from 'lib/constants'
 import { parseLDAT } from 'lib/ldat'
-import { useCachedEncryptedFile } from '../../../chat/msg/hooks'
-import Button from '../../../common/Button'
-import Boost from '../../../common/Button/Boost'
-import Typography from '../../../common/Typography'
+import { useCachedEncryptedFile } from 'views/chat/msg/hooks'
+import Button from 'views/common/Button'
+import Boost from 'views/common/Button/Boost'
+import Typography from 'views/common/Typography'
 import BoostDetails from './BoostDetails'
 
 export default function PhotoViewer({ visible, close, photos, chat, initialIndex }) {
   const theme = useTheme()
-
-  // return useObserver(() => (
   return (
     <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
@@ -45,7 +41,6 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
       </View>
     </Modal>
   )
-  // ))
 }
 
 function SwipeItem(props) {

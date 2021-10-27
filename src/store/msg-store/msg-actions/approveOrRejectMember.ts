@@ -11,7 +11,7 @@ export const approveOrRejectMember = async (
 ) => {
   const r = await relay?.put(`member/${contactID}/${status}/${msgId}`)
   if (r?.chat && r.chat.id) {
-    const msgs = self.messages[r.chat.id]
+    const msgs = self.msgsForChatroom(r.chat.id)
     const msg = msgs.find((m) => m.id === msgId)
     if (msg) {
       msg.type = r.message.type

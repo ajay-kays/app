@@ -57,7 +57,7 @@ export default function BoostRow({ isTribe = true, ...props }) {
         {hasBoosts && (
           <AvatarsRow
             aliases={theBoosts.map((b) => {
-              const { senderAlias, senderPic } = useBoostSender(b, contacts.contacts, isTribe)
+              const { senderAlias, senderPic } = useBoostSender(b, contacts.contactsArray, isTribe)
 
               if (b.sender === props.myid) {
                 return {

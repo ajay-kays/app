@@ -11,6 +11,7 @@ import { useCachedEncryptedFile } from './hooks'
 import { constantCodes, constants } from 'lib/constants'
 import { parseLDAT } from 'lib/ldat'
 import Typography from '../../common/Typography'
+import { display } from 'lib/logging'
 
 function ReplyContent(props) {
   const { shouldRender = true } = props
@@ -69,6 +70,7 @@ function ReplySource(props) {
 
   switch (type) {
     case 'message':
+      console.log('message reply yooo?')
       return <></>
 
     case 'attachment':
@@ -94,6 +96,13 @@ function Media(props) {
   }, [media_token])
 
   const hasImgData = data || uri ? true : false
+
+  display({
+    name: 'replyContent',
+    value: { hasImgData, media_token, uri, data, props, ldat, loading },
+    preview: `hasImgData: ${hasImgData.toString()}`,
+    important: true,
+  })
 
   return (
     <View style={{ width: props.reply ? '15%' : '25%' }}>

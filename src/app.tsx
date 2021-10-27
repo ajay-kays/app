@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
+import { Provider as PaperProvider } from 'react-native-paper'
 import { RootStore, RootStoreProvider, setupRootStore } from 'store'
-import { HomePlaceholder } from 'views/home-placeholder'
-import { RootNavigator } from './nav'
+import { navigationRef, RootNavigator } from './nav'
+import { paperTheme } from './theme'
 
 const App = () => {
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
@@ -15,11 +16,15 @@ const App = () => {
 
   if (!rootStore) return null
 
+  const pTheme = paperTheme(rootStore.theme)
+
   return (
     <RootStoreProvider value={rootStore}>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
+      <PaperProvider theme={pTheme}>
+        <NavigationContainer ref={navigationRef}>
+          <RootNavigator />
+        </NavigationContainer>
+      </PaperProvider>
     </RootStoreProvider>
   )
 }

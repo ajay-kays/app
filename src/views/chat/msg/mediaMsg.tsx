@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { observer } from 'mobx-react-lite'
-import { PERMISSIONS, check, request, RESULTS } from 'react-native-permissions'
+import { PERMISSIONS, check, RESULTS } from 'react-native-permissions'
 import { ActivityIndicator, IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -9,10 +9,7 @@ import Video from 'react-native-video'
 import FastImage from 'react-native-fast-image'
 import RNFetchBlob from 'rn-fetch-blob'
 import Toast from 'react-native-simple-toast'
-
-import { useStores, useTheme } from '../../../store'
-
-import { useTribeMediaType } from '../../../store/hooks/tribes'
+import { useCommunityMediaType, useMsgs, useStores, useTheme } from 'store'
 import shared from './sharedStyles'
 import { useCachedEncryptedFile } from './hooks'
 import AudioPlayer from './audioPlayer'
@@ -25,7 +22,6 @@ import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 import { setTint } from '../../common/StatusBar'
 import EmbedVideo from './embedVideo'
 import { getRumbleLink, getYoutubeLink } from './utils'
-import { useMsgs } from 'store/hooks'
 
 function MediaMsg(props) {
   const { id, message_content, media_type, chat, media_token } = props
@@ -58,6 +54,7 @@ function MediaMsg(props) {
   const isEmbedVideo = youtubeLink || rumbleLink
 
   const hasImgData = data || uri ? true : false
+  console.log('mediaMsg hasImgData:', hasImgData)
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
   const showStats = isMe && amt
@@ -140,7 +137,7 @@ function MediaMsg(props) {
   }
 
   const msgs = useMsgs(chat) || []
-  const photos = useTribeMediaType(msgs, 6)
+  const photos = useCommunityMediaType(msgs, 6)
 
   return (
     <View collapsable={false}>

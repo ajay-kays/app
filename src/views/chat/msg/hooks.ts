@@ -5,6 +5,7 @@ import * as aes from 'lib/crypto/aes'
 import { decode as atob } from 'base-64'
 import { isBase64 } from 'lib/crypto/Base64'
 import { reportError } from 'lib/errorHelper'
+import { display } from 'lib/logging'
 
 const sess = 'all'
 
@@ -43,8 +44,10 @@ export function useCachedEncryptedFile(
   }
 
   async function trigger() {
+    console.log('trigger...', loading, data, uri, paidMessageText)
     if (loading || data || uri || paidMessageText) return // already done
     if (!ldat?.host || !ldat?.sig) return
+    console.log('past dat look')
 
     const url = `https://${ldat.host}/file/${media_token}`
 
@@ -55,25 +58,52 @@ export function useCachedEncryptedFile(
     const existingPath = dirs.CacheDir + `/attachments/msg_${id}_decrypted`
     const exists = await RNFetchBlob.fs.exists(existingPath)
 
+    display({
+      name: 'trigger',
+      preview: `exists ${exists} ---- existingPath ${existingPath}`,
+      value: {
+        url,
+        loading,
+        data,
+        uri,
+        paidMessageText,
+        ldat,
+        media_token,
+        server,
+        existingPath,
+        exists,
+      },
+      important: true,
+    })
+
     if (exists) {
+      console.log('EXISTS')
       if (isPaidMessage) {
+        console.log('IS PAID MESSAGE')
         const txt = await parsePaidMsg(id)
+        console.log('txt:', txt)
         setPaidMessageText(txt)
       } else {
+        console.log('IS NOT PAID MESSAGE')
         setURI('file://' + existingPath)
       }
       setLoading(false)
       return
     }
 
-    if (!server) return
+    if (!server) {
+      console.log('no server, returning')
+      return
+    }
     try {
       const res = await RNFetchBlob.config({
         path: dirs.CacheDir + `/attachments/msg_${id}`,
       }).fetch('GET', url, {
         Authorization: `Bearer ${server.token}`,
       })
-      // console.log('The file saved to ', res.path())
+
+      console.log(res)
+      console.log('The file saved to ', res.path())
 
       const headers = res.info().headers
       const disp = headers['Content-Disposition']
@@ -90,6 +120,7 @@ export function useCachedEncryptedFile(
       const status = res.info().status
 
       if (status == 200 && path) {
+        console.log('so we got')
         let extension = ''
         if (media_type.startsWith('audio')) {
           extension = 'm4a'
@@ -104,6 +135,7 @@ export function useCachedEncryptedFile(
         }
         setLoading(false)
       }
+
       // if(status == 200 && path){
       //   console.log("DECRYPT", path, media_key)
       //   const dec = await aes.readEncryptedFile(path, media_key)
@@ -132,6 +164,13 @@ export function useCachedEncryptedFile(
     if (!media_token || paidMessageText || !dispatchTrigger) return
     trigger()
   }, [media_token, paidMessageText, ldat])
+
+  // display({
+  //   name: 'trigger returning',
+  //   preview: `${data} ${uri}`,
+  //   value: { data, uri, loading, trigger, dispose, paidMessageText: paidMessageText ?? '' },
+  //   important: true,
+  // })
 
   return { data, uri, loading, trigger, dispose, paidMessageText: paidMessageText ?? '' }
 }

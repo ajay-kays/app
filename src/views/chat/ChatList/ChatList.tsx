@@ -15,7 +15,7 @@ export const ChatList = observer(() => {
           <TouchableOpacity
             key={chat.id}
             onPress={() => {
-              navigate('Chatroom' as never, { chatId: chat.id } as never)
+              navigate('Chat' as never, { chatId: chat.id } as never)
             }}
             style={{ padding: 5 }}
           >

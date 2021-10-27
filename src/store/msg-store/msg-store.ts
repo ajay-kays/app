@@ -1,3 +1,4 @@
+import { values } from 'mobx'
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
 import moment from 'moment'
 import { withEnvironment } from '../extensions/with-environment'
@@ -18,9 +19,9 @@ export const MsgStoreModel = types
   .props({
     lastFetched: types.optional(types.number, 0),
     lastSeen: types.optional(types.frozen(), {}),
-    messages: types.optional(types.map(MsgModel), {}),
-    messages2: types.map(types.array(MsgModel)),
-    messageCache: types.frozen({}), // types.optional(types.frozen(), [])
+    // messages: types.optional(types.map(MsgModel), {}),
+    messages: types.map(types.array(MsgModel)),
+    // messageCache: types.frozen({}), // types.optional(types.frozen(), [])
   })
   .extend(withEnvironment)
   .actions((self) => ({
@@ -74,8 +75,21 @@ export const MsgStoreModel = types
       self.lastFetched = lastFetched
     },
     setMessage: (msg: Msg) => {
-      self.messages.set(msg.id.toString(), msg)
-      ;(self as MsgStore).rebuildCache()
+      // const chat = (self as MsgStore).msgsForChatroom(msg.chat_id)
+      const chat = self.messages.get(msg.chat_id.toString())
+      if (chat) {
+        chat.push(msg)
+        display({
+          name: 'setMessage',
+          preview: `Pushed msg to chat. sorted?`,
+          value: { chat, msg },
+          important: true,
+        })
+      } else {
+        throw 'no chat..?'
+      }
+      // self.messages.set(msg.id.toString(), msg)
+      // ;(self as MsgStore).rebuildCache()
     },
     setMessages: (msgs: { [k: number]: any[] }) => {
       display({
@@ -83,11 +97,11 @@ export const MsgStoreModel = types
         preview: `Setting messages for ${Object.entries(msgs).length} chats`,
         value: { msgs },
       })
-      self.messages2.merge(msgs)
+      self.messages.merge(msgs)
       display({
         name: 'New setMessages',
         preview: `Finished setting messages`,
-        value: { messages2: self.messages2 },
+        value: { messages: self.messages },
       })
     },
     setMessagesOld: (msgs: Msg[]) => {
@@ -129,54 +143,56 @@ export const MsgStoreModel = types
       })
       // self.messageCache = sortedCachedMessages
     },
-    rebuildCache() {
-      const msgs = Array.from(self.messages.values())
-      const formattedArray: any[] = []
-      const messagesByChatroom = {}
-      msgs.forEach((msg) => {
-        formattedArray.push([msg.id, msg])
-        if (typeof messagesByChatroom[msg.chat_id] === 'object') {
-          messagesByChatroom[msg.chat_id].push(msg)
-        } else {
-          messagesByChatroom[msg.chat_id] = []
-        }
-      })
+    // rebuildCache() {
+    //   const msgs = Array.from(self.messages.values())
+    //   const formattedArray: any[] = []
+    //   const messagesByChatroom = {}
+    //   msgs.forEach((msg) => {
+    //     formattedArray.push([msg.id, msg])
+    //     if (typeof messagesByChatroom[msg.chat_id] === 'object') {
+    //       messagesByChatroom[msg.chat_id].push(msg)
+    //     } else {
+    //       messagesByChatroom[msg.chat_id] = []
+    //     }
+    //   })
 
-      let sortedCachedMessages = {}
-      Object.entries(messagesByChatroom).forEach((entries: any) => {
-        const k = entries[0]
-        const v: Msg[] = entries[1]
-        v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
-        sortedCachedMessages[k] = v
-      })
+    //   let sortedCachedMessages = {}
+    //   Object.entries(messagesByChatroom).forEach((entries: any) => {
+    //     const k = entries[0]
+    //     const v: Msg[] = entries[1]
+    //     v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+    //     sortedCachedMessages[k] = v
+    //   })
 
-      display({
-        name: 'rebuildCache',
-        preview: `Setting ${msgs.length} messages and caching`,
-        value: { msgs, formattedArray, messagesByChatroom, sortedCachedMessages },
-      })
+    //   display({
+    //     name: 'rebuildCache',
+    //     preview: `Setting ${msgs.length} messages and caching`,
+    //     value: { msgs, formattedArray, messagesByChatroom, sortedCachedMessages },
+    //   })
 
-      self.messageCache = sortedCachedMessages
-    },
+    //   self.messageCache = sortedCachedMessages
+    // },
   }))
   .views((self) => ({
     countUnseenMessages(myid: number): number {
-      const now = new Date().getTime()
-      let unseenCount = 0
-      const lastSeenObj = self.lastSeen
-      ;(self as MsgStore).messagesArray.forEach(function (msg: Msg) {
-        const lastSeen = lastSeenObj[msg.chat_id || '_'] || now
-        if (msg.sender !== myid) {
-          const unseen = moment(new Date(lastSeen)).isBefore(moment(msg.date))
-          if (unseen) unseenCount += 1
-        }
-      })
-      display({
-        name: 'countUnseenMessages',
-        preview: `Unseen messages: ${unseenCount}`,
-        important: true,
-      })
-      return unseenCount
+      console.log('countUnseenMessages unimplemented')
+      return 0
+      // const now = new Date().getTime()
+      // let unseenCount = 0
+      // const lastSeenObj = self.lastSeen
+      // ;(self as MsgStore).messagesArray.forEach(function (msg: Msg) {
+      //   const lastSeen = lastSeenObj[msg.chat_id || '_'] || now
+      //   if (msg.sender !== myid) {
+      //     const unseen = moment(new Date(lastSeen)).isBefore(moment(msg.date))
+      //     if (unseen) unseenCount += 1
+      //   }
+      // })
+      // display({
+      //   name: 'countUnseenMessages',
+      //   preview: `Unseen messages: ${unseenCount}`,
+      //   important: true,
+      // })
+      // return unseenCount
     },
     filterMessagesByContent(id, filterString): any {
       const list = (self as MsgStore).msgsForChatroom(id)
@@ -198,37 +214,59 @@ export const MsgStoreModel = types
       })
       return l
     },
-    get messagesArray(): Msg[] {
-      return Array.from(self.messages.values())
-    },
     msgsForChatroom(chatId: number) {
-      // const msgs = self.messageCache[chatId]
       // display({
       //   name: 'msgsForChatroom',
-      //   preview: `Returning msgsForChatroom cache for chatId ${chatId}`,
-      //   important: true,
-      //   value: { msgs },
-      // })
-      // return msgs
-
-      const msgArray = (self as MsgStore).messagesArray
-      const msgs = msgArray
-        .filter((msg) => msg.chat_id === chatId)
-        .sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
-
-      // display({
-      //   name: 'msgsForChatroom',
-      //   preview: `LOOPING THROUGH ${msgArray.length} MSGS TWICE ????`,
+      //   preview: `Attempting msgsForChatroom ${chatId}`,
       //   important: true,
       // })
-
-      display({
-        name: 'msgsForChatroom',
-        preview: `msgsForChatroom ${chatId}`,
-        value: { msgs, chatId },
-      })
-      return msgs
+      const msgs = self.messages.get(chatId.toString())
+      if (msgs) {
+        // display({
+        //   name: 'msgsForChatroom',
+        //   preview: `Returning ${msgs.length} msgsForChatroom ${chatId}`,
+        //   important: true,
+        //   value: { chatId, msgs },
+        // })
+        return values(msgs)
+      } else {
+        // console.log('returning nothin for msgs')
+        return []
+      }
+      // const msgs = values()
     },
+    // get messagesArray(): Msg[] {
+    //   return self.messages.values()
+    //   // return Array.from(self.messages.values())
+    // },
+    // msgsForChatroom(chatId: number) {
+    //   // const msgs = self.messageCache[chatId]
+    //   // display({
+    //   //   name: 'msgsForChatroom',
+    //   //   preview: `Returning msgsForChatroom cache for chatId ${chatId}`,
+    //   //   important: true,
+    //   //   value: { msgs },
+    //   // })
+    //   // return msgs
+
+    //   const msgArray = (self as MsgStore).messagesArray
+    //   const msgs = msgArray
+    //     .filter((msg) => msg.chat_id === chatId)
+    //     .sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+
+    //   // display({
+    //   //   name: 'msgsForChatroom',
+    //   //   preview: `LOOPING THROUGH ${msgArray.length} MSGS TWICE ????`,
+    //   //   important: true,
+    //   // })
+
+    //   display({
+    //     name: 'msgsForChatroom',
+    //     preview: `msgsForChatroom ${chatId}`,
+    //     value: { msgs, chatId },
+    //   })
+    //   return msgs
+    // },
     sortAllMsgs(allms: { [k: number]: Msg[] }) {
       return false
       const final = {}
