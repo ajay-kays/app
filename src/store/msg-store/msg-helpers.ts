@@ -92,12 +92,12 @@ export async function makeRemoteTextMap(
 }
 
 export async function decodeSingle(m: Msg) {
-  display({
-    name: 'decodeSingle',
-    preview: `${m.id} - ${m.type} - ${m.message_content}`,
-    value: { m },
-    important: true,
-  })
+  // display({
+  //   name: 'decodeSingle',
+  //   preview: `${m.id} - ${m.type} - ${m.message_content}`,
+  //   value: { m },
+  //   important: true,
+  // })
   if (m.type === constants.message_types.keysend) {
     return m // "keysend" type is not e2e
   }
@@ -121,10 +121,10 @@ export async function decodeSingle(m: Msg) {
   //   })
   //   msg.media_key = null
   // }
-  // if (m.media_key) {
-  //   const dmediakey = await e2e.decryptPrivate(m.media_key)
-  //   msg.media_key = dmediakey as string
-  // }
+  if (m.media_key) {
+    const dmediakey = await e2e.decryptPrivate(m.media_key)
+    msg.media_key = dmediakey as string
+  }
   // display({
   //   name: 'decodeSingle',
   //   preview: `RETURNING ${m.id} - ${m.type} - ${m.message_content}`,
@@ -145,28 +145,24 @@ const typesToDecrypt = [
   constants.message_types.boost,
 ]
 export async function decodeMessages(messages: Msg[]) {
-  // console.log('SKIPPING DEOCDE MESSAGES')
-  // return []
   const msgs: any[] = []
   for (const m of messages) {
     if (typesToDecrypt.includes(m.type)) {
-      // console.log('SKIPPING DECODE')
-      // msgs.push(m)
       const msg = await decodeSingle(m)
-      display({
-        name: 'decodeMessages',
-        preview: `Decoded msg ${msg.id}: ${msg.message_content}`,
-        value: { m, msg },
-        important: true,
-      })
+      // display({
+      //   name: 'decodeMessages',
+      //   preview: `Decoded msg ${msg.id}: ${msg.message_content}`,
+      //   value: { m, msg },
+      //   important: true,
+      // })
       msgs.push(msg)
     } else {
-      display({
-        name: 'decodeMessages',
-        preview: `Not decoding msg ${m.id}: ${m.message_content}`,
-        value: { m },
-        important: true,
-      })
+      // display({
+      //   name: 'decodeMessages',
+      //   preview: `Not decoding msg ${m.id}: ${m.message_content}`,
+      //   value: { m },
+      //   important: true,
+      // })
       msgs.push(m)
     }
   }

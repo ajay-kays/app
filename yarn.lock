@@ -973,6 +973,13 @@
   resolved "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-6.0.3.tgz#712c851a6ee5a4b445d7cfc6c9d3b3ead41c3521"
   integrity sha512-NkIMhKiNwjrpYiv+4Lls86K8xAFRURFroMjK7ZWbJKB6Oqc4hivP//q6Pp5iQSxiCBkbbO9O2RFU6iH9fvvVVQ==
 
+"@react-native-community/push-notification-ios@1.10.1":
+  version "1.10.1"
+  resolved "https://registry.npmjs.org/@react-native-community/push-notification-ios/-/push-notification-ios-1.10.1.tgz#d52a6d69ac1112df0f79e1d17978077629b76784"
+  integrity sha512-k6bZWUKLif4GjenyTD3aQLwA2VT3bNmt22INO/34lexnpmqkPDZF7nreqbckTHG0Zso9wDTe4N/AZJUC/d8iRg==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -5628,6 +5635,11 @@ react-native-camera@3.44.3:
   dependencies:
     prop-types "^15.6.2"
 
+react-native-check-version@1.0.10:
+  version "1.0.10"
+  resolved "https://registry.npmjs.org/react-native-check-version/-/react-native-check-version-1.0.10.tgz#b5239633ced108dc5e7da1275efd0f479e2ba29b"
+  integrity sha512-dqBmXzQclwG4a5JBtzX6zl1rhylDwDxhqlllf/dO2aV24fri2uC2fDXFi910GppXHCqwpCXZhBuLOQxUCnCfLA==
+
 react-native-codegen@^0.0.7:
   version "0.0.7"
   resolved "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.7.tgz#86651c5c5fec67a8077ef7f4e36f7ed459043e14"
@@ -5636,6 +5648,11 @@ react-native-codegen@^0.0.7:
     flow-parser "^0.121.0"
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
+
+react-native-device-info@8.4.3:
+  version "8.4.3"
+  resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-8.4.3.tgz#b2e9ade45867ae9526f1a54d0c83d33a24ac7680"
+  integrity sha512-1MOMBpLNjeaLEjL3lNAAmgisdcGekZJxNBp0F9OuA0EzBtH52mBLxFl+g7wyenVlibbUZIxngWDtlhVwLswoWQ==
 
 react-native-device-time-format@2.3.0:
   version "2.3.0"

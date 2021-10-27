@@ -2,6 +2,7 @@ import { onSnapshot } from 'mobx-state-tree'
 import { RootStoreModel, RootStore } from './root-store'
 import { Environment } from '../environment'
 // import * as storage from '../../utils/storage'
+import storage from '@react-native-async-storage/async-storage'
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -30,28 +31,41 @@ export async function setupRootStore() {
   // prepare the environment that will be associated with the RootStore.
   const env = await createEnvironment()
   rootStore = RootStoreModel.create({}, env)
-  // try {
-  //   // load data from storage
-  //   data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
-  //   rootStore = RootStoreModel.create(data, env)
-  // } catch (e) {
-  //   // if there's any problems loading, then let's at least fallback to an empty state
-  //   // instead of crashing.
-  //   rootStore = RootStoreModel.create({}, env)
+  try {
+    // load data from storage
+    data = (await storage.getItem(ROOT_STATE_STORAGE_KEY)) || {}
+    rootStore = RootStoreModel.create(JSON.parse(data), env)
+  } catch (e) {
+    // if there's any problems loading, then let's at least fallback to an empty state
+    // instead of crashing.
+    rootStore = RootStoreModel.create({}, env)
 
-  //   // but please inform us what happened
-  //   __DEV__ && console.tron.error(e.message, null)
-  // }
+    // but please inform us what happened
+    console.log(e)
+    // __DEV__ && console.tron.error(e.message, null)
+  }
 
   // reactotron logging
   if (__DEV__) {
     env.reactotron.setRootStore(rootStore, data)
   }
 
+  let lastSaved = new Date()
+  let secondsSinceLastSent: number | null = null
+  let SAVE_INTERVAL = 10
+
   // track changes & save to storage
-  // onSnapshot(rootStore, (snapshot) =>
-  //   storage.save(ROOT_STATE_STORAGE_KEY, snapshot)
-  // )
+  onSnapshot(rootStore, (snapshot) => {
+    const now = new Date()
+    const dif = now.getTime() - lastSaved.getTime()
+    secondsSinceLastSent = dif / 1000
+
+    if (!lastSaved || secondsSinceLastSent > SAVE_INTERVAL) {
+      lastSaved = new Date()
+      storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
+      console.log('Saved', lastSaved)
+    }
+  })
 
   return rootStore
 }

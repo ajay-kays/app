@@ -15,7 +15,7 @@ import PinCodeModal from 'views/common/Modals/PinCode'
 import Disconnect from 'views/disconnect'
 import PIN, { wasEnteredRecently } from 'views/utils/pin'
 import * as utils from 'views/utils/utils'
-import { Main } from './main'
+import Main from './main'
 
 // This is the first component where we can assume an initialized rootStore.
 const RootComponentFC = () => {
