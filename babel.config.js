@@ -12,6 +12,7 @@ module.exports = {
           nav: './src/nav',
           services: './src/services',
           store: './src/store',
+          theme: './src/theme',
           views: './src/views',
         },
       },

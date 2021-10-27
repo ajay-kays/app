@@ -132,6 +132,10 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
+        // https://stackoverflow.com/questions/69034879/how-to-resolve-this-error-the-mincompilesdk-31-specified-in-a-dependencys-aar
+        configurations.all {
+            resolutionStrategy { force 'androidx.core:core:1.6.0' }
+        }
         applicationId "com.getzion.zion"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

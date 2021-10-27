@@ -968,6 +968,11 @@
   resolved "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
+"@react-native-community/netinfo@6.0.3":
+  version "6.0.3"
+  resolved "https://registry.npmjs.org/@react-native-community/netinfo/-/netinfo-6.0.3.tgz#712c851a6ee5a4b445d7cfc6c9d3b3ead41c3521"
+  integrity sha512-NkIMhKiNwjrpYiv+4Lls86K8xAFRURFroMjK7ZWbJKB6Oqc4hivP//q6Pp5iQSxiCBkbbO9O2RFU6iH9fvvVVQ==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -1194,6 +1199,13 @@
   version "0.65.8"
   resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.65.8.tgz#0923cceb0cf59ae674d915296554e726ea3a768a"
   integrity sha512-dVZwSBBxkX+PlEQrFhAqnoA5Cln6ZF5H8GVi/NeA767KKH06bNPeezlZI8/J4Wa6quyB5qssVq4r5PvFJ9iKcw==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-native@>=0.62.0":
+  version "0.66.1"
+  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.66.1.tgz#093b4a2a9fce2335548d35be3c8900bf3ebb9373"
+  integrity sha512-CjKGkhXFcMZDYJQ0blz+gxDNH4Jcbbdwoc43onKDVvr9kwg5Nh9liHBixAh2vGYYpO1xLgYm3Y7FIr1CCSmZtg==
   dependencies:
     "@types/react" "*"
 
@@ -5625,12 +5637,26 @@ react-native-codegen@^0.0.7:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
+react-native-device-time-format@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/react-native-device-time-format/-/react-native-device-time-format-2.3.0.tgz#87f4c91a90b8a0ca2dc059cf82d3063c823126fc"
+  integrity sha512-al4m6MXD1nT+W8p7UsJpyc4aaNRwh85oLC+sNe+PfCxlxVUDmriBN8dEDLjaDxfnX2yDub3PHLcLmuZqcI6jrw==
+
 react-native-dotenv@3.2.0:
   version "3.2.0"
   resolved "https://registry.npmjs.org/react-native-dotenv/-/react-native-dotenv-3.2.0.tgz#3db4674cb56e6572fa8358904b8a58f35e56ff3f"
   integrity sha512-/gHyvEVkgzLOI1DBes8g52vLV0cRWtxNDG/LgxRqQCeGvbzqJE7Z3tgcg5NsGOMDdr3tNYsm3yDE3GtMQi4sEg==
   dependencies:
     dotenv "^10.0.0"
+
+react-native-dynamic@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/react-native-dynamic/-/react-native-dynamic-1.0.0.tgz#d971618fd278cf66acb0add46536aa7a68fd8d4f"
+  integrity sha512-CMP97GREQ74tpwhKFdUiMpvybzO+dp13Y70rCyu6qzTouOde9vlpDHlxa++o0EA6kXucEW28x3GN0rvZ/1bjrA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" ">=0.62.0"
+    toolkit.ts "^0.0.2"
 
 react-native-encrypted-storage@4.0.2:
   version "4.0.2"
@@ -5723,6 +5749,11 @@ react-native-popover-view@3.1.1:
   dependencies:
     react-native-safe-area-view "0.14.9"
 
+react-native-portalize@1.0.7:
+  version "1.0.7"
+  resolved "https://registry.npmjs.org/react-native-portalize/-/react-native-portalize-1.0.7.tgz#8b3c742a06f863654d526ea1075a8596625f8482"
+  integrity sha512-icqopPh9ZSV+I8C5LlZN9pQJ0OMeBDNqHhP80+qDx0hOGEcsDC09wgjogbEMfJE0GcMDM7PDYtyQkqa9gIqd1g==
+
 react-native-qrcode-scanner@1.5.4:
   version "1.5.4"
   resolved "https://registry.npmjs.org/react-native-qrcode-scanner/-/react-native-qrcode-scanner-1.5.4.tgz#5e96189260942db3287739545eb3f6a16f7c0178"
@@ -5739,6 +5770,11 @@ react-native-qrcode-svg@6.1.1:
   dependencies:
     prop-types "^15.7.2"
     qrcode "^1.4.4"
+
+react-native-radial-gradient@1.0.9:
+  version "1.0.9"
+  resolved "https://registry.npmjs.org/react-native-radial-gradient/-/react-native-radial-gradient-1.0.9.tgz#de18106d4ba491f1ffb5e8bb9e17cb06ce2f4050"
+  integrity sha512-yGib/8t0Da35FYKOSuQf6fB02+OAjN55Dg93eN8ks35NreLHC0M+SZCJRjHlxO3zGE2E+m/90NJy0UZlSboCaQ==
 
 react-native-reanimated@2.3.0-beta.2:
   version "2.3.0-beta.2"
@@ -6920,6 +6956,11 @@ toidentifier@1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+
+toolkit.ts@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/toolkit.ts/-/toolkit.ts-0.0.2.tgz#91bde730e5e6ad1a22146cdaf83f4a52721cf3b2"
+  integrity sha512-yJJTVbCwiD6AfFgReewJCGJuODmyZUeL1sDjnxp33t0UBxnezgQrLbz/F9++RC28CTlk5u5pVji4TbeondYEkw==
 
 toposort@^2.0.2:
   version "2.0.2"
