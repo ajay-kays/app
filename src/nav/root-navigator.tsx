@@ -10,9 +10,8 @@ import {
   EditCommunity,
 } from 'views/communities'
 import { Contact, Contacts } from 'views/contacts'
-// import Account from '../Account/Navigation'
-// import Payment from '../Payment'
-// import AddSats from '../Payment/AddSats'
+import { AddSats, Payment } from 'views/payment'
+// import AccountNavigator from 'nav/account-navigator'
 import { setTint } from 'views/common/StatusBar'
 
 const RootStack = createNativeStackNavigator()
@@ -47,23 +46,23 @@ export default function Root() {
           headerShown: false,
         }}
       />
-      {/* <RootStack.Screen
+      <RootStack.Screen
         name='Payment'
         component={Payment}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          animationEnabled: false,
+          // animationEnabled: false,
         }}
-      /> */}
-      {/* <RootStack.Screen
+      />
+      <RootStack.Screen
         name='AddSats'
         component={AddSats}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
-      /> */}
+      />
       {/* <RootStack.Screen
         name='Account'
         component={Account}

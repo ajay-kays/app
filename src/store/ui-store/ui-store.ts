@@ -176,7 +176,7 @@ export const UiStoreModel = types
       await sleep(500)
       self.shareInviteString = ''
     },
-    setPayMode(payMode: typeof self.payMode, chat: Chat) {
+    setPayMode(payMode: typeof self.payMode, chat: Chat | null) {
       self.payMode = payMode
       if (chat) {
         self.chatForPayModal = chat
@@ -193,7 +193,8 @@ export const UiStoreModel = types
         console.log('ERROR:', e)
       }
     },
-    setConfirmInvoiceMsg(msg: InvoiceMsg) {
+    setConfirmInvoiceMsg(msg: any) {
+      // InvoiceMsg
       // const invoiceMsg = InvoiceMsgModel.create({
       //   payment_request: msg.payment_request,
       //   amount: msg.amount,
