@@ -1,4 +1,6 @@
 import Chats from './Chats/Chats'
+import ChatDetails from './ChatDetails'
+
 export * from './Chatroom'
 
-export { Chats }
+export { ChatDetails, Chats }

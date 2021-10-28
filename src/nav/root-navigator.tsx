@@ -1,16 +1,14 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useTheme } from 'store'
-import { Chatroom as Chat, Chats } from 'views/chat'
+import { Chatroom as Chat, ChatDetails, Chats } from 'views/chat'
 import Community from 'views/communities/Community'
 import { Communities } from 'views/communities'
-// import ChatDetails from '../chat/ChatDetails'
 // import Account from '../Account/Navigation'
 // import Payment from '../Payment'
 // import AddSats from '../Payment/AddSats'
 // import Contacts from '../Contacts'
 // import Contact from '../Contacts/Contact'
-// import Tribes from '../Tribes'
 // import DiscoverTribes from '../Tribes/Discover'
 // import Tribe from '../Tribes/Tribe'
 // import EditTribe from '../Tribes/Tribe/EditTribe'
@@ -41,14 +39,14 @@ export default function Root() {
           headerShown: false,
         }}
       />
-      {/* <RootStack.Screen
+      <RootStack.Screen
         name='ChatDetails'
         component={ChatDetails}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
-      /> */}
+      />
       {/* <RootStack.Screen
         name='Payment'
         component={Payment}
