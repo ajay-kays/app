@@ -35,12 +35,12 @@ const Tribe = ({ route }) => {
     chats.getTribes()
   }, [isFocused])
 
-  const onEditTribePress = useCallback(() => {
-    navigate('EditTribe', { tribe })
+  const onEditCommunityPress = useCallback(() => {
+    navigate('EditCommunity', { tribe })
   }, [])
 
-  const onTribeMembersPress = useCallback(() => {
-    navigate('TribeMembers', { tribe })
+  const onCommunityMembersPress = useCallback(() => {
+    navigate('CommunityMembers', { tribe })
   }, [])
 
   const navigationBack = useCallback(() => {
@@ -83,8 +83,8 @@ const Tribe = ({ route }) => {
         visible={tribeDialog}
         owner={tribe.owner}
         onCancel={() => setTribeDialog(false)}
-        onEditPress={onEditTribePress}
-        onMembersPress={onTribeMembersPress}
+        onEditPress={onEditCommunityPress}
+        onMembersPress={onCommunityMembersPress}
       />
     </SafeAreaView>
   )

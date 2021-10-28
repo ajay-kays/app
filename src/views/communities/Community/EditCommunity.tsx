@@ -6,7 +6,7 @@ import Form from '../../form'
 import * as schemas from '../../form/schemas'
 import { BackHeader } from 'views/common'
 
-export default function EditTribe({ route }) {
+export default function EditCommunity({ route }) {
   const { chats } = useStores()
   const [loading, setLoading] = useState(false)
   const theme = useTheme()

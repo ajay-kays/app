@@ -137,7 +137,7 @@ export const UiStoreModel = types
     setNewGroupModal(openDialog: boolean) {
       self.newGroupModal = openDialog
     },
-    setEditTribeParams(params: { [k: string]: any } | null) {
+    setEditCommunityParams(params: { [k: string]: any } | null) {
       if (!params) {
         // TODO: Check if this will put null as a value or will put a {} object
         self.editTribeParams = null

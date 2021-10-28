@@ -25,7 +25,7 @@ function HeaderFC({}) {
             icon={() => <FeatherIcon name='search' color={theme.primary} size={18} />}
             size={24}
             style={{ backgroundColor: theme.lightGrey, marginRight: 12 }}
-            onPress={() => navigation.navigate('DiscoverTribes' as never)}
+            onPress={() => navigation.navigate('DiscoverCommunities' as never)}
           />
           <Pushable onPress={() => ui.setNewTribeModal(true)}>
             <IconButton

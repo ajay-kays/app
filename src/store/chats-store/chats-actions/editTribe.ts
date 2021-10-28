@@ -2,7 +2,7 @@ import { ChatsStore } from '../chats-store'
 import { relay } from 'api'
 import { display, log } from 'lib/logging'
 
-export const editTribe = async (self: ChatsStore, params: EditTribeParams) => {
+export const editTribe = async (self: ChatsStore, params: EditCommunityParams) => {
   display({
     name: 'editTribe',
     preview: 'Attempting editTribe with params',
@@ -43,7 +43,7 @@ export const editTribe = async (self: ChatsStore, params: EditTribeParams) => {
   return r
 }
 
-export type EditTribeParams = {
+export type EditCommunityParams = {
   id: number
   name: string
   description: string

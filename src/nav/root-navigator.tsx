@@ -2,17 +2,18 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useTheme } from 'store'
 import { Chatroom as Chat, ChatDetails, Chats } from 'views/chat'
-import Community from 'views/communities/Community'
-import { Communities } from 'views/communities'
+import {
+  Communities,
+  Community,
+  CommunityMembers,
+  DiscoverCommunities,
+  EditCommunity,
+} from 'views/communities'
 // import Account from '../Account/Navigation'
 // import Payment from '../Payment'
 // import AddSats from '../Payment/AddSats'
 // import Contacts from '../Contacts'
 // import Contact from '../Contacts/Contact'
-// import DiscoverTribes from '../Tribes/Discover'
-// import Tribe from '../Tribes/Tribe'
-// import EditTribe from '../Tribes/Tribe/EditTribe'
-// import TribeMembers from '../Tribes/Members'
 import { setTint } from 'views/common/StatusBar'
 
 const RootStack = createNativeStackNavigator()
@@ -73,7 +74,6 @@ export default function Root() {
           animationEnabled: false,
         }}
       /> */}
-
       {/* <RootStack.Screen
         name='Contacts'
         component={Contacts}
@@ -99,14 +99,14 @@ export default function Root() {
           // animationEnabled: false,
         }}
       />
-      {/* <RootStack.Screen
-        name='DiscoverTribes'
-        component={DiscoverTribes}
+      <RootStack.Screen
+        name='DiscoverCommunities'
+        component={DiscoverCommunities}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
-      /> */}
+      />
       <RootStack.Screen
         name='Community'
         component={Community}
@@ -115,22 +115,22 @@ export default function Root() {
           headerShown: false,
         }}
       />
-      {/* <RootStack.Screen
-        name='EditTribe'
-        component={EditTribe}
+      <RootStack.Screen
+        name='EditCommunity'
+        component={EditCommunity}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
-      /> */}
-      {/* <RootStack.Screen
-        name='TribeMembers'
-        component={TribeMembers}
+      />
+      <RootStack.Screen
+        name='CommunityMembers'
+        component={CommunityMembers}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
-      /> */}
+      />
     </RootStack.Navigator>
   )
 }

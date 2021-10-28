@@ -23,7 +23,7 @@ export const ChatsStoreModel = types
       await actions.createGroup(self as ChatsStore, contact_ids, name),
     createTribe: async (params: actions.CreateTribeParams): Promise<any> =>
       await actions.createTribe(self as ChatsStore, params),
-    editTribe: async (params: actions.EditTribeParams): Promise<any> =>
+    editTribe: async (params: actions.EditCommunityParams): Promise<any> =>
       await actions.editTribe(self as ChatsStore, params),
     exitGroup: async (chatID: number): Promise<void> =>
       await actions.exitGroup(self as ChatsStore, chatID),

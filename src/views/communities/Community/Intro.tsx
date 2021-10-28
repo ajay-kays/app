@@ -82,8 +82,8 @@ const Intro = ({ tribe }) => {
       })
   }
 
-  function onTribeMembersPress() {
-    navigate('TribeMembers', { tribe })
+  function onCommunityMembersPress() {
+    navigate('CommunityMembers', { tribe })
   }
 
   if (tribePhoto) tribe.img = tribePhoto
@@ -162,7 +162,7 @@ const Intro = ({ tribe }) => {
                 ...styles.row,
                 flex: 1,
               }}
-              onPress={onTribeMembersPress}
+              onPress={onCommunityMembersPress}
             >
               <Typography size={14} fw='600' numberOfLines={1}>
                 {tribe.member_count}{' '}

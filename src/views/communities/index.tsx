@@ -5,6 +5,12 @@ import { useTheme } from '../../store'
 import TabBar from '../common/TabBar'
 import Header from './Header'
 import OwnedCommunities from './OwnedCommunities'
+import Community from './Community'
+import DiscoverCommunities from './Discover'
+import EditCommunity from './Community/EditCommunity'
+import CommunityMembers from './Members'
+
+export { Community, CommunityMembers, DiscoverCommunities, EditCommunity }
 
 const CommunitiesFC = () => {
   const theme = useTheme()

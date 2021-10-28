@@ -71,6 +71,17 @@ export function useOwnerMedia(msgs, tribe, type, myId): Array<Msg> {
     .sort((a, b) => moment(b.created_at).unix() - moment(a.created_at).unix())
 }
 
+// tribes not joined yet.
+export function useSearchCommunities(tribes) {
+  const { ui } = useStores()
+
+  // tribes = tribes.filter(t => !t.owner).sort((a, b) => a.joined - b.joined)
+
+  tribes = tribes.filter((t) => !t.joined).sort((a) => (!a.img ? 1 : -1))
+
+  return searchTribes(tribes, ui.tribesSearchTerm)
+}
+
 // HELPERS
 
 export function allCommunities(tribes, chats, user) {
@@ -86,6 +97,17 @@ export function allCommunities(tribes, chats, user) {
       joined: chatsuids ? (chatsuids.find((uuid) => uuid === tribe.uuid) ? true : false) : false,
       owner: ownedChats ? (ownedChats.find((c) => c.uuid === tribe.uuid) ? true : false) : false,
     }
+  })
+}
+
+export function searchTribes(tribes, searchTerm) {
+  return tribes.filter((c) => {
+    if (!searchTerm) return true
+
+    return (
+      c.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   })
 }
 
