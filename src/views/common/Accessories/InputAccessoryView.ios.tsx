@@ -27,7 +27,7 @@ export default function InputAccessoryView(props) {
   }
 
   return (
-    <View nativeID={nativeID} style={{ backgroundColor: theme.bg }}>
+    <ReactInputAccessoryView nativeID={nativeID} backgroundColor={theme.bg}>
       <View style={styles.btnWrap}>
         <Button
           onPress={_cancel}
@@ -43,7 +43,7 @@ export default function InputAccessoryView(props) {
           {doneText}
         </Button>
       </View>
-    </View>
+    </ReactInputAccessoryView>
   )
 }
 

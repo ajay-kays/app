@@ -14,7 +14,10 @@ function rnd() {
   return `?rnd=${Math.random().toString(36).substring(7)}`
 }
 
-export function usePicSrc(contact: Contact) {
+export function usePicSrc(contact: Contact | undefined) {
+  if (!usePicSrc) {
+    throw 'no usepicsrc'
+  }
   const [uri, setURI] = useState('')
   const s = contact && contact.photo_url
   useEffect(() => {

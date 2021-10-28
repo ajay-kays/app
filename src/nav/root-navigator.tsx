@@ -11,7 +11,7 @@ import {
 } from 'views/communities'
 import { Contact, Contacts } from 'views/contacts'
 import { AddSats, Payment } from 'views/payment'
-// import AccountNavigator from 'nav/account-navigator'
+import AccountNavigator from 'nav/account-navigator'
 import { setTint } from 'views/common/StatusBar'
 
 const RootStack = createNativeStackNavigator()
@@ -63,15 +63,15 @@ export default function Root() {
           headerShown: false,
         }}
       />
-      {/* <RootStack.Screen
+      <RootStack.Screen
         name='Account'
-        component={Account}
+        component={AccountNavigator}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          animationEnabled: false,
+          // animationEnabled: false,
         }}
-      /> */}
+      />
       <RootStack.Screen
         name='Contacts'
         component={Contacts}
