@@ -15,6 +15,12 @@ const MSGS_PER_CHAT = 50
 // Decode+normalize only those messages.
 // Store in MST via 'map of arrays' structure.
 export const getMessages = async (self: MsgStore, forceMore: boolean = false) => {
+  console.log('skipping getMessages')
+  return
+  const len = self.lengthOfAllMessages() // this aint doin nothing
+  console.log('len:', len)
+  if (len > 50) return
+
   /**
    * FETCH RECENT MESSAGES
    */

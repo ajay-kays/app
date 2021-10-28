@@ -1,11 +1,9 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useTheme } from 'store'
-import { Chatroom as Chat } from 'views/chat'
+import { Chatroom as Chat, Chats } from 'views/chat'
 import Community from 'views/communities/Community'
 import { Communities } from 'views/communities'
-// import Chats from '../chat/Chats'
-// import Chat from '../chat/chat'
 // import ChatDetails from '../chat/ChatDetails'
 // import Account from '../Account/Navigation'
 // import Payment from '../Payment'
@@ -26,15 +24,15 @@ export default function Root() {
 
   return (
     <RootStack.Navigator initialRouteName='Communities'>
-      {/* <RootStack.Screen
+      <RootStack.Screen
         name='Chats'
         component={Chats}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          animationEnabled: false,
+          // animationEnabled: false,
         }}
-      /> */}
+      />
       <RootStack.Screen
         name='Chat'
         component={Chat}

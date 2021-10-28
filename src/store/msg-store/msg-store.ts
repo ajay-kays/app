@@ -209,9 +209,12 @@ export const MsgStoreModel = types
     },
     lengthOfAllMessages(): number {
       let l = 0
-      Object.values(self.messages).forEach((msgs) => {
-        l += msgs.length
-      })
+      for (let i in self.messages.values()) {
+        console.log(i)
+      }
+      // self.messages.values().forEach((msgs) => {
+      //   l += msgs.length
+      // })
       return l
     },
     msgsForChatroom(chatId: number) {
