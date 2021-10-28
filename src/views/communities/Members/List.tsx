@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, FlatList, SectionList } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 
 import { useStores, useTheme } from '../../../store'
@@ -8,7 +8,7 @@ import { constants } from 'lib/constants'
 import { Contact, DeletableContact, PendingContact } from './Items'
 import Typography from '../../common/Typography'
 
-export default function List({ tribe, members, listHeader }) {
+function List({ tribe, members, listHeader }) {
   const { chats } = useStores()
   const theme = useTheme()
 
@@ -23,29 +23,29 @@ export default function List({ tribe, members, listHeader }) {
     return <Contact key={index} contact={item} unselectable={true} />
   }
 
-  return useObserver(() => {
-    return (
-      <SectionList
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        // scrollEnabled={false}
-        style={styles.wrap}
-        sections={grouper(members)}
-        // data={members}
-        renderItem={renderItem}
-        renderSectionHeader={({ section: { title } }) => (
-          <View style={{ ...styles.section, backgroundColor: theme.main }}>
-            <Typography color={theme.title} fw='500'>
-              {title}
-            </Typography>
-          </View>
-        )}
-        ListHeaderComponent={listHeader}
-        keyExtractor={(item) => String(item.id)}
-      />
-    )
-  })
+  return (
+    <SectionList
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      // scrollEnabled={false}
+      style={styles.wrap}
+      sections={grouper(members)}
+      // data={members}
+      renderItem={renderItem}
+      renderSectionHeader={({ section: { title } }) => (
+        <View style={{ ...styles.section, backgroundColor: theme.main }}>
+          <Typography color={theme.title} fw='500'>
+            {title}
+          </Typography>
+        </View>
+      )}
+      ListHeaderComponent={listHeader}
+      keyExtractor={(item) => String(item.id)}
+    />
+  )
 }
+
+export default observer(List)
 
 function grouper(data) {
   // takes "alias"

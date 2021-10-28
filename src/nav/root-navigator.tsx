@@ -9,11 +9,10 @@ import {
   DiscoverCommunities,
   EditCommunity,
 } from 'views/communities'
+import { Contact, Contacts } from 'views/contacts'
 // import Account from '../Account/Navigation'
 // import Payment from '../Payment'
 // import AddSats from '../Payment/AddSats'
-// import Contacts from '../Contacts'
-// import Contact from '../Contacts/Contact'
 import { setTint } from 'views/common/StatusBar'
 
 const RootStack = createNativeStackNavigator()
@@ -74,22 +73,22 @@ export default function Root() {
           animationEnabled: false,
         }}
       /> */}
-      {/* <RootStack.Screen
+      <RootStack.Screen
         name='Contacts'
         component={Contacts}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
-      /> */}
-      {/* <RootStack.Screen
+      />
+      <RootStack.Screen
         name='Contact'
         component={Contact}
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
         }}
-      /> */}
+      />
       <RootStack.Screen
         name='Communities'
         component={Communities}

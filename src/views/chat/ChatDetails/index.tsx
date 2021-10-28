@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { IconButton, TextInput } from 'react-native-paper'
 // import Slider from '@react-native-community/slider'
@@ -22,7 +22,7 @@ import InputAccessoryView from '../../common/Accessories/InputAccessoryView'
 import { reportError } from 'lib/errorHelper'
 import { Contact } from 'store/contacts-store'
 
-export default function ChatDetails({ route }) {
+function ChatDetails({ route }) {
   const { ui, chats, user, contacts, meme } = useStores()
   const theme = useTheme()
   const [loading, setLoading] = useState(false)
@@ -155,92 +155,91 @@ export default function ChatDetails({ route }) {
     }, 500)
   }
 
-  return useObserver(() => {
-    const meContact = contacts.contactsArray.find((c) => c.id === user.myid) as Contact
-    let imgURI = usePicSrc(meContact)
+  const meContact = contacts.contactsArray.find((c) => c.id === user.myid) as Contact
+  let imgURI = usePicSrc(meContact)
 
-    let myPhoto = group.my_photo_url || imgURI
+  let myPhoto = group.my_photo_url || imgURI
 
-    if (photo_url) myPhoto = photo_url
+  if (photo_url) myPhoto = photo_url
 
-    return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <BackHeader
-          title='Details'
-          navigate={() => navigation.goBack()}
-          border={true}
-          action={<DetailsAction chat={group} />}
-        />
+  return (
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+      <BackHeader
+        title='Details'
+        navigate={() => navigation.goBack()}
+        border={true}
+        action={<DetailsAction chat={group} />}
+      />
 
-        <View style={styles.content}>
-          {hasGroup && (
-            <View style={styles.groupInfo}>
-              <View style={styles.groupInfoLeft}>
-                {group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}
-                <View style={styles.groupInfoText}>
-                  <Typography size={16} style={{ marginBottom: 4 }}>
-                    {group.name}
-                  </Typography>
+      <View style={styles.content}>
+        {hasGroup && (
+          <View style={styles.groupInfo}>
+            <View style={styles.groupInfoLeft}>
+              {group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}
+              <View style={styles.groupInfoText}>
+                <Typography size={16} style={{ marginBottom: 4 }}>
+                  {group.name}
+                </Typography>
+                <Typography
+                  color={theme.title}
+                  size={12}
+                  style={{ marginBottom: 4 }}
+                >{`Created on ${moment(group.created_at).format('ll')}`}</Typography>
+                {Boolean(group.price_per_message !== null || group.escrow_amount !== null) && (
                   <Typography
-                    color={theme.title}
                     size={12}
-                    style={{ marginBottom: 4 }}
-                  >{`Created on ${moment(group.created_at).format('ll')}`}</Typography>
-                  {Boolean(group.price_per_message !== null || group.escrow_amount !== null) && (
-                    <Typography
-                      size={12}
-                      color={theme.subtitle}
-                    >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
-                  )}
-                </View>
+                    color={theme.subtitle}
+                  >{`Price per message: ${group.price_per_message}, Amount to stake: ${group.escrow_amount}`}</Typography>
+                )}
               </View>
-
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onPress={() => setGroupSettingsDialog(true)}
-                style={{
-                  marginLeft: 0,
-                  marginRight: 0,
-                  position: 'absolute',
-                  right: 8,
-                }}
-              >
-                <MaterialCommunityIcon name='dots-vertical' size={25} color={theme.icon} />
-              </TouchableOpacity>
-            </View>
-          )}
-
-          <View style={{ ...styles.infoWrap }}>
-            <Typography size={16}>Alias</Typography>
-            <View style={{ position: 'relative' }}>
-              <TextInput
-                inputAccessoryViewID={nativeID}
-                placeholder='Alias'
-                value={alias}
-                onChangeText={setAlias}
-                style={{ ...styles.input, backgroundColor: theme.bg }}
-                underlineColor={theme.border}
-              />
-              {group && (
-                <View style={{ ...styles.infoImg }}>
-                  <AvatarEdit
-                    onPress={() => setImageDialog(true)}
-                    uploading={uploading}
-                    uploadPercent={uploadPercent}
-                    display={true}
-                    size={45}
-                    top='27%'
-                  >
-                    <Avatar size={45} aliasSize={18} big alias={group.my_alias} photo={myPhoto} />
-                  </AvatarEdit>
-                </View>
-              )}
             </View>
 
-            <InputAccessoryView nativeID={nativeID} done={updateAlias} />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() => setGroupSettingsDialog(true)}
+              style={{
+                marginLeft: 0,
+                marginRight: 0,
+                position: 'absolute',
+                right: 8,
+              }}
+            >
+              <MaterialCommunityIcon name='dots-vertical' size={25} color={theme.icon} />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        <View style={{ ...styles.infoWrap }}>
+          <Typography size={16}>Alias</Typography>
+          <View style={{ position: 'relative' }}>
+            <TextInput
+              inputAccessoryViewID={nativeID}
+              placeholder='Alias'
+              value={alias}
+              onChangeText={setAlias}
+              style={{ ...styles.input, backgroundColor: theme.bg }}
+              underlineColor={theme.border}
+            />
+            {group && (
+              <View style={{ ...styles.infoImg }}>
+                <AvatarEdit
+                  onPress={() => setImageDialog(true)}
+                  uploading={uploading}
+                  uploadPercent={uploadPercent}
+                  display={true}
+                  size={45}
+                  top='27%'
+                >
+                  <Avatar size={45} aliasSize={18} big alias={group.my_alias} photo={myPhoto} />
+                </AvatarEdit>
+              </View>
+            )}
           </View>
 
-          {/* {showValueSlider && (
+          <InputAccessoryView nativeID={nativeID} done={updateAlias} />
+        </View>
+
+        {/* {showValueSlider && (
             <View style={styles.slideWrap}>
               <View style={styles.slideText}>
                 <Text style={{ ...styles.slideLabel, color: theme.subtitle }}>
@@ -262,52 +261,53 @@ export default function ChatDetails({ route }) {
               />
             </View>
           )} */}
-        </View>
-        <GroupSettings
-          visible={groupSettingsDialog}
-          owner={isTribeAdmin}
-          onCancel={() => setGroupSettingsDialog(false)}
-          shareGroup={onShareGroup}
-          exitGroup={onExitGroup}
-        />
-        <ImageDialog
-          visible={imageDialog}
-          onCancel={() => setImageDialog(false)}
-          onPick={tookPic}
-          onSnap={tookPic}
-          setImageDialog={setImageDialog}
-        />
       </View>
-    )
-  })
+      <GroupSettings
+        visible={groupSettingsDialog}
+        owner={isTribeAdmin}
+        onCancel={() => setGroupSettingsDialog(false)}
+        shareGroup={onShareGroup}
+        exitGroup={onExitGroup}
+      />
+      <ImageDialog
+        visible={imageDialog}
+        onCancel={() => setImageDialog(false)}
+        onPick={tookPic}
+        onSnap={tookPic}
+        setImageDialog={setImageDialog}
+      />
+    </View>
+  )
 }
 
-function DetailsAction({ chat }) {
+export default observer(ChatDetails)
+
+function DetailsActionFC({ chat }) {
   const { chats } = useStores()
   const theme = useTheme()
 
-  return useObserver(() => {
-    const theChat = chats.chatsArray.find((c) => c.id === chat.id)
-    const isMuted = (theChat && theChat.is_muted) || false
+  const theChat = chats.chatsArray.find((c) => c.id === chat.id)
+  const isMuted = (theChat && theChat.is_muted) || false
 
-    async function muteChat() {
-      chats.muteChat(chat.id, isMuted ? false : true)
-    }
+  async function muteChat() {
+    chats.muteChat(chat.id, isMuted ? false : true)
+  }
 
-    return (
-      <>
-        {chat && (
-          <IconButton
-            icon={() => (
-              <FeatherIcon name={isMuted ? 'bell-off' : 'bell'} size={22} color={theme.icon} />
-            )}
-            onPress={muteChat}
-          />
-        )}
-      </>
-    )
-  })
+  return (
+    <>
+      {chat && (
+        <IconButton
+          icon={() => (
+            <FeatherIcon name={isMuted ? 'bell-off' : 'bell'} size={22} color={theme.icon} />
+          )}
+          onPress={muteChat}
+        />
+      )}
+    </>
+  )
 }
+
+const DetailsAction = observer(DetailsActionFC)
 
 const styles = StyleSheet.create({
   wrap: {

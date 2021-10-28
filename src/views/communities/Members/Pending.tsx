@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useStores, useTheme } from 'store'
 import { constants } from 'lib/constants'
 import { Contact, DeletableContact, PendingContact } from './Items'
 
-export default function Pending({ tribe, members }) {
+function Pending({ tribe, members }) {
   const { chats, msg } = useStores()
 
   async function onApproveOrDenyMember(contactId, status) {
@@ -22,19 +22,17 @@ export default function Pending({ tribe, members }) {
     <PendingContact key={index} contact={item} onApproveOrDenyMember={onApproveOrDenyMember} />
   )
 
-  return useObserver(() => {
-    return (
-      <>
-        <FlatList
-          style={styles.scroller}
-          data={members}
-          renderItem={renderItem}
-          keyExtractor={(item) => String(item.id)}
-        />
-      </>
-    )
-  })
+  return (
+    <FlatList
+      style={styles.scroller}
+      data={members}
+      renderItem={renderItem}
+      keyExtractor={(item) => String(item.id)}
+    />
+  )
 }
+
+export default observer(Pending)
 
 const styles = StyleSheet.create({
   scroller: {

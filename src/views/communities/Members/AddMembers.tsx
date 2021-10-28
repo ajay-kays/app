@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { StyleSheet, View, Modal, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import { useTheme, useStores } from '../../../store'
 import { TRIBE_SIZE_LIMIT } from 'lib/constants'
@@ -7,7 +7,7 @@ import Button from '../../common/Button'
 import Typography from '../../common/Typography'
 import { Contact, SelectedContact } from './Items'
 
-export default function AddMembers({ initialMemberIds, loading, finish }) {
+function AddMembers({ initialMemberIds, loading, finish }) {
   const theme = useTheme()
   const { contacts } = useStores()
   const [selected, setTheSelected] = useState<any>([])
@@ -85,7 +85,7 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
     </View>
   )
 
-  return useObserver(() => (
+  return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <>
         {/* {showSelectedContacts && (
@@ -123,8 +123,10 @@ export default function AddMembers({ initialMemberIds, loading, finish }) {
         />
       </>
     </View>
-  ))
+  )
 }
+
+export default observer(AddMembers)
 
 const styles = StyleSheet.create({
   wrap: {

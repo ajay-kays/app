@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { Appbar, IconButton } from 'react-native-paper'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -18,7 +18,7 @@ import JoinTribe from '../common/Modals/Community/JoinCommunity'
 import { setTint } from '../common/StatusBar'
 import List from './List'
 
-export default function Discover() {
+function Discover() {
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const isFocused = useIsFocused()
@@ -40,28 +40,28 @@ export default function Discover() {
     setRefreshing(false)
   }
 
-  return useObserver(() => {
-    const tribes = useCommunities()
-    const tribesToShow = useSearchCommunities(tribes)
+  const tribes = useCommunities()
+  const tribesToShow = useSearchCommunities(tribes)
 
-    return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-        <SearchHeader />
-        <View style={styles.content}>
-          <List
-            data={tribesToShow}
-            loading={loading}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            listEmpty={<ListEmpty />}
-          />
-        </View>
-
-        <TabBar />
+  return (
+    <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+      <SearchHeader />
+      <View style={styles.content}>
+        <List
+          data={tribesToShow}
+          loading={loading}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          listEmpty={<ListEmpty />}
+        />
       </View>
-    )
-  })
+
+      <TabBar />
+    </View>
+  )
 }
+
+export default observer(Discover)
 
 function ListEmpty() {
   const { ui } = useStores()

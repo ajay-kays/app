@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
-
 import { useStores, useTheme } from '../../../store'
 import BackHeader from '../../common/BackHeader'
 import List from './List'
@@ -16,7 +15,7 @@ import Empty from '../../common/Empty'
 import Search from '../../common/Search'
 import { SCREEN_WIDTH } from 'lib/constants'
 
-export default function Members({ route }) {
+function Members({ route }) {
   const [addMember, setAddMember] = useState(false)
   const { contacts } = useStores()
   const theme = useTheme()
@@ -49,42 +48,42 @@ export default function Members({ route }) {
       )
     }) || []
 
-  return useObserver(() => {
-    return (
-      <>
-        <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-          <BackHeader
-            // title={`${tribe.name} Members`}
-            title='Members'
-            navigate={() => navigation.goBack()}
-            // action={tribe.owner && <MemberHeader openDialog={() => setAddMember(true)} />}
-          />
-          <View style={styles.content}>
-            {contactsToShow && contactsToShow.length > 0 ? (
-              <List
-                tribe={tribe}
-                members={searchedContacts}
-                listHeader={
-                  <ListHeader
-                    tribe={tribe}
-                    searchText={membersSearchText}
-                    setSearchText={setMembersSearchText}
-                  />
-                }
-              />
-            ) : (
-              <EmptyMembers tribe={tribe} />
-            )}
-            {/* <Pending tribe={tribe} members={pendingContactsToShow} /> */}
-            {/* <AddMemberModal visible={addMember} close={() => setAddMember(false)}>
+  return (
+    <>
+      <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+        <BackHeader
+          // title={`${tribe.name} Members`}
+          title='Members'
+          navigate={() => navigation.goBack()}
+          // action={tribe.owner && <MemberHeader openDialog={() => setAddMember(true)} />}
+        />
+        <View style={styles.content}>
+          {contactsToShow && contactsToShow.length > 0 ? (
+            <List
+              tribe={tribe}
+              members={searchedContacts}
+              listHeader={
+                <ListHeader
+                  tribe={tribe}
+                  searchText={membersSearchText}
+                  setSearchText={setMembersSearchText}
+                />
+              }
+            />
+          ) : (
+            <EmptyMembers tribe={tribe} />
+          )}
+          {/* <Pending tribe={tribe} members={pendingContactsToShow} /> */}
+          {/* <AddMemberModal visible={addMember} close={() => setAddMember(false)}>
               <AddMembers initialMemberIds={(tribe && tribe.chat.contact_ids) || []} />
             </AddMemberModal> */}
-          </View>
         </View>
-      </>
-    )
-  })
+      </View>
+    </>
+  )
 }
+
+export default observer(Members)
 
 function ListHeader({ tribe, searchText, setSearchText }) {
   return (
