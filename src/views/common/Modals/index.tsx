@@ -1,7 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite'
 import AddContact from './AddContact'
-import InviteNewUser from './InviteNewUser'
 import Payment from './Payment'
 import ShareGroup from './ShareGroup'
 import AddCommunity from './Community/AddCommunity'
@@ -12,7 +11,6 @@ function Modals() {
   return (
     <>
       <AddContact />
-      <InviteNewUser />
       <PostPhoto />
       <Payment />
       <ShareGroup />

@@ -151,7 +151,7 @@ function ChatDetails({ route }) {
     setGroupSettingsDialog(false)
 
     setTimeout(() => {
-      ui.setShareTribeUUID(group.uuid)
+      ui.setShareCommunityUUID(group.uuid)
     }, 500)
   }
 
