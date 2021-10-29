@@ -1,5 +1,6 @@
 import { relay } from 'api'
 import { getRoot } from 'mobx-state-tree'
+import { Alert } from 'react-native'
 import { RootStore } from 'store'
 import { encryptText } from '../msg-helpers'
 import { MsgStore } from '../msg-store'
@@ -11,6 +12,10 @@ export const sendPayment = async (
   const root = getRoot(self) as RootStore
   try {
     const myid = root.user.myid
+    if (!contact_id) {
+      Alert.alert('no contact id - is that ok?! [dev]')
+      return
+    }
     const myenc = await encryptText(root, { contact_id: myid, text: memo })
     const encMemo = await encryptText(root, { contact_id, text: memo })
     const v = {
@@ -31,9 +36,9 @@ export const sendPayment = async (
 }
 
 export interface SendPaymentParams {
-  contact_id: number
+  contact_id: number | null
   amt: number
-  chat_id: number
+  chat_id: number | null
   destination_key: string
   memo: string
 }

@@ -12,8 +12,8 @@ import * as utils from 'views/utils/utils'
 import { initPicSrc } from 'views/utils/picSrc'
 import * as rsa from 'lib/crypto/rsa'
 import EE, { RESET_IP_FINISHED } from 'lib/ee'
-// import Modals from './components/modals'
-// import ModalsN from './components/common/Modals'
+import { Modals } from 'views/modals'
+import ModalsN from 'views/common/Modals'
 // import Dialogs from './components/common/Dialogs'
 import Root from 'nav/root-navigator'
 import { display } from 'lib/logging'
@@ -175,8 +175,8 @@ export default function Main() {
   return (
     <>
       <Root />
-      {/* <Modals /> */}
-      {/* <ModalsN /> */}
+      <Modals />
+      <ModalsN />
       {/* <Dialogs /> */}
       {/* <AppVersionUpdate
         visible={versionUpdateVisible}

@@ -70,15 +70,6 @@ function EditContact({ route }) {
 
   const Subscribe = (
     <>
-      {/* {!sub && (
-        <TouchableOpacity onPress={() => ui.setContactSubscribeModal(true, contact)}>
-          <Button mode='text' size='small'>
-            <Typography size={14} color={theme.primary}>
-              {existingSub ? 'Subscribed' : 'Subscribe'}
-            </Typography>
-          </Button>
-        </TouchableOpacity>
-      )} */}
       {sub && existingSub && existingSub.id && (
         <View style={styles.row}>
           <IconButton

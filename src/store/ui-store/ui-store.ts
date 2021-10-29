@@ -21,10 +21,6 @@ export const UiStoreModel = types
     inviteFriendModal: false,
     addContactModal: false,
     // Reference to why using frozen https://github.com/mobxjs/mobx-state-tree/issues/415
-    subModalParams: types.maybeNull(types.map(types.frozen())),
-    redeemModalParams: types.maybeNull(types.map(types.frozen())),
-    contactSubscribeModal: false,
-    contactSubscribeParams: types.maybe(types.reference(ContactModel)),
     newTribeModal: false,
     newGroupModal: false,
     editTribeParams: types.maybeNull(types.map(types.frozen())),
@@ -43,8 +39,6 @@ export const UiStoreModel = types
     confirmInvoiceMsg: types.frozen(), // types.maybe(types.reference(InvoiceMsgModel)),
     sendRequestModal: types.maybe(types.reference(ChatModel)),
     viewContact: types.maybe(types.reference(ContactModel)),
-    rawInvoiceModal: false,
-    rawInvoiceModalParams: types.maybeNull(types.map(types.frozen())),
     lastPaidInvoice: '',
     joinTribeParams: types.maybeNull(types.map(types.frozen())),
     imgViewerParams: types.optional(types.frozen(), {}),
@@ -107,29 +101,6 @@ export const UiStoreModel = types
     },
     setAddContactModal(openDialog: boolean) {
       self.addContactModal = openDialog
-    },
-    setSubModalParams(params: { [k: string]: any } | null) {
-      if (!params) {
-        self.subModalParams = null
-        return
-      }
-      self.subModalParams?.replace(params)
-    },
-    setRedeemModalParams(params: { [k: string]: any } | false | null) {
-      if (!params) {
-        self.redeemModalParams = null
-        return
-      }
-      self.redeemModalParams?.replace(params)
-    },
-    setContactSubscribeModal(openDialog: boolean, params: Contact) {
-      self.contactSubscribeModal = openDialog
-      self.contactSubscribeParams = params
-    },
-    async closeEditContactModal() {
-      self.contactSubscribeModal = false
-      await sleep(500)
-      self.contactSubscribeParams = undefined
     },
     setNewTribeModal(openModal: boolean) {
       self.newTribeModal = openModal
@@ -207,17 +178,6 @@ export const UiStoreModel = types
     },
     setViewContact(contact: Contact) {
       self.viewContact = contact
-    },
-    setRawInvoiceModal(params: { [k: string]: string }) {
-      self.rawInvoiceModal = true
-      self.lastPaidInvoice = ''
-      self.rawInvoiceModalParams?.replace(params)
-    },
-    async clearRawInvoiceModal() {
-      self.rawInvoiceModal = false
-      await sleep(500)
-      self.rawInvoiceModalParams = null
-      self.lastPaidInvoice = ''
     },
     setLastPaidInvoice(invoiceID: string) {
       self.lastPaidInvoice = invoiceID

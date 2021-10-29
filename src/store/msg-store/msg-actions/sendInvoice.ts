@@ -31,6 +31,6 @@ export const sendInvoice = async (
 export interface SendInvoiceParams {
   contact_id: number
   amt: number
-  chat_id: number
+  chat_id: number | null
   memo: string
 }
