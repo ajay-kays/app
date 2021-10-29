@@ -11,6 +11,9 @@ import { contactForConversation } from './utils'
 import EE, { LEFT_GROUP } from 'lib/ee'
 import { StreamPayment } from 'store/feed'
 import { ActivityIndicator, KeyboardAvoidingView, View } from 'react-native'
+import Header from './header'
+import BottomBar from '../BottomBar/bottomBar'
+import Podcast from '../../podcast'
 
 export type RouteStatus = 'active' | 'inactive' | null
 
@@ -146,7 +149,7 @@ const ChatroomFC = () => {
       style={{ flex: 1, backgroundColor: theme.bg }}
       keyboardVerticalOffset={1}
     >
-      {/* <Header
+      <Header
         chat={chat}
         appMode={appMode}
         setAppMode={setAppMode}
@@ -154,7 +157,7 @@ const ChatroomFC = () => {
         tribeParams={tribeParams}
         pricePerMinute={pricePerMinute}
         podId={pod?.id}
-      /> */}
+      />
       {loadingChat ? (
         <View
           style={{
@@ -169,6 +172,10 @@ const ChatroomFC = () => {
       ) : (
         <MsgList chat={chat} msgs={msgs} pricePerMessage={pricePerMessage} />
       )}
+
+      {showPod && <Podcast pod={pod} chat={chat} onBoost={onBoost} podError={podError} />}
+
+      <BottomBar chat={chat} pricePerMessage={pricePerMessage} tribeBots={tribeBots} />
     </KeyboardAvoidingView>
   )
 }

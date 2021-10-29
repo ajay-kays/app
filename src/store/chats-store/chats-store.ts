@@ -4,6 +4,7 @@ import { display } from 'lib/logging'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './chats-actions'
 import { Chat, ChatModel } from './chats-models'
+import { Destination } from 'store/feed'
 
 export const ChatsStoreModel = types
   .model('ChatsStore')
@@ -43,6 +44,21 @@ export const ChatsStoreModel = types
       await actions.loadFeed(host, uuid, url),
     muteChat: async (chatID: number, muted: boolean): Promise<void> =>
       await actions.muteChat(self as ChatsStore, chatID, muted),
+    sendPayments: async (
+      destinations: Destination[],
+      text: string,
+      amount: number,
+      chat_id: number,
+      update_meta: boolean
+    ): Promise<any> =>
+      await actions.sendPayments(
+        self as ChatsStore,
+        destinations,
+        text,
+        amount,
+        chat_id,
+        update_meta
+      ),
     updateMyInfoInChat: async (
       tribeID: number,
       my_alias: string,

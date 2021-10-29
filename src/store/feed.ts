@@ -1,3 +1,10 @@
+type DestinationType = 'wallet' | 'node'
+export interface Destination {
+  address: string
+  split: number
+  type: DestinationType
+}
+
 export const NUM_SECONDS = 60
 export interface StreamPayment {
   feedID: number

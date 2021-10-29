@@ -160,8 +160,12 @@ export const UiStoreModel = types
     setSignedUp(value: boolean) {
       self.signedUp = value
     },
-    setPodcastBoostAmount(amount: number) {
-      self.podcastBoostAmount = amount
+    setPodcastBoostAmount(amount: number | null) {
+      if (!amount) {
+        self.podcastBoostAmount = 0
+      } else {
+        self.podcastBoostAmount = amount
+      }
     },
   }))
 

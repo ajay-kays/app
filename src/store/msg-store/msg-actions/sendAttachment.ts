@@ -46,7 +46,7 @@ export const sendAttachment = async (
 }
 
 export interface SendAttachmentParams {
-  contact_id: number
+  contact_id: number | null
   text: string
   chat_id: number
   muid: number
