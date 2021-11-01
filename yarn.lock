@@ -1823,6 +1823,13 @@ browserslist@^4.16.6, browserslist@^4.17.3:
     node-releases "^2.0.0"
     picocolors "^1.0.0"
 
+bs58-rn@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmjs.org/bs58-rn/-/bs58-rn-0.0.3.tgz#62660cf6332db551070d9131d3c4f38411c97a52"
+  integrity sha512-Qey94E3DNZ73Fmcb9TPApWJbJnJ/b/Q8kC9AzP8XjRTWtsCF7M0qIFjLEgMDicI5W3dFyqH+Ys2nr41YLlPDgA==
+  dependencies:
+    safe-buffer "^5.1.2"
+
 bser@2.1.1:
   version "2.1.1"
   resolved "https://registry.npmjs.org/bser/-/bser-2.1.1.tgz#e6787da20ece9d07998533cfd9de6f5c38f4bc05"
