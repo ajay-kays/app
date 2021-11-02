@@ -1,5 +1,5 @@
 import React from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { View, Text, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native'
 import { Button, Portal } from 'react-native-paper'
 import Share from 'react-native-share'
@@ -12,7 +12,7 @@ import ModalWrap from './modalWrap'
 import Header from './modalHeader'
 import { reportError } from 'lib/errorHelper'
 
-export default function ShareInviteWrap({ visible }) {
+function ShareInviteWrap({ visible }) {
   const { ui } = useStores()
 
   function close() {
@@ -25,6 +25,8 @@ export default function ShareInviteWrap({ visible }) {
     </ModalWrap>
   )
 }
+
+export default observer(ShareInviteWrap)
 
 function ShareInvite({ close }) {
   const { ui } = useStores()
@@ -44,7 +46,7 @@ function ShareInvite({ close }) {
 
   const hasInvite = ui.shareInviteString ? true : false
 
-  return useObserver(() => (
+  return (
     <Portal.Host>
       <Header title='Share Invitation Code' onClose={close} />
       <TouchableWithoutFeedback style={styles.wrap} onPress={copy}>
@@ -70,7 +72,7 @@ function ShareInvite({ close }) {
         </View>
       </TouchableWithoutFeedback>
     </Portal.Host>
-  ))
+  )
 }
 
 const styles = StyleSheet.create({

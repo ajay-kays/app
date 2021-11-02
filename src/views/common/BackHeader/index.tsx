@@ -5,19 +5,21 @@ import { useNavigation } from '@react-navigation/native'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import { useTheme } from 'store'
 import Typography from '../Typography'
+import { navigate } from 'nav'
 
-export default function BackHeader({ title, screen, action, navigate, border }) {
+export default function BackHeader({ title, screen, action, border, navigate }) {
   const theme = useTheme()
   const navigation = useNavigation()
 
   function onBack() {
-    requestAnimationFrame(() => {
-      if (navigate) {
-        return navigate()
-      }
+    navigation.goBack()
+    // requestAnimationFrame(() => {
+    //   if (navigate) {
+    //     return navigate()
+    //   }
 
-      navigation.navigate(screen)
-    })
+    //   navigation.navigate(screen)
+    // })
   }
 
   return (

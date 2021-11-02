@@ -175,10 +175,12 @@ export default function Podcast({ pod, chat, onBoost, podError }) {
   }
 
   let pricePerMinute = 0
-  if (chats.pricesPerMinute[chatID] || chats.pricesPerMinute[chatID] === 0) {
-    pricePerMinute = chats.pricesPerMinute[chatID]
-  } else if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
-    pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
+  if (chats.pricesPerMinute) {
+    if (chats.pricesPerMinute[chatID] || chats.pricesPerMinute[chatID] === 0) {
+      pricePerMinute = chats.pricesPerMinute[chatID]
+    } else if (pod && pod.value && pod.value.model && pod.value.model.suggested) {
+      pricePerMinute = Math.round(parseFloat(pod.value.model.suggested) * 100000000)
+    }
   }
 
   async function sendPayments(mult: number) {

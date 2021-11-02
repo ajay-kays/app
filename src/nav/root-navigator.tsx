@@ -27,7 +27,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          // animationEnabled: false,
+          animation: 'none',
         }}
       />
       <RootStack.Screen
@@ -52,7 +52,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          // animationEnabled: false,
+          animation: 'none',
         }}
       />
       <RootStack.Screen
@@ -69,7 +69,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          // animationEnabled: false,
+          animation: 'none',
         }}
       />
       <RootStack.Screen
@@ -94,7 +94,7 @@ export default function Root() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
-          // animationEnabled: false,
+          animation: 'none',
         }}
       />
       <RootStack.Screen

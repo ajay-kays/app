@@ -1,5 +1,5 @@
 import React from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { IconButton } from 'react-native-paper'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
@@ -9,7 +9,7 @@ import * as ImagePicker from 'react-native-image-picker'
 import { useTheme } from 'store'
 import MenuSheet from '../ActionSheet/MenuSheet'
 
-export default function ChatOptions({
+function ChatOptions({
   visible,
   onCancel,
   onPick,
@@ -183,7 +183,7 @@ export default function ChatOptions({
     ? [...commonItems, ...conversationItems]
     : [...commonItems, ...userItems]
 
-  return useObserver(() => (
-    <MenuSheet visible={visible} items={items} onCancel={close} noSwipe marginH={12} />
-  ))
+  return <MenuSheet visible={visible} items={items} onCancel={close} noSwipe marginH={12} />
 }
+
+export default observer(ChatOptions)

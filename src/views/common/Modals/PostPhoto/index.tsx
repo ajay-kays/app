@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { StyleSheet, View, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 import { ActivityIndicator, IconButton } from 'react-native-paper'
@@ -7,9 +7,8 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import FastImage from 'react-native-fast-image'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
 import * as base64 from 'base-64'
-
 import { useStores, useTheme } from 'store'
-import { constants, SCREEN_HEIGHT, SCREEN_WIDTH, STATUS_BAR_HEIGHT } from 'lib/constants'
+import { SCREEN_HEIGHT, SCREEN_WIDTH, STATUS_BAR_HEIGHT } from 'lib/constants'
 import { randString } from 'lib/crypto/rand'
 import * as e2e from 'lib/crypto/e2e'
 import ModalWrap from '../ModalWrap'
@@ -17,33 +16,33 @@ import SetPrice from './SetPrice'
 import Typography from '../../Typography'
 import { setTint } from '../../StatusBar'
 
-export default function PostPhotoWrap() {
-  return useObserver(() => {
-    const { ui } = useStores()
-    const theme = useTheme()
+function PostPhotoWrap() {
+  const { ui } = useStores()
+  const theme = useTheme()
 
-    const visible =
-      ui.imgViewerParams &&
-      (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg)
-        ? true
-        : false
+  const visible =
+    ui.imgViewerParams &&
+    (ui.imgViewerParams.data || ui.imgViewerParams.uri || ui.imgViewerParams.msg)
+      ? true
+      : false
 
-    const params = ui.imgViewerParams
+  const params = ui.imgViewerParams
 
-    function close() {
-      ui.setImgViewerParams(null)
-      setTint(theme.dark ? 'dark' : 'light')
-    }
+  function close() {
+    ui.setImgViewerParams(null)
+    setTint(theme.dark ? 'dark' : 'light')
+  }
 
-    return (
-      <ModalWrap onClose={close} visible={visible} noHeader noSwipe>
-        {visible && <PostPhoto params={params} close={close} />}
-      </ModalWrap>
-    )
-  })
+  return (
+    <ModalWrap onClose={close} visible={visible} noHeader noSwipe>
+      {visible && <PostPhoto params={params} close={close} />}
+    </ModalWrap>
+  )
 }
 
-function PostPhoto(props) {
+export default observer(PostPhotoWrap)
+
+function PostPhotoFC(props) {
   const { params, close } = props
   const { data, uri, chat_id, contact_id, pricePerMessage } = params
 
@@ -166,88 +165,89 @@ function PostPhoto(props) {
     }
   }
 
-  return useObserver(() => {
-    return (
-      <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
-        <IconButton
-          icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
-          onPress={close}
-          style={{ ...styles.closeButton }}
+  return (
+    <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
+      {/* @ts-ignore  */}
+      <IconButton
+        icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
+        onPress={close}
+        style={{ ...styles.closeButton }}
+      />
+      {showInput && <SetPrice setAmount={(amt) => setPrice(amt)} onShow={onShowAmount} />}
+      {showImg && (
+        <FastImage
+          resizeMode='contain'
+          source={{ uri: uri || data }}
+          style={{ ...styles.img, ...boxStyles }}
         />
-        {showInput && <SetPrice setAmount={(amt) => setPrice(amt)} onShow={onShowAmount} />}
-        {showImg && (
-          <FastImage
-            resizeMode='contain'
-            source={{ uri: uri || data }}
-            style={{ ...styles.img, ...boxStyles }}
-          />
-        )}
-        {showMsgMessage && !uploading && (
-          <View style={{ ...styles.msgMessage, ...boxStyles }}>
-            <Typography color={theme.white}>Set a price and enter your message</Typography>
-          </View>
-        )}
+      )}
+      {showMsgMessage && !uploading && (
+        <View style={{ ...styles.msgMessage, ...boxStyles }}>
+          <Typography color={theme.white}>Set a price and enter your message</Typography>
+        </View>
+      )}
 
-        {uploading && (
+      {uploading && (
+        <View
+          style={{
+            ...styles.activityWrap,
+            width: SCREEN_WIDTH,
+            height: SCREEN_HEIGHT - 180,
+          }}
+        >
+          <ActivityIndicator animating={true} color='white' size='large' />
+          <Typography
+            color={theme.white}
+            size={16}
+            style={{
+              marginTop: 16,
+            }}
+          >{`${uploadPercent}%`}</Typography>
+        </View>
+      )}
+
+      {showInput && (
+        <KeyboardAvoidingView
+          style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}
+          behavior='position'
+          keyboardVerticalOffset={1}
+        >
           <View
             style={{
-              ...styles.activityWrap,
-              width: SCREEN_WIDTH,
-              height: SCREEN_HEIGHT - 180,
+              ...styles.inputWrap,
+              bottom: isIphoneX() ? getBottomSpace() : 15,
             }}
           >
-            <ActivityIndicator animating={true} color='white' size='large' />
-            <Typography
-              color={theme.white}
-              size={16}
+            <TextInput
+              placeholder='Message...'
+              ref={inputRef}
               style={{
-                marginTop: 16,
+                ...styles.input,
+                backgroundColor: theme.inputBg,
+                color: theme.input,
               }}
-            >{`${uploadPercent}%`}</Typography>
-          </View>
-        )}
-
-        {showInput && (
-          <KeyboardAvoidingView
-            style={{ position: 'absolute', left: 0, right: 0, bottom: 0 }}
-            behavior='position'
-            keyboardVerticalOffset={1}
-          >
-            <View
-              style={{
-                ...styles.inputWrap,
-                bottom: isIphoneX() ? getBottomSpace() : 15,
-              }}
+              placeholderTextColor={theme.subtitle}
+              onFocus={() => setInputFocused(true)}
+              onBlur={() => setInputFocused(false)}
+              onChangeText={(e) => setText(e)}
+              value={text}
+            />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              style={{ ...styles.sendButton, backgroundColor: theme.primary }}
+              onPress={() => sendAttachment()}
+              disabled={disabled}
             >
-              <TextInput
-                placeholder='Message...'
-                ref={inputRef}
-                style={{
-                  ...styles.input,
-                  backgroundColor: theme.inputBg,
-                  color: theme.input,
-                }}
-                placeholderTextColor={theme.subtitle}
-                onFocus={() => setInputFocused(true)}
-                onBlur={() => setInputFocused(false)}
-                onChangeText={(e) => setText(e)}
-                value={text}
-              />
-              <TouchableOpacity
-                activeOpacity={0.6}
-                style={{ ...styles.sendButton, backgroundColor: theme.primary }}
-                onPress={() => sendAttachment()}
-                disabled={disabled}
-              >
-                <MaterialCommunityIcon name='send' size={17} color={theme.white} />
-              </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
-        )}
-      </View>
-    )
-  })
+              <MaterialCommunityIcon name='send' size={17} color={theme.white} />
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      )}
+    </View>
+  )
 }
+
+const PostPhoto = observer(PostPhotoFC)
 
 const styles = StyleSheet.create({
   wrap: {

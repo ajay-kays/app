@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { Portal } from 'react-native-paper'
 import { Alert, StyleSheet } from 'react-native'
 const basex = require('bs58-rn')
-
 import { useStores } from 'store'
 import ModalWrap from '../ModalWrap'
 import ModalHeader from '../ModalHeader'
@@ -16,21 +15,23 @@ import { reportError } from 'lib/errorHelper'
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const base58 = basex(ALPHABET)
 
-export default function PaymentWrap() {
+function PaymentWrap() {
   const { ui } = useStores()
 
   function close() {
     ui.clearPayModal()
   }
 
-  return useObserver(() => (
+  return (
     <ModalWrap onClose={close} visible={ui.showPayModal}>
       {ui.showPayModal && <Payment visible={ui.showPayModal} close={close} />}
     </ModalWrap>
-  ))
+  )
 }
 
-function Payment({ visible, close }) {
+export default observer(PaymentWrap)
+
+function PaymentFC({ visible, close }) {
   const { ui, user, msg, contacts } = useStores()
   const [main, setMain] = useState(false)
   const [next, setNext] = useState('')
@@ -180,41 +181,41 @@ function Payment({ visible, close }) {
   const isLoopout = ui.payMode === 'loopout'
   const hasRawInvoice = rawInvoice ? true : false
 
-  return useObserver(() => {
-    const label =
-      ui.payMode === 'payment' ? 'Send Payment' : isLoopout ? 'Send Bitcoin' : 'Request Payment'
+  const label =
+    ui.payMode === 'payment' ? 'Send Payment' : isLoopout ? 'Send Bitcoin' : 'Request Payment'
 
-    return (
-      <Portal.Host>
-        <ModalHeader title={label} onClose={handleOnClose} />
-        {main && (
-          <Main
-            contactless={!chat ? true : false}
-            contact={isLoopout ? null : contact}
-            loading={loading}
-            confirmOrContinue={confirmOrContinue}
-          />
-        )}
-
-        {hasRawInvoice && rawInvoice && (
-          <RawInvoice
-            visible={hasRawInvoice}
-            onClose={handleOnClose}
-            amount={rawInvoice.amount}
-            payreq={rawInvoice.invoice}
-            paid={rawInvoice.invoice === ui.lastPaidInvoice}
-          />
-        )}
-
-        <QR
-          visible={next === 'payment' || next === 'loopout'}
-          onCancel={handleOnClose}
-          confirm={payContactless}
-          isLoading={loading}
-          isLoopout={isLoopout}
-          showPaster={true}
+  return (
+    <Portal.Host>
+      <ModalHeader title={label} onClose={handleOnClose} />
+      {main && (
+        <Main
+          contactless={!chat ? true : false}
+          contact={isLoopout ? null : contact}
+          loading={loading}
+          confirmOrContinue={confirmOrContinue}
         />
-      </Portal.Host>
-    )
-  })
+      )}
+
+      {hasRawInvoice && rawInvoice && (
+        <RawInvoice
+          visible={hasRawInvoice}
+          onClose={handleOnClose}
+          amount={rawInvoice.amount}
+          payreq={rawInvoice.invoice}
+          paid={rawInvoice.invoice === ui.lastPaidInvoice}
+        />
+      )}
+
+      <QR
+        visible={next === 'payment' || next === 'loopout'}
+        onCancel={handleOnClose}
+        confirm={payContactless}
+        isLoading={loading}
+        isLoopout={isLoopout}
+        showPaster={true}
+      />
+    </Portal.Host>
+  )
 }
+
+const Payment = observer(PaymentFC)

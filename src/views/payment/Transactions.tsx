@@ -173,8 +173,7 @@ function Payment(props: PaymentProps) {
   const transactionDate = moment(date).format('dd MMM DD, hh:mm A')
   const [podId, setPodId] = useState<any>(null)
 
-  //@ts-ignore
-  const chat = useMemo(() => chats.chats.find((c) => c.id === chat_id), [])
+  const chat = useMemo(() => chats.chatsArray.find((c) => c.id.toString() === chat_id), [])
 
   // TODO: check if is necessary to move it to <PerTribe/>
   useEffect(() => {
@@ -184,6 +183,7 @@ function Payment(props: PaymentProps) {
       return // skip
     }
     ;(async () => {
+      if (!chat) return // ?
       const tr = await chats.getTribeDetails(chat.host, chat.uuid)
       const params = await chats.loadFeed(chat.host, chat.uuid, tr.feed_url)
       if (params) setPodId(params.id)

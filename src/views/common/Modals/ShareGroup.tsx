@@ -1,5 +1,5 @@
 import React from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { StyleSheet, View } from 'react-native'
 import Share from 'react-native-share'
 import Clipboard from '@react-native-community/clipboard'
@@ -16,7 +16,7 @@ import Button from '../Button'
 import Typography from '../Typography'
 import { reportError } from 'lib/errorHelper'
 
-export default function ShareGroup() {
+function ShareGroup() {
   const { ui, chats } = useStores()
   const theme = useTheme()
 
@@ -41,7 +41,7 @@ export default function ShareGroup() {
   const host = chats.getDefaultTribeServer().host
   const qr = `${DEFAULT_DOMAIN}://?action=tribe&uuid=${uuid}&host=${host}`
 
-  return useObserver(() => (
+  return (
     <ModalWrap visible={ui.shareCommunityUUID ? true : false} onClose={close}>
       <ModalHeader title='Community QR Code' onClose={close} />
       <View style={styles.wrap}>
@@ -63,8 +63,10 @@ export default function ShareGroup() {
         </View>
       </View>
     </ModalWrap>
-  ))
+  )
 }
+
+export default observer(ShareGroup)
 
 const styles = StyleSheet.create({
   wrap: {

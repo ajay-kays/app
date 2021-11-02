@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
-
+import { observer } from 'mobx-react-lite'
 import { useTheme } from 'store'
 import NumKey from '../../../utils/numkey'
 import Typography from '../../Typography'
 import Button from '../../Button'
 
-export default function SetPrice({ setAmount, onShow }) {
+function SetPrice({ setAmount, onShow }) {
   const theme = useTheme()
   const [price, setPrice] = useState('SET PRICE')
   const [showNum, setShowNum] = useState(false)
@@ -31,7 +30,7 @@ export default function SetPrice({ setAmount, onShow }) {
     setShowNum(!showNum)
   }
 
-  return useObserver(() => (
+  return (
     <>
       <TouchableOpacity
         activeOpacity={0.6}
@@ -81,8 +80,10 @@ export default function SetPrice({ setAmount, onShow }) {
         </View>
       )}
     </>
-  ))
+  )
 }
+
+export default observer(SetPrice)
 
 const styles = StyleSheet.create({
   priceButton: {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from 'react'
 import { StyleSheet, View, ScrollView, Modal, Animated, Dimensions } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import RNFetchBlob from 'rn-fetch-blob'
 import { useStores, useTheme } from 'store'
 import { SCREEN_WIDTH } from 'lib/constants'
@@ -16,7 +16,7 @@ import AvatarEdit from '../../Avatar/AvatarEdit'
 import TribeTags from 'views/communities/Community/TribeTags'
 import { reportError } from 'lib/errorHelper'
 
-export default function AddTribe() {
+function AddTribe() {
   const { ui, chats } = useStores()
   const [loading, setLoading] = useState(false)
   const [next, setNext] = useState(1)
@@ -79,7 +79,7 @@ export default function AddTribe() {
     }
   }
 
-  return useObserver(() => (
+  return (
     <Modal
       visible={ui.newTribeModal}
       animationType='slide'
@@ -156,8 +156,10 @@ export default function AddTribe() {
         )}
       </View>
     </Modal>
-  ))
+  )
 }
+
+export default observer(AddTribe)
 
 const AddPhoto = ({ finish }) => {
   const [imageDialog, setImageDialog] = useState(false)

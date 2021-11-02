@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useStores } from '../../../store'
 import Form from '../../form'
 import * as schemas from '../../form/schemas'
 import ModalWrap from './ModalWrap'
 import ModalHeader from './ModalHeader'
 
-export default function AddContact() {
+function AddContact() {
   const { ui, contacts, user } = useStores()
   const [loading, setLoading] = useState(false)
 
@@ -15,7 +15,7 @@ export default function AddContact() {
     ui.setAddContactModal(false)
   }
 
-  return useObserver(() => (
+  return (
     <ModalWrap onClose={close} visible={ui.addContactModal} noSwipe>
       <ModalHeader title='Add Contact' onClose={close} />
       <View style={styles.content}>
@@ -37,8 +37,10 @@ export default function AddContact() {
         />
       </View>
     </ModalWrap>
-  ))
+  )
 }
+
+export default observer(AddContact)
 
 const styles = StyleSheet.create({
   content: {

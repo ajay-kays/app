@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useObserver } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import {
   Keyboard,
   View,
@@ -44,7 +44,7 @@ const audioRecorderPlayer = new AudioRecorderPlayer()
 let nonStateRecordingStartTime = 0
 let dontRecordActually = false
 
-export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
+function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const { user, ui, msg, meme } = useStores()
   const theme = useTheme()
   const [text, setText] = useState('')
@@ -418,7 +418,7 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   const hasReplyContent = replyUuid || extraTextContent ? true : false
 
-  return useObserver(() => (
+  return (
     <View
       style={{
         ...styles.bar,
@@ -534,8 +534,10 @@ export default function BottomBar({ chat, pricePerMessage, tribeBots }) {
         }}
       />
     </View>
-  ))
+  )
 }
+
+export default observer(BottomBar)
 
 type IMicButton = {
   panResponder: any

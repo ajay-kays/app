@@ -97,7 +97,12 @@ function ChatDetails({ route }) {
       })
   }
 
-  let initppm = chats.pricesPerMinute[group.id]
+  let initppm
+  if (chats.pricesPerMinute) {
+    initppm = chats.pricesPerMinute[group.id]
+  } else {
+    initppm = 0
+  }
   if (!(initppm || initppm === 0)) initppm = group.pricePerMinute || 5
   const [ppm, setPpm] = useState(initppm)
 
