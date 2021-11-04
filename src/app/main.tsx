@@ -13,11 +13,11 @@ import { initPicSrc } from 'views/utils/picSrc'
 import * as rsa from 'lib/crypto/rsa'
 import EE, { RESET_IP_FINISHED } from 'lib/ee'
 import { Modals } from 'views/modals'
+import Dialogs from 'views/common/Dialogs'
+import AppVersionUpdate from 'views/common/Dialogs/AppVersion'
 import ModalsN from 'views/common/Modals'
-// import Dialogs from './components/common/Dialogs'
 import Root from 'nav/root-navigator'
 import { display } from 'lib/logging'
-// import AppVersionUpdate from './components/common/Dialogs/AppVersion'
 
 export default function Main() {
   const { contacts, msg, details, user, meme, ui } = useStores()
@@ -177,11 +177,11 @@ export default function Main() {
       <Root />
       <Modals />
       <ModalsN />
-      {/* <Dialogs /> */}
-      {/* <AppVersionUpdate
+      <Dialogs />
+      <AppVersionUpdate
         visible={versionUpdateVisible}
         close={() => setVersionUpdateVisible(false)}
-      /> */}
+      />
     </>
   )
 }

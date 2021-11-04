@@ -7,7 +7,6 @@ import Typography from '../Typography'
 
 export default function Empty(props) {
   const theme = useTheme()
-  console.log('EMPTY')
   const {
     text,
     style,

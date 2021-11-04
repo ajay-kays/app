@@ -233,6 +233,8 @@ const TribeActionsFC = ({ tribe }) => {
       const howManyMsgs = msg.msgsForChatroom(tribe.chat.id)
       if (!howManyMsgs || howManyMsgs.length === 0) {
         await msg.getMessages()
+      } else {
+        console.log('skipping getMessages')
       }
 
       navigate('Chat', { ...tribe.chat })

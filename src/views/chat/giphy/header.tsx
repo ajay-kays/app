@@ -15,6 +15,7 @@ const Header: React.FC<HeaderProps> = ({ onClose, searchGif, setSearchGif, getGi
     <View style={styles.header}>
       <View style={styles.inputContainer}>
         <TextInput
+          autoCompleteType='off'
           style={{
             ...styles.input,
             backgroundColor: theme.inputBg,

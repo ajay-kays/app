@@ -107,7 +107,7 @@ const ChatroomFC = () => {
       contacts.exchangeKeys(contact.id)
     }
     EE.on(LEFT_GROUP, () => {
-      navigate('Tribes', { params: { rnd: Math.random() } })
+      navigate('Communities', { params: { rnd: Math.random() } })
     })
 
     fetchTribeParams()
@@ -135,7 +135,7 @@ const ChatroomFC = () => {
 
   const showPod = feedURL ? true : false
 
-  const msgs = msg.messages.get(chatID.toString())
+  const msgs = chatID ? msg.messages.get(chatID.toString()) : []
 
   display({
     name: 'ChatroomFC',

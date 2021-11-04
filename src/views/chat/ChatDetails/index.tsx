@@ -218,6 +218,7 @@ function ChatDetails({ route }) {
           <Typography size={16}>Alias</Typography>
           <View style={{ position: 'relative' }}>
             <TextInput
+              autoCompleteType='off'
               inputAccessoryViewID={nativeID}
               placeholder='Alias'
               value={alias}

@@ -146,7 +146,8 @@ function JoinTribe(props) {
                   {!joined ? (
                     <>
                       <TextInput
-                        placeholder='Your Name in this Tribe'
+                        autoCompleteType='off'
+                        placeholder='Your name in this community'
                         onChangeText={(e) => setAlias(e)}
                         value={alias}
                         style={{

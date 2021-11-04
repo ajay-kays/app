@@ -40,6 +40,7 @@ export default function Network() {
           style={{ height: 50, textAlign: 'auto', backgroundColor: theme.bg }}
           placeholderTextColor={theme.placeholder}
           underlineColor={theme.border}
+          autoCompleteType='off'
         />
 
         <InputAccessoryView nativeID={nativeID} done={saveServerURL} />

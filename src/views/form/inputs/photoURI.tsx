@@ -86,6 +86,7 @@ export default function PhotoURIInput({
   return (
     <View style={styles.wrap}>
       <TextInput
+        autoCompleteType='off'
         accessibilityLabel={accessibilityLabel}
         spellCheck={false}
         autoCorrect={false}

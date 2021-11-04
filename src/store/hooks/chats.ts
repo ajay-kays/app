@@ -22,6 +22,7 @@ export function useChatRow(id) {
 
   const now = new Date().getTime()
   const lastSeen = msg.lastSeen[id || '_'] || now
+  // console.log(`lastSeen for ${id}?`, msg.lastSeen[id || '_'])
   const unseenCount = countUnseen(msgs, lastSeen, myid)
   const hasUnseen = unseenCount > 0 ? true : false
 

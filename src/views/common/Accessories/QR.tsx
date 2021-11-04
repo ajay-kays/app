@@ -68,6 +68,7 @@ export default function QR({
             <>
               <View style={{ ...styles.inputWrap, backgroundColor: theme.bg }}>
                 <TextInput
+                  autoCompleteType='off'
                   placeholder={inputPlaceholder}
                   value={text}
                   onChangeText={(e) => setText(e)}

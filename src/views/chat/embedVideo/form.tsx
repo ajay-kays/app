@@ -53,6 +53,7 @@ const Form: React.FC<FormTypes> = ({ onSubmit }) => {
               Embed Video Link
             </Typography>
             <TextInput
+              autoCompleteType='off'
               autoFocus
               mode='flat'
               accessibilityLabel='form-input-video'
@@ -79,6 +80,7 @@ const Form: React.FC<FormTypes> = ({ onSubmit }) => {
               Message price
             </Typography>
             <TextInput
+              autoCompleteType='off'
               mode='flat'
               accessibilityLabel='form-input-message-price'
               error={!!errors.message_price}

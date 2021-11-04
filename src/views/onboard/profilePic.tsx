@@ -97,7 +97,6 @@ function ProfilePic({ z, show, onDone, onBack }) {
       style={{ backgroundColor: theme.bg }}
       accessibilityLabel='onboard-profile'
     >
-      {/* @ts-ignore */}
       <IconButton
         icon='arrow-left'
         color={theme.grey}

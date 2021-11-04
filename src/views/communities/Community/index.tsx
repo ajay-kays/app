@@ -95,7 +95,6 @@ function TribeHeader({ openDialog }) {
   const theme = useTheme()
 
   return (
-    // @ts-ignore
     <IconButton
       icon={() => <MaterialCommunityIcon name='dots-horizontal' color={theme.icon} size={30} />}
       onPress={openDialog}

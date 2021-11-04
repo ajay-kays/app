@@ -29,6 +29,7 @@ export default function Search(props) {
 
   return (
     <Searchbar
+      autoCompleteType='off'
       placeholder={placeholder}
       value={value}
       onChangeText={onChangeText}

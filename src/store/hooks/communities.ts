@@ -4,8 +4,11 @@ import { calendarDate } from 'lib/date'
 import { useStores } from 'store'
 import { useChats } from './chats'
 import { Msg } from 'store/msg-store'
+import { display } from 'lib/logging'
 
 // HOOKS
+
+let tribeLoops = 0
 
 export function useCommunities() {
   const { chats, user } = useStores()
@@ -16,6 +19,10 @@ export function useCommunities() {
     return []
   }
   const theTribes = allCommunities(chats.tribes, chatsToShow, user)
+  display({
+    name: 'useCommunities',
+    preview: 'theTribes...',
+  })
 
   return theTribes
 }
@@ -85,12 +92,14 @@ export function useSearchCommunities(tribes) {
 // HELPERS
 
 export function allCommunities(tribes, chats, user) {
+  // console.log('allCommunities.')
   const chatsuids = chats.map((c) => c.uuid)
   const ownedChats = chats.filter(
     (c) => c.type === constants.chat_types.tribe && c.owner_pubkey === user.publicKey
   )
   if (!tribes || !tribes.length) return []
-  return tribes.map((tribe) => {
+  const tribesToReturn = tribes.map((tribe) => {
+    tribeLoops++
     return {
       ...tribe,
       chat: chatsuids && chats.find((c) => c.uuid === tribe.uuid),
@@ -98,6 +107,8 @@ export function allCommunities(tribes, chats, user) {
       owner: ownedChats ? (ownedChats.find((c) => c.uuid === tribe.uuid) ? true : false) : false,
     }
   })
+  console.log('tribeLoops:', tribeLoops)
+  return tribesToReturn
 }
 
 export function searchTribes(tribes, searchTerm) {

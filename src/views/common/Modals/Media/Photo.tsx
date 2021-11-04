@@ -17,7 +17,6 @@ function Photo({ visible, close, photo }) {
   return (
     <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
-        {/** @ts-ignore */}
         <IconButton
           icon={() => <MaterialCommunityIcon name='close' color={theme.icon} size={30} />}
           onPress={close}

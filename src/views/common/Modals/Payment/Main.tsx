@@ -80,6 +80,7 @@ export default function Main({ contact, loading, confirmOrContinue, contactless 
       {ui.payMode === 'invoice' && (
         <View style={styles.memoWrap}>
           <TextInput
+            autoCompleteType='off'
             value={text}
             placeholder='Add Message'
             onChangeText={(v) => setText(v)}

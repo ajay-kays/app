@@ -32,6 +32,7 @@ export default function NumberInput({
         {lab}
       </Typography>
       <TextInput
+        autoCompleteType='off'
         accessibilityLabel={accessibilityLabel}
         keyboardType='numeric'
         error={error}

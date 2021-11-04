@@ -120,6 +120,7 @@ function Do({ app }) {
       <View style={styles.stuffWrap}>
         <Text style={{ color: theme.text, marginBottom: 8 }}>Address</Text>
         <TextInput
+          autoCompleteType='off'
           placeholder='Bitcoin Address'
           value={addy}
           editable={false}

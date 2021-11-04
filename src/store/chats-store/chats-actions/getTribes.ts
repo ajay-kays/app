@@ -23,6 +23,7 @@ export const getTribes = async (self: ChatsStore) => {
   TRIBES_LAST_FETCHED = new Date()
 
   try {
+    console.log('Fetching getTribes')
     const r = await fetch(`https://${DEFAULT_TRIBE_SERVER}/tribes`)
     const j = await r.json()
 

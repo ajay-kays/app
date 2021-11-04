@@ -89,6 +89,7 @@ export default function AccountDetails() {
           onChangeText={tipAmountChange}
           style={{ height: 50, backgroundColor: theme.bg }}
           underlineColor={theme.border}
+          autoCompleteType='off'
         />
         <InputAccessoryView nativeID={nativeID} done={save} />
       </View>

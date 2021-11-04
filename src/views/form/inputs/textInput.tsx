@@ -43,6 +43,7 @@ export default function TheTextInput({
         {lab}
       </Typography>
       <TextInput
+        autoCompleteType='off'
         mode={mode}
         accessibilityLabel={accessibilityLabel}
         error={error}

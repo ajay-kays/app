@@ -175,8 +175,37 @@ export const MsgStoreModel = types
   }))
   .views((self) => ({
     countUnseenMessages(myid: number): number {
-      console.log('countUnseenMessages unimplemented')
+      const now = new Date().getTime()
+      let unseenCount = 0
+      const lastSeenObj = self.lastSeen
+      // const msgsEntries = self.messages.entries()
+      // for (let msgs in msgsEntries) {
+
+      // }
+      // console.log(msgs)
+      console.log(self.messages)
+      self.messages.forEach(function (wat) {
+        console.log(wat)
+      })
       return 0
+      // self.messages.forEach(function ([id, msgs]) {
+      //   const lastSeen = lastSeenObj[id || '_'] || now
+      //   msgs.forEach((m) => {
+      //     if (m.sender !== myid) {
+      //       const unseen = moment(new Date(lastSeen)).isBefore(moment(m.date))
+      //       if (unseen) unseenCount += 1
+      //     }
+      //   })
+      // })
+      // display({
+      //   name: 'countUnseenMessages',
+      //   preview: `Unseen messages: ${unseenCount}`,
+      //   important: true,
+      // })
+      // return unseenCount
+
+      // console.log('countUnseenMessages unimplemented')
+      // return 0
       // const now = new Date().getTime()
       // let unseenCount = 0
       // const lastSeenObj = self.lastSeen

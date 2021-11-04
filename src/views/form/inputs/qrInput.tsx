@@ -86,6 +86,7 @@ export default function QrInput({
       ) : (
         <View>
           <TextInput
+            autoCompleteType='off'
             accessibilityLabel={accessibilityLabel}
             onChangeText={handleChange(name)}
             onBlur={handleBlur(name)}

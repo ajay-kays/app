@@ -131,6 +131,7 @@ export default function TribeTags(props) {
           <>
             <View style={{ ...styles.inputWrap }}>
               <TextInput
+                autoCompleteType='off'
                 inputAccessoryViewID={nativeID}
                 placeholder='Type topic: Art or Music...'
                 value={tag}
