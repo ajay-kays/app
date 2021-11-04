@@ -61,7 +61,6 @@ const RootComponentFC = () => {
       if (pinWasEnteredRecently) ui.setPinCodeModal(true)
 
       setLoading(false)
-      // RNBootSplash.hide({ fade: true })
     })()
   }, [])
 
