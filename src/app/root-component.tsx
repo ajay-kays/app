@@ -19,7 +19,7 @@ import Main from './main'
 
 // This is the first component where we can assume an initialized rootStore.
 const RootComponentFC = () => {
-  const { theme, user, ui } = useStores()
+  const { relay, theme, user, ui } = useStores()
   const [loading, setLoading] = useState(true)
   const [showDisconnectUI, setShowDisconnectedUI] = useState(true)
 
@@ -46,6 +46,8 @@ const RootComponentFC = () => {
       const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
 
       ui.setSignedUp(isSignedUp)
+
+      relay.registerWebsocketHandlers()
 
       if (isSignedUp) {
         instantiateRelay(

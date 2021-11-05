@@ -47,12 +47,12 @@ export const sendMessage = async (
     if (!chat_id) {
       const r = await relay?.post('messages', v)
 
-      display({
-        name: 'sendMessage',
-        preview: 'RETURNED WITH (no chat_id)',
-        value: { r },
-        important: true,
-      })
+      // display({
+      //   name: 'sendMessage',
+      //   preview: 'RETURNED WITH (no chat_id)',
+      //   value: { r },
+      //   important: true,
+      // })
 
       if (!r) return
       self.gotNewMessage(r)

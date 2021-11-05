@@ -82,7 +82,7 @@ export const MsgStoreModel = types
       // const chat = (self as MsgStore).msgsForChatroom(msg.chat_id)
       const chat = self.messages.get(msg.chat_id.toString())
       if (chat) {
-        chat.push(msg)
+        chat.unshift(msg)
         display({
           name: 'setMessage',
           preview: `Pushed msg to chat. sorted?`,
@@ -102,11 +102,14 @@ export const MsgStoreModel = types
       //   value: { msgs },
       // })
       self.messages.merge(msgs)
-      display({
-        name: 'setMessages',
-        preview: `Set messages for ${Object.entries(msgs).length} chats`,
-        value: { messages: self.messages },
-      })
+      const len = Object.entries(msgs).length
+      if (len > 1) {
+        display({
+          name: 'setMessages',
+          preview: `Set messages for ${len} chats`,
+          value: { messages: self.messages },
+        })
+      }
     },
     setMessagesOld: (msgs: Msg[]) => {
       display({

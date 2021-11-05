@@ -1,7 +1,6 @@
 import { DEFAULT_HUB_API, DEFAULT_SHOP_API } from 'lib/config'
 import API from './api'
 import { connectWebSocket, registerWsHandlers } from './ws'
-// import * as wsHandlers from '../store/websocketHandlers'
 
 const invite = new API(DEFAULT_HUB_API, '', '')
 const shop = new API(DEFAULT_SHOP_API, '', '')
@@ -41,12 +40,7 @@ export function instantiateRelay(
   if (authToken) {
     // only connect here (to avoid double) if auth token means for real
     connectWebSocket(`${protocol}${ip}`, authToken, connectedCallback, disconnectCallback)
-    console.log('Skipping WS handler registration')
-    // registerWsHandlers(wsHandlers)
   }
-
-  // registerHandler each msg type here?
-  // or just one?
 }
 
 export function composeAPI(host: string, authToken?: string) {

@@ -1,5 +1,6 @@
 import socketio from 'socket.io-client'
 import { reportError } from 'lib/errorHelper'
+import { display } from 'lib/logging'
 
 type WSMessage = { [k: string]: any }
 
@@ -44,6 +45,12 @@ export function connectWebSocket(
   })
 
   io.on('message', (data) => {
+    display({
+      name: 'message',
+      important: true,
+      preview: 'Websocket message received',
+      value: data,
+    })
     try {
       let msg: WSMessage = JSON.parse(data)
       let typ = msg.type
