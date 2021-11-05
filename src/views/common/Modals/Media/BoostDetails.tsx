@@ -38,7 +38,7 @@ export default function BoostRow(props) {
         {hasBoosts && (
           <AvatarsRow
             aliases={theBoosts.map((b) => {
-              const { senderAlias, senderPic } = useBoostSender(b, contacts.contacts, true)
+              const { senderAlias, senderPic } = useBoostSender(b, contacts.contactsArray, true)
 
               if (b.sender === props.myid) {
                 return {

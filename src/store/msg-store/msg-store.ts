@@ -40,6 +40,8 @@ export const MsgStoreModel = types
       await actions.deleteMessage(self as MsgStore, id),
     getMessages: async (forceMore: boolean = false): Promise<any> =>
       await actions.getMessages(self as MsgStore, forceMore),
+    getMessagesForChat: async (chatId: number): Promise<any> =>
+      await actions.getMessagesForChat(self as MsgStore, chatId),
     gotNewMessage: async (m: any): Promise<any> => await actions.gotNewMessage(self as MsgStore, m),
     gotNewMessageFromWS: async (m: any): Promise<any> =>
       await actions.gotNewMessageFromWS(self as MsgStore, m),
@@ -261,12 +263,12 @@ export const MsgStoreModel = types
       // })
       const msgs = self.messages.get(chat.id.toString())
       if (!msgs) return []
-      display({
-        name: 'msgsForChatroomByUuid',
-        preview: `Returning ${msgs.length} msgsForChatroomByUuid ${uuid}`,
-        important: true,
-        value: { uuid, msgs },
-      })
+      // display({
+      //   name: 'msgsForChatroomByUuid',
+      //   preview: `Returning ${msgs.length} msgsForChatroomByUuid ${uuid}`,
+      //   important: true,
+      //   value: { uuid, msgs },
+      // })
       return values(msgs)
     },
     msgsForChatroom(chatId: number) {

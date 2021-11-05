@@ -14,11 +14,12 @@ import Intro from './Intro'
 import About from './About'
 import Media from './Media'
 import { navigate } from 'nav'
+import { display } from 'lib/logging'
 
 const Community = ({ route }) => {
   const theme = useTheme()
   const navigation = useNavigation()
-  const { chats } = useStores()
+  const { chats, msg } = useStores()
   const isFocused = useIsFocused()
 
   const [tribeDialog, setTribeDialog] = useState(false)
@@ -28,12 +29,18 @@ const Community = ({ route }) => {
     { key: 'second', title: 'About' },
   ])
 
-  useEffect(() => {
-    chats.getCommunities()
-  }, [isFocused])
-
   const uuid = route.params.tribe.uuid
   const tribe = chats.communities.get(uuid)
+  const chatId = tribe?.chat?.id
+
+  useEffect(() => {
+    chats.getCommunities()
+    if (chatId) {
+      msg.getMessagesForChat(chatId)
+    } else {
+      console.log('NO CHATID...?')
+    }
+  }, [isFocused])
 
   const onEditCommunityPress = useCallback(() => {
     navigate('EditCommunity', { tribe })

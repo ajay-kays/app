@@ -1,15 +1,15 @@
 import React from 'react'
 import { View, StyleSheet, Image } from 'react-native'
-import { useTheme } from 'store'
+import { useDarkMode } from 'react-native-dynamic'
 import Wobble from '../Animations/Wobble'
 
 export default function Splash() {
-  const theme = useTheme()
+  const isDarkMode = useDarkMode()
   return (
     <View
       style={{
         ...styles.wrap,
-        backgroundColor: theme.dark ? theme.mirage : theme.white,
+        backgroundColor: isDarkMode ? '#141d26' : '#fff',
       }}
     >
       <Wobble>
@@ -22,7 +22,7 @@ export default function Splash() {
 
       <Image
         source={
-          theme.dark
+          isDarkMode
             ? require('../../../assets/zion-dark-theme.png')
             : require('../../../assets/zion.png')
         }
