@@ -32,7 +32,7 @@ const ChatroomFC = () => {
 
   const feedURL = tribeParams && tribeParams.feed_url
   const tribeBots = tribeParams && tribeParams.bots
-  console.log('route params:', route.params)
+  // console.log('route params:', route.params)
   const chatID = route.params.id
   const chat = useMemo(
     () => chats.chatsArray.find((c) => c.id === chatID) || route.params,

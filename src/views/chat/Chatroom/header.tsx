@@ -5,7 +5,7 @@ import { Appbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FeatherIcon from 'react-native-vector-icons/Feather'
-import { useCommunities, useStores, useTheme } from 'store'
+import { useStores, useTheme } from 'store'
 import { Chat } from 'store/chats-store'
 import { contactForConversation } from './utils'
 import { constants } from 'lib/constants'
@@ -35,12 +35,11 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
   const isTribeAdmin = tribeParams && tribeParams.owner_pubkey === user.publicKey
   const theme = useTheme()
   const navigation = useNavigation()
-  const tribes = useCommunities()
 
   const [payments, setPayments] = useState([])
 
   useEffect(() => {
-    chats.getTribes()
+    chats.getCommunities()
     ;(async () => {
       const ps = await details.getPayments()
       setPayments(ps)
@@ -70,7 +69,9 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
         navigation.goBack()
       }
     } else {
-      const tribe = tribes.find((t) => t.chat?.uuid === chat?.uuid)
+      const uuid = chat?.uuid
+      const tribe = chats.communities.get(uuid)
+      // const tribe = tribes.find((t) => t.chat?.uuid === chat?.uuid)
       navigate('Tribe', { tribe: { ...tribe } })
     }
   }

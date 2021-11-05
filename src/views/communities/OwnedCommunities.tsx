@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
 import { useIsFocused } from '@react-navigation/native'
-import { useCommunities, useOwnedCommunities, useStores, useTheme } from '../../store'
+import { useOwnedCommunities, useStores, useTheme } from '../../store'
 import Typography from '../common/Typography'
 import Button from '../common/Button'
 import Empty from '../common/Empty'
@@ -22,7 +22,7 @@ function OwnedCommunitiesFC() {
   }, [ui.newTribeModal, isFocused])
 
   function fetchTribes() {
-    chats.getTribes().then(() => {
+    chats.getCommunities().then(() => {
       setLoading(false)
       setRefreshing(false)
     })
@@ -33,7 +33,7 @@ function OwnedCommunitiesFC() {
     fetchTribes()
   }
 
-  const tribes = useCommunities()
+  const tribes = chats.communitiesArrayWithJoined
   const tribesToShow = useOwnedCommunities(tribes)
 
   return (

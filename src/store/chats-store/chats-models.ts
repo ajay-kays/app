@@ -1,4 +1,6 @@
-import { Instance, types } from 'mobx-state-tree'
+import { constants } from 'lib/constants'
+import { getRoot, Instance, types } from 'mobx-state-tree'
+import { RootStore } from 'store'
 import { InviteModel } from '../contacts-store/contacts-models'
 
 export const ChatModel = types
@@ -53,4 +55,62 @@ export const ChatModel = types
     },
   }))
 
+export const CommunityModel = types
+  .model('Community')
+  .props({
+    uuid: types.identifier,
+    app_url: types.string,
+    bots: types.frozen(),
+    created: types.string,
+    deleted: types.boolean,
+    description: types.string,
+    escrow_amount: types.number,
+    escrow_millis: types.number,
+    feed_url: types.string,
+    group_key: types.string,
+    img: types.string,
+    last_active: types.number,
+    member_count: types.number,
+    name: types.string,
+    owner_alias: types.string,
+    owner_pubkey: types.string,
+    owner_route_hint: types.string,
+    price_per_message: types.number,
+    price_to_join: types.number,
+    private: types.boolean,
+    tags: types.array(types.string),
+    unlisted: types.boolean,
+    updated: types.string,
+  })
+  .views((self) => ({
+    get chat(): Chat | undefined {
+      const root = getRoot(self) as RootStore
+      const chat = root.chats.chatsArray.find((c) => c.uuid === self.uuid)
+      return chat
+    },
+    get joined(): boolean {
+      const root = getRoot(self) as RootStore
+      const chatsuids = root.chats.chatsArray.map((c) => c.uuid)
+      const joined = chatsuids
+        ? chatsuids.find((uuid) => uuid === self.uuid)
+          ? true
+          : false
+        : false
+      return joined
+    },
+    get owner(): boolean {
+      const root = getRoot(self) as RootStore
+      const ownedChats = root.chats.chatsArray.filter(
+        (c) => c.type === constants.chat_types.tribe && c.owner_pubkey === root.user.publicKey
+      )
+      const owner = ownedChats
+        ? ownedChats.find((c) => c.uuid === self.uuid)
+          ? true
+          : false
+        : false
+      return owner
+    },
+  }))
+
 export interface Chat extends Instance<typeof ChatModel> {}
+export interface Community extends Instance<typeof CommunityModel> {}

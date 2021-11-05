@@ -10,22 +10,25 @@ import { display } from 'lib/logging'
 
 let tribeLoops = 0
 
-export function useCommunities() {
-  const { chats, user } = useStores()
-  const chatsToShow = useChats()
+// export function useCommunities() {
+//   const { chats, user } = useStores()
+//   const chatsToShow = useChats()
 
-  if (!chats.tribes) {
-    console.log('useCommunities - no chats tribes, returning []')
-    return []
-  }
-  const theTribes = allCommunities(chats.tribes, chatsToShow, user)
-  display({
-    name: 'useCommunities',
-    preview: 'theTribes...',
-  })
+//   if (!chats.communities) {
+//     console.log('useCommunities - no chats tribes, returning []')
+//     return []
+//   }
+//   // const theCommunities = allCommunities(chats.communitiesArray, chatsToShow, user)
+//   const theCommunities = chats.communitiesArray
+//   display({
+//     name: 'useCommunities',
+//     preview: 'theCommunities',
+//     value: { theCommunities },
+//     important: true,
+//   })
 
-  return theTribes
-}
+//   return theCommunities
+// }
 
 export function useCommunityHistory(created, lastActive) {
   const createdDate = calendarDate(moment(created), 'MMM DD, YYYY')
@@ -124,15 +127,22 @@ export function searchTribes(tribes, searchTerm) {
 
 function useSortTribesByLastMsg(tribesToShow) {
   const {
-    msg: { msgsForChatroom },
+    // chats,
+    msg: { msgsForChatroomByUuid },
   } = useStores()
 
+  // display({
+  //   name: 'useSortTribesByLastMsg',
+  //   preview: 'tribesToShow',
+  //   value: { tribesToShow },
+  // })
+
   return tribesToShow.sort((a, b) => {
-    const amsgs = msgsForChatroom(a.chat.id)
+    const amsgs = msgsForChatroomByUuid(a.uuid)
     const alastMsg = amsgs?.[0]
     const then = moment(new Date()).add(-30, 'days')
     const adate = alastMsg?.date ? moment(alastMsg.date) : then
-    const bmsgs = msgsForChatroom(b.chat.id)
+    const bmsgs = msgsForChatroomByUuid(b.uuid)
     const blastMsg = bmsgs?.[0]
     const bdate = blastMsg?.date ? moment(blastMsg.date) : then
     return adate.isBefore(bdate) ? 0 : -1

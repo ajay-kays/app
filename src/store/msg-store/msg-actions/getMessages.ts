@@ -15,99 +15,103 @@ const MSGS_PER_CHAT = 50
 // Decode+normalize only those messages.
 // Store in MST via 'map of arrays' structure.
 export const getMessages = async (self: MsgStore, forceMore: boolean = false) => {
-  console.log('skipping getMessages')
+  console.log('Skipping getMessages')
+
+  // let route = 'msgsForChat?chatId=2'
+  // const r = await relay?.get(route)
+  // display({
+  //   name: 'getMessages',
+  //   preview: `Fetched messages?`,
+  //   value: { r },
+  //   // important: true,
+  // })
+
   return
-  const len = self.lengthOfAllMessages() // this aint doin nothing
-  console.log('len:', len)
-  if (len > 50) return
+  // const len = self.lengthOfAllMessages() // this aint doin nothing
+  // console.log('len:', len)
+  // if (len > 50) return
 
-  /**
-   * FETCH RECENT MESSAGES
-   */
-  let route = 'messages'
-  const start = moment().subtract(DAYS, 'days').format('YYYY-MM-DD%20HH:mm:ss')
-  route += `?date=${start}`
+  // /**
+  //  * FETCH RECENT MESSAGES
+  //  */
+  // let route = 'messages'
+  // const start = moment().subtract(DAYS, 'days').format('YYYY-MM-DD%20HH:mm:ss')
+  // route += `?date=${start}`
 
-  display({
-    name: 'getMessages',
-    preview: `Fetching messages...`,
-    value: { route },
-  })
+  // const r = await relay?.get(route)
 
-  const r = await relay?.get(route)
+  // /**
+  //  * SORT MESSAGES BY CHATROOM
+  //  */
 
-  /**
-   * SORT MESSAGES BY CHATROOM
-   */
+  // let msgs: { [k: number]: any[] } = ({} = {})
 
-  let msgs: { [k: number]: any[] } = ({} = {})
+  // if (r.new_messages && r.new_messages.length) {
+  //   display({
+  //     name: 'getMessages',
+  //     preview: `Fetched ${r.new_messages.length} new messages`,
+  //     value: { route, r },
+  //   })
 
-  if (r.new_messages && r.new_messages.length) {
-    display({
-      name: 'getMessages',
-      preview: `Fetched ${r.new_messages.length} new messages`,
-      value: { route, r },
-    })
+  //   r.new_messages.forEach((msg) => {
+  //     if (msgs[msg.chat_id]) {
+  //       msgs[msg.chat_id].push(skinny(msg))
+  //     } else {
+  //       msgs[msg.chat_id] = [skinny(msg)]
+  //     }
+  //   })
 
-    r.new_messages.forEach((msg) => {
-      if (msgs[msg.chat_id]) {
-        msgs[msg.chat_id].push(skinny(msg))
-      } else {
-        msgs[msg.chat_id] = [skinny(msg)]
-      }
-    })
+  //   display({
+  //     name: 'getMessages',
+  //     preview: `Finished building unsorted msgs map`,
+  //     value: { msgs },
+  //   })
 
-    display({
-      name: 'getMessages',
-      preview: `Finished building unsorted msgs map`,
-      value: { msgs },
-    })
+  //   /**
+  //    * SORT BY DATE AND PRUNE TO {MSGS_PER_CHAT} MESSAGES PER CHATROOM
+  //    */
+  //   let sortedAndFilteredMsgs: { [k: number]: any[] } = ({} = {})
+  //   Object.entries(msgs).forEach((chat) => {
+  //     sortedAndFilteredMsgs[chat[0]] = chat[1]
+  //       .sort((a, b) => {
+  //         const bd: any = new Date(b.created_at)
+  //         const ad: any = new Date(a.created_at)
+  //         return bd - ad
+  //       })
+  //       .slice(0, MSGS_PER_CHAT)
+  //   })
 
-    /**
-     * SORT BY DATE AND PRUNE TO {MSGS_PER_CHAT} MESSAGES PER CHATROOM
-     */
-    let sortedAndFilteredMsgs: { [k: number]: any[] } = ({} = {})
-    Object.entries(msgs).forEach((chat) => {
-      sortedAndFilteredMsgs[chat[0]] = chat[1]
-        .sort((a, b) => {
-          const bd: any = new Date(b.created_at)
-          const ad: any = new Date(a.created_at)
-          return bd - ad
-        })
-        .slice(0, MSGS_PER_CHAT)
-    })
+  //   display({
+  //     name: 'getMessages',
+  //     preview: 'Finished sorting and pruning messages',
+  //     value: { msgs, sortedAndFilteredMsgs },
+  //   })
 
-    display({
-      name: 'getMessages',
-      preview: 'Finished sorting and pruning messages',
-      value: { msgs, sortedAndFilteredMsgs },
-    })
+  //   /**
+  //    * NORMALIZE AND DECODE ONLY THESE MESSAGES
+  //    */
+  //   let normalizedMsgs: { [k: number]: any[] } = ({} = {}) // collapse all these down to 1 obj?
+  //   const sortedChats = Object.entries(sortedAndFilteredMsgs)
+  //   for (const chat of sortedChats) {
+  //     const msgs = await decodeMessages(chat[1])
+  //     const msgsToSave: Msg[] = []
+  //     msgs.forEach((msg) => {
+  //       const normMsg = normalizeMessage(msg)
+  //       if (normMsg) {
+  //         msgsToSave.push(normMsg)
+  //       }
+  //     })
+  //     normalizedMsgs[chat[0]] = msgsToSave
+  //   }
 
-    /**
-     * NORMALIZE AND DECODE ONLY THESE MESSAGES
-     */
-    let normalizedMsgs: { [k: number]: any[] } = ({} = {}) // collapse all these down to 1 obj?
-    const sortedChats = Object.entries(sortedAndFilteredMsgs)
-    for (const chat of sortedChats) {
-      const msgs = await decodeMessages(chat[1])
-      const msgsToSave: Msg[] = []
-      msgs.forEach((msg) => {
-        const normMsg = normalizeMessage(msg)
-        if (normMsg) {
-          msgsToSave.push(normMsg)
-        }
-      })
-      normalizedMsgs[chat[0]] = msgsToSave
-    }
+  //   display({
+  //     name: 'getMessages',
+  //     preview: 'Finished decoding+normalizing messages',
+  //     value: { normalizedMsgs },
+  //   })
 
-    display({
-      name: 'getMessages',
-      preview: 'Finished decoding+normalizing messages',
-      value: { normalizedMsgs },
-    })
-
-    self.setMessages(normalizedMsgs)
-  }
+  //   self.setMessages(normalizedMsgs)
+  // }
 }
 
 export const getMessagesOld = async (self: MsgStore, forceMore: boolean) => {

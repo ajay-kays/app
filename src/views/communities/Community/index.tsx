@@ -5,7 +5,7 @@ import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { TabView } from 'react-native-tab-view'
-import { useCommunities, useStores, useTheme } from '../../../store'
+import { useStores, useTheme } from 'store'
 import BackHeader from '../../common/BackHeader'
 import Divider from '../../common/Layout/Divider'
 import TribeSettings from '../../common/Dialogs/TribeSettings'
@@ -15,12 +15,11 @@ import About from './About'
 import Media from './Media'
 import { navigate } from 'nav'
 
-const Tribe = ({ route }) => {
+const Community = ({ route }) => {
   const theme = useTheme()
   const navigation = useNavigation()
   const { chats } = useStores()
   const isFocused = useIsFocused()
-  const tribes = useCommunities()
 
   const [tribeDialog, setTribeDialog] = useState(false)
   const [index, setIndex] = React.useState(0)
@@ -29,11 +28,12 @@ const Tribe = ({ route }) => {
     { key: 'second', title: 'About' },
   ])
 
-  const tribe = tribes.find((t) => t.uuid === route.params.tribe.uuid) || route.params.tribe
-
   useEffect(() => {
-    chats.getTribes()
+    chats.getCommunities()
   }, [isFocused])
+
+  const uuid = route.params.tribe.uuid
+  const tribe = chats.communities.get(uuid)
 
   const onEditCommunityPress = useCallback(() => {
     navigate('EditCommunity', { tribe })
@@ -81,7 +81,7 @@ const Tribe = ({ route }) => {
 
       <TribeSettings
         visible={tribeDialog}
-        owner={tribe.owner}
+        owner={tribe?.owner}
         onCancel={() => setTribeDialog(false)}
         onEditPress={onEditCommunityPress}
         onMembersPress={onCommunityMembersPress}
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default observer(Tribe)
+export default observer(Community)

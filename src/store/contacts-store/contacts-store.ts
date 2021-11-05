@@ -43,12 +43,12 @@ export const ContactsStoreModel = types
       contacts.forEach((contact) => {
         formattedArray.push([contact.id, contact])
       })
+      self.contacts.merge(formattedArray)
       display({
         name: 'setContacts',
-        preview: `Setting ${contacts.length} contacts`,
+        preview: `Set ${contacts.length} contacts`,
         value: { contacts, formattedArray },
       })
-      self.contacts.merge(formattedArray)
     },
   }))
   .views((self) => ({

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import { useCommunities, useCommunityHistory, useStores, useTheme } from 'store'
+import { useCommunityHistory, useStores, useTheme } from 'store'
 import { BoxHeader, Button, DialogWrap, Empty, Typography } from 'views/common'
 import TribeTags from './TribeTags'
 
@@ -64,12 +64,12 @@ const Tags = observer((props: any) => {
       id: theTribe.chat.id,
     })
 
-    chats.getTribes()
+    chats.getCommunities()
     setTopicsEditDialog(false)
   }
 
-  const tribes = useCommunities()
-  const tribe = tribes.find((t) => t.uuid === theTribe.uuid) || theTribe
+  const uuid = theTribe.uuid
+  const tribe = chats.communities.get(uuid) || theTribe // ?
 
   return (
     <>

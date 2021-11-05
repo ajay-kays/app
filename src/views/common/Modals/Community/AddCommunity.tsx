@@ -59,7 +59,7 @@ function AddTribe() {
     close()
     await chats.createTribe(newTribe)
 
-    chats.getTribes()
+    chats.getCommunities()
   }
 
   function close() {

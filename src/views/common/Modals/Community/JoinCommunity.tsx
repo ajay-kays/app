@@ -12,7 +12,7 @@ import { observer } from 'mobx-react-lite'
 import Video from 'react-native-video'
 import { IconButton, TextInput } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useCommunities, useStores, useTheme } from 'store'
+import { useStores, useTheme } from 'store'
 import { navigate } from 'nav'
 import { DEFAULT_TRIBE_SERVER } from 'lib/config'
 import { SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from 'lib/constants'
@@ -40,8 +40,9 @@ function JoinTribe(props) {
   const [videoVisible, setVideoVisible] = useState(false)
   const [alias, setAlias] = useState('')
 
-  const tribes = useCommunities()
-  const tribeToCheck = tribes && tribes.find((t) => t.uuid === tribe.uuid)
+  const uuid = tribe.uuid
+  const tribeToCheck = chats.communities.get(uuid)
+
   let joined = true
   if (tribeToCheck) {
     joined = tribeToCheck.joined

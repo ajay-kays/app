@@ -1,5 +1,5 @@
 import { values } from 'mobx'
-import { Instance, SnapshotOut, types } from 'mobx-state-tree'
+import { getRoot, Instance, SnapshotOut, types } from 'mobx-state-tree'
 import moment from 'moment'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './msg-actions'
@@ -13,6 +13,7 @@ import {
   SendPaymentParams,
 } from './msg-actions'
 import { display } from 'lib/logging'
+import { RootStore } from 'store'
 
 export const MsgStoreModel = types
   .model('MsgStore')
@@ -245,6 +246,28 @@ export const MsgStoreModel = types
       //   l += msgs.length
       // })
       return l
+    },
+    msgsForChatroomByUuid(uuid: string) {
+      const root = getRoot(self) as RootStore
+      const community = root.chats.communities.get(uuid)
+      if (!community) return []
+      const chat = community.chat
+      if (!chat) return []
+      // display({
+      //   name: 'msgsForChatroomByUuid',
+      //   preview: `Checking ${uuid} - community? CHAT`,
+      //   important: true,
+      //   value: { uuid, community, chat },
+      // })
+      const msgs = self.messages.get(chat.id.toString())
+      if (!msgs) return []
+      display({
+        name: 'msgsForChatroomByUuid',
+        preview: `Returning ${msgs.length} msgsForChatroomByUuid ${uuid}`,
+        important: true,
+        value: { uuid, msgs },
+      })
+      return values(msgs)
     },
     msgsForChatroom(chatId: number) {
       // display({

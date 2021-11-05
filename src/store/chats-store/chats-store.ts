@@ -3,16 +3,17 @@ import { DEFAULT_TRIBE_SERVER } from 'lib/config'
 import { display } from 'lib/logging'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './chats-actions'
-import { Chat, ChatModel } from './chats-models'
+import { Chat, ChatModel, Community, CommunityModel } from './chats-models'
 import { Destination } from 'store/feed'
 
 export const ChatsStoreModel = types
   .model('ChatsStore')
   .props({
     chats: types.optional(types.map(ChatModel), {}),
+    communities: types.optional(types.map(CommunityModel), {}),
+    // communities: types.optional(types.frozen(), {}),
     pricesPerMinute: types.frozen(),
     servers: types.frozen([{ host: DEFAULT_TRIBE_SERVER }]),
-    tribes: types.optional(types.frozen(), {}),
   })
   .extend(withEnvironment)
   .actions((self) => ({
@@ -29,10 +30,10 @@ export const ChatsStoreModel = types
     exitGroup: async (chatID: number): Promise<void> =>
       await actions.exitGroup(self as ChatsStore, chatID),
     getChats: async (): Promise<boolean> => await actions.getChats(self as ChatsStore),
+    getCommunities: async (): Promise<boolean> => await actions.getCommunities(self as ChatsStore),
     getDefaultTribeServer: (): any => actions.getDefaultTribeServer(self as ChatsStore),
     getTribeDetails: async (host: string, uuid: string): Promise<any> =>
       await actions.getTribeDetails(self as ChatsStore, host, uuid),
-    getTribes: async (): Promise<boolean> => await actions.getTribes(self as ChatsStore),
     gotChat: async (chat: Chat): Promise<any> => await actions.gotChat(self as ChatsStore, chat),
     joinDefaultTribe: async (): Promise<boolean> =>
       await actions.joinDefaultTribe(self as ChatsStore),
@@ -84,7 +85,20 @@ export const ChatsStoreModel = types
     //   chats.forEach((chat) => (self as ChatsStore).setChat(chat))
     // },
 
-    setTribes: (tribes: any) => (self.tribes = tribes),
+    setCommunities(communities: Community[]) {
+      const formattedArray: any = []
+      communities.forEach((community) => {
+        formattedArray.push([community.uuid, community])
+      })
+      self.communities.merge(formattedArray)
+      display({
+        name: 'setCommunities',
+        preview: `Set ${communities.length} communities`,
+        value: { communities, formattedArray },
+      })
+    },
+
+    // setCommunities: (communities: any) => (self.communities = communities),
     updateChatMeta: (chat_id: number, meta: any) => {
       const chat = self.chats?.get(chat_id.toString())
       if (chat) {
@@ -101,17 +115,34 @@ export const ChatsStoreModel = types
       chats.forEach((chat) => {
         formattedArray.push([chat.id, chat])
       })
+      self.chats.merge(formattedArray)
       display({
         name: 'setChats',
-        preview: `Setting ${chats.length} chats`,
+        preview: `Set ${chats.length} chats`,
         value: { chats, formattedArray },
       })
-      self.chats.merge(formattedArray)
     },
   }))
   .views((self) => ({
     get chatsArray(): Chat[] {
       return Array.from(self.chats.values())
+    },
+    get communitiesArray(): Community[] {
+      return Array.from(self.communities.values())
+    },
+    get communitiesArrayWithJoined(): Community[] {
+      const comms = Array.from(self.communities.values())
+      const commsToReturn: Community[] = []
+      comms.forEach((comm) => {
+        const grab = self.communities.get(comm.uuid)
+        if (!grab) return
+        commsToReturn.push({
+          ...grab,
+          joined: grab.joined,
+        })
+      })
+
+      return commsToReturn
     },
     setPricePerMinute(chatId: number, ppm: number) {
       if (!chatId) return

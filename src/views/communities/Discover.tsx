@@ -5,7 +5,7 @@ import { useNavigation, useIsFocused } from '@react-navigation/native'
 import { Appbar, IconButton } from 'react-native-paper'
 import FeatherIcon from 'react-native-vector-icons/Feather'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign'
-import { useCommunities, useSearchCommunities, useStores, useTheme } from '../../store'
+import { useSearchCommunities, useStores, useTheme } from '../../store'
 import { SCREEN_HEIGHT, STACK_HEADER_HEIGHT } from 'lib/constants'
 import * as utils from '../utils/utils'
 import TabBar from '../common/TabBar'
@@ -31,7 +31,7 @@ function Discover() {
   }, [isFocused])
 
   function fetchTribes() {
-    chats.getTribes().then(() => setLoading(false))
+    chats.getCommunities().then(() => setLoading(false))
   }
 
   function onRefresh() {
@@ -40,7 +40,7 @@ function Discover() {
     setRefreshing(false)
   }
 
-  const tribes = useCommunities()
+  const tribes = chats.communitiesArray
   const tribesToShow = useSearchCommunities(tribes)
 
   return (

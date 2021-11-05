@@ -1,5 +1,5 @@
 import { display, log } from 'lib/logging'
-import { Chat, ChatModel } from './chats-store'
+import { Chat, ChatModel, Community, CommunityModel } from './chats-store'
 import { Contact, ContactModel } from './contacts-store'
 import { Msg, MsgModel } from './msg-store'
 
@@ -37,6 +37,39 @@ export const normalizeChat = (raw: any) => {
     return normalized
   } catch (e) {
     console.log(e)
+  }
+}
+
+export const normalizeCommunity = (raw: any) => {
+  try {
+    const normalized: Community = CommunityModel.create({
+      uuid: raw.uuid,
+      app_url: raw.app_url,
+      bots: raw.bots,
+      created: raw.created,
+      deleted: parseBool(raw.deleted),
+      description: raw.description,
+      escrow_amount: raw.escrow_amount,
+      escrow_millis: raw.escrow_millis,
+      feed_url: raw.feed_url,
+      group_key: raw.group_key,
+      img: raw.img,
+      last_active: raw.last_active,
+      member_count: raw.member_count,
+      name: raw.name,
+      owner_alias: raw.owner_alias,
+      owner_pubkey: raw.owner_pubkey,
+      owner_route_hint: raw.owner_route_hint,
+      price_per_message: raw.price_per_message,
+      price_to_join: raw.price_to_join,
+      private: parseBool(raw.private),
+      tags: raw.tags,
+      unlisted: parseBool(raw.unlisted),
+      updated: raw.updated,
+    })
+    return normalized
+  } catch (e) {
+    console.log('ERROR:', e)
   }
 }
 

@@ -12,7 +12,7 @@ export const updateContact = async (self: ContactsStore, id: any, v: any) => {
       self.setContact(contact)
       display({
         name: 'updateContact',
-        preview: 'Updated contact:',
+        preview: `Updated contact ${contact.alias}`,
         value: contact,
       })
     }
