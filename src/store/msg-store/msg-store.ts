@@ -38,6 +38,7 @@ export const MsgStoreModel = types
       await actions.createRawInvoice(amt, memo),
     deleteMessage: async (id: number): Promise<void> =>
       await actions.deleteMessage(self as MsgStore, id),
+    getDirectMessages: async (): Promise<any> => await actions.getDirectMessages(self as MsgStore),
     getMessages: async (forceMore: boolean = false): Promise<any> =>
       await actions.getMessages(self as MsgStore, forceMore),
     getMessagesForChat: async (chatId: number): Promise<any> =>
@@ -95,15 +96,15 @@ export const MsgStoreModel = types
       // ;(self as MsgStore).rebuildCache()
     },
     setMessages: (msgs: { [k: number]: any[] }) => {
-      display({
-        name: 'New setMessages',
-        preview: `Setting messages for ${Object.entries(msgs).length} chats`,
-        value: { msgs },
-      })
+      // display({
+      //   name: 'New setMessages',
+      //   preview: `Setting messages for ${Object.entries(msgs).length} chats`,
+      //   value: { msgs },
+      // })
       self.messages.merge(msgs)
       display({
-        name: 'New setMessages',
-        preview: `Finished setting messages`,
+        name: 'setMessages',
+        preview: `Set messages for ${Object.entries(msgs).length} chats`,
         value: { messages: self.messages },
       })
     },

@@ -97,7 +97,9 @@ export default function Main() {
       await contacts.getContacts()
     }
 
-    await msg.getMessages()
+    msg.getDirectMessages() // should we wait for this or not
+
+    // await msg.getMessages()
     // await msg.getMessages(false, true)
     ui.setLoadingHistory(false)
 

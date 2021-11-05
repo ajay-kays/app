@@ -8,6 +8,7 @@ import InviteRow, { styles } from './InviteRow'
 import { useChatPicSrc } from 'views/utils/picSrc'
 import { Avatar, RefreshLoading, Typography } from 'views/common'
 import { navigate } from 'nav'
+import { display } from 'lib/logging'
 
 function ChatList(props) {
   const { ui, user, contacts, msg, details, chats } = useStores()
@@ -34,6 +35,11 @@ function ChatList(props) {
    */
   const renderItem: any = ({ item, index }) => {
     const chatID = (item.id || rando()) + ''
+    // display({
+    //   name: 'ChatList renderItem',
+    //   preview: `${item.name} - chatID ${chatID}`,
+    //   value: { item, chatID },
+    // })
     let showInvite = false
     if (item.invite && item.invite.status !== 4) showInvite = true
     if (showInvite) return <InviteRow key={`invite_${index}`} {...item} />
@@ -49,13 +55,23 @@ function ChatList(props) {
         data={chatsToShow}
         renderItem={renderItem}
         keyExtractor={(item) => {
+          let key
           if (!item.id) {
             const contact_id = item.contact_ids.find((id) => id !== myid)
-            return 'contact_' + String(contact_id)
+            key = 'contact_' + String(contact_id)
+            // return 'contact_' + String(contact_id)
+          } else {
+            key = String(item.id)
           }
-          return String(item.id)
+          // display({
+          //   name: 'ChatList keyExtractor',
+          //   preview: `${item.name} - ${key}`,
+          //   value: { chatsToShow, item, key },
+          // })
+          return key
+          // return String(item.id)
         }}
-        // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+        refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         ListHeaderComponent={props.listHeader}
       />
     </View>

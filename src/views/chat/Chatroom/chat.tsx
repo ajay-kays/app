@@ -136,12 +136,21 @@ const ChatroomFC = () => {
   const showPod = feedURL ? true : false
 
   const msgs = chatID ? msg.messages.get(chatID.toString()) : []
+  if (!msgs || (msgs && msgs.length === 0)) {
+    display({
+      name: 'ChatroomFC',
+      preview: `Fetching messages for chat ID ${chatID}`,
+      important: true,
+      value: { chat, msgs, pricePerMessage, chatID, route },
+    })
+    msg.getMessagesForChat(chatID)
+  }
 
-  display({
-    name: 'ChatroomFC',
-    important: true,
-    value: { chat, msgs, pricePerMessage, chatID, route },
-  })
+  // display({
+  //   name: 'ChatroomFC',
+  //   important: true,
+  //   value: { chat, msgs, pricePerMessage, chatID, route },
+  // })
 
   return (
     <KeyboardAvoidingView

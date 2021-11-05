@@ -2,12 +2,11 @@ import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import IonIcon from 'react-native-vector-icons/Ionicons'
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
-import { useTheme } from '../../../store'
+import { useTheme } from 'store'
 import Pushable from '../Pushable'
 import Icon from '../Icon'
 
@@ -15,16 +14,10 @@ function TabBar() {
   const theme = useTheme()
   const navigation = useNavigation()
   const current = useRoute()
-  const insets = useSafeAreaInsets()
   const { width } = Dimensions.get('window')
   const tabbarWidth = width - 32
 
   const routes = [
-    // {
-    //   name: 'Home',
-    //   icon: 'home',
-    //   key: 'home'
-    // },
     {
       name: 'Chats',
       icon: (color) => <IonIcon name='chatbubbles-outline' color={color} size={24} />,
@@ -37,7 +30,6 @@ function TabBar() {
     },
     {
       name: 'Payment',
-      // icon: 'wallet',
       icon: (color) => <SimpleIcon name='wallet' color={color} size={20} />,
       key: 'payment',
     },
@@ -85,7 +77,6 @@ export default observer(TabBar)
 
 function renderIcon(route, current, theme) {
   const iconElement = typeof route.icon === 'function'
-  // console.log(`${route.name} ${current.name}`)
   return (
     <>
       {iconElement ? (
@@ -93,7 +84,11 @@ function renderIcon(route, current, theme) {
       ) : (
         <Icon
           name={route.name}
-          color={route.name === current.name ? theme.primary : theme.icon}
+          color={
+            route.name === current.name || `${route.name}Main` === current.name
+              ? theme.primary
+              : theme.icon
+          }
           size={24}
         />
       )}
@@ -111,19 +106,9 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     height: isIphoneX() ? 50 + getBottomSpace() : 60,
-    // ...ifIphoneX({
-    // height: 50 + getBottomSpace()
-    // })
-    // height: 60 + getBottomSpace()
-    // height: isIphoneXorAbove() ? 80 : 60
   },
   iconWrap: {
     height: isIphoneX() ? 50 + getBottomSpace() : 60,
-    // ...ifIphoneX({
-    //   height: 50 + getBottomSpace()
-    // }),
-    // height: 60 + getBottomSpace(),
-    // height: isIphoneXorAbove() ? 80 : 60,
     alignItems: 'center',
     justifyContent: 'center',
   },

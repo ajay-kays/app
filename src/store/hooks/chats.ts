@@ -1,5 +1,6 @@
 import { DEFAULT_DOMAIN } from 'lib/config'
 import { constants } from 'lib/constants'
+import { display } from 'lib/logging'
 import moment from 'moment'
 import { useStores } from 'store'
 import { Chat } from 'store/chats-store'
@@ -35,8 +36,7 @@ export function useChats() {
   const { chats, msg, contacts, user } = useStores()
   const theChats = allChats(chats.chatsArray, contacts.contactsArray, user.myid)
   const chatsToShow = theChats
-  sortChats(chatsToShow, msg.messages) // ??
-
+  sortChats(chatsToShow, msg)
   return chatsToShow
 }
 
@@ -150,13 +150,13 @@ export function searchChats(theChats, searchTerm) {
   })
 }
 
-export function sortChats(chatsToShow, messages) {
+export function sortChats(chatsToShow, msgs) {
   chatsToShow.sort((a, b) => {
-    const amsgs = messages[a.id]
+    const amsgs = msgs.msgsForChatroom(a.id)
     const alastMsg = amsgs && amsgs[0]
     const then = moment(new Date()).add(-30, 'days')
     const adate = alastMsg && alastMsg.date ? moment(alastMsg.date) : then
-    const bmsgs = messages[b.id]
+    const bmsgs = msgs.msgsForChatroom(b.id)
     const blastMsg = bmsgs && bmsgs[0]
     const bdate = blastMsg && blastMsg.date ? moment(blastMsg.date) : then
     return adate.isBefore(bdate) ? 0 : -1

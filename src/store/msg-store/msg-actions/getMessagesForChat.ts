@@ -8,19 +8,18 @@ import { decodeMessages, Msg, skinny } from '..'
 const MSGS_PER_CHAT = 250
 
 export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
-  display({
-    name: 'getMessagesForChat',
-    preview: `Lets grab messages for chatId ${chatId}`,
-    important: true,
-  })
+  // display({
+  //   name: 'getMessagesForChat',
+  //   preview: `Lets grab messages for chatId ${chatId}`,
+  //   important: true,
+  // })
   let route = `msgsForChat?chatId=${chatId}`
   const r = await relay?.get(route)
-  display({
-    name: 'getMessagesForChat',
-    preview: `Fetched messages for chatId ${chatId}`,
-    value: { r, route },
-    important: true,
-  })
+  // display({
+  //   name: 'getMessagesForChat',
+  //   preview: `Fetched messages for chatId ${chatId}`,
+  //   value: { r, route },
+  // })
 
   /**
    * SORT MESSAGES BY CHATROOM
@@ -31,7 +30,7 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
   if (r.new_messages && r.new_messages.length) {
     display({
       name: 'getMessagesForChat',
-      preview: `Fetched ${r.new_messages.length} new messages`,
+      preview: `Fetched ${r.new_messages.length} new messages for chatId ${chatId}`,
       value: { route, r },
     })
 
@@ -43,11 +42,11 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
       }
     })
 
-    display({
-      name: 'getMessagesForChat',
-      preview: `Finished building unsorted msgs map`,
-      value: { msgs },
-    })
+    // display({
+    //   name: 'getMessagesForChat',
+    //   preview: `Finished building unsorted msgs map`,
+    //   value: { msgs },
+    // })
 
     /**
      * SORT BY DATE AND PRUNE TO {MSGS_PER_CHAT} MESSAGES PER CHATROOM
@@ -63,11 +62,11 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
         .slice(0, MSGS_PER_CHAT)
     })
 
-    display({
-      name: 'getMessagesForChat',
-      preview: 'Finished sorting and pruning messages',
-      value: { msgs, sortedAndFilteredMsgs },
-    })
+    // display({
+    //   name: 'getMessagesForChat',
+    //   preview: 'Finished sorting and pruning messages',
+    //   value: { msgs, sortedAndFilteredMsgs },
+    // })
 
     /**
      * NORMALIZE AND DECODE ONLY THESE MESSAGES
@@ -86,11 +85,11 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
       normalizedMsgs[chat[0]] = msgsToSave
     }
 
-    display({
-      name: 'getMessages',
-      preview: 'Finished decoding+normalizing messages',
-      value: { normalizedMsgs },
-    })
+    // display({
+    //   name: 'getMessagesForChat',
+    //   preview: 'Finished decoding+normalizing messages',
+    //   value: { normalizedMsgs },
+    // })
 
     self.setMessages(normalizedMsgs)
   }
