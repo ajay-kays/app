@@ -18,6 +18,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@bugsnag/react-native": "7.13.2",
     "@react-native-async-storage/async-storage": "1.15.9",
     "@react-native-community/clipboard": "1.5.1",
     "@react-native-community/datetimepicker": "2.6.2",
