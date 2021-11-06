@@ -44,10 +44,10 @@ export function useCachedEncryptedFile(
   }
 
   async function trigger() {
-    console.log('trigger...', loading, data, uri, paidMessageText)
+    // console.log('trigger...', loading, data, uri, paidMessageText)
     if (loading || data || uri || paidMessageText) return // already done
     if (!ldat?.host || !ldat?.sig) return
-    console.log('past dat look')
+    // console.log('past dat look')
 
     const url = `https://${ldat.host}/file/${media_token}`
 
@@ -60,7 +60,7 @@ export function useCachedEncryptedFile(
 
     display({
       name: 'trigger',
-      preview: `exists ${exists} ---- existingPath ${existingPath}`,
+      preview: `useCachedEncryptedFile`, // exists ${exists} ---- existingPath ${existingPath}`,
       value: {
         url,
         loading,
@@ -73,18 +73,18 @@ export function useCachedEncryptedFile(
         existingPath,
         exists,
       },
-      important: true,
+      // important: true,
     })
 
     if (exists) {
-      console.log('EXISTS')
+      // console.log('EXISTS')
       if (isPaidMessage) {
-        console.log('IS PAID MESSAGE')
+        // console.log('IS PAID MESSAGE')
         const txt = await parsePaidMsg(id)
-        console.log('txt:', txt)
+        // console.log('txt:', txt)
         setPaidMessageText(txt)
       } else {
-        console.log('IS NOT PAID MESSAGE')
+        // console.log('IS NOT PAID MESSAGE')
         setURI('file://' + existingPath)
       }
       setLoading(false)

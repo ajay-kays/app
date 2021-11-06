@@ -97,12 +97,12 @@ function Media(props) {
 
   const hasImgData = data || uri ? true : false
 
-  display({
-    name: 'replyContent',
-    value: { hasImgData, media_token, uri, data, props, ldat, loading },
-    preview: `hasImgData: ${hasImgData.toString()}`,
-    important: true,
-  })
+  // display({
+  //   name: 'replyContent',
+  //   value: { hasImgData, media_token, uri, data, props, ldat, loading },
+  //   preview: `hasImgData: ${hasImgData.toString()}`,
+  //   important: true,
+  // })
 
   return (
     <View style={{ width: props.reply ? '15%' : '25%' }}>

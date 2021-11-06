@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { observer } from 'mobx-react-lite'
-import { useStores, useTheme } from 'store'
+import { useMsgs, useStores, useTheme } from 'store'
 import { MsgList } from '../MsgList'
 import { useNavigation, useRoute } from '@react-navigation/core'
 import { display } from 'lib/logging'
@@ -135,7 +135,9 @@ const ChatroomFC = () => {
 
   const showPod = feedURL ? true : false
 
-  const msgs = chatID ? msg.messages.get(chatID.toString()) : []
+  // const msgs = chatID ? msg.messages.get(chatID.toString()) : []
+  const msgs = useMsgs(chat)
+
   if (!msgs || (msgs && msgs.length === 0)) {
     display({
       name: 'ChatroomFC',

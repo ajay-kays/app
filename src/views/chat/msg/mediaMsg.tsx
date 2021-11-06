@@ -54,7 +54,7 @@ function MediaMsg(props) {
   const isEmbedVideo = youtubeLink || rumbleLink
 
   const hasImgData = data || uri ? true : false
-  console.log('mediaMsg hasImgData:', hasImgData)
+  // console.log('mediaMsg hasImgData:', hasImgData)
   const hasContent = message_content ? true : false
   const showPurchaseButton = amt && !isMe ? true : false
   const showStats = isMe && amt
@@ -328,6 +328,7 @@ function VideoPlayer(props) {
           zIndex: 100,
         }}
       />
+      {/* @ts-ignore  */}
       <IconButton
         icon='play'
         size={55}

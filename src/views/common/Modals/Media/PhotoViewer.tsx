@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, StyleSheet, View, Modal } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native' // , Modal
+import Modal from '../ModalWrap'
 import FastImage from 'react-native-fast-image'
 import { IconButton } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -20,8 +21,15 @@ import BoostDetails from './BoostDetails'
 export default function PhotoViewer({ visible, close, photos, chat, initialIndex }) {
   const theme = useTheme()
   return (
-    <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
+    <Modal
+      visible={visible}
+      animationType='slide'
+      presentationStyle='fullScreen'
+      onDismiss={close}
+      noHeader
+    >
       <View style={{ ...styles.wrap, backgroundColor: theme.black }}>
+        {/* @ts-ignore  */}
         <IconButton
           icon={() => <MaterialCommunityIcon name='close' color={theme.white} size={30} />}
           onPress={close}
