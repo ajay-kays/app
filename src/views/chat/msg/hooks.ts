@@ -120,7 +120,6 @@ export function useCachedEncryptedFile(
       const status = res.info().status
 
       if (status == 200 && path) {
-        console.log('so we got')
         let extension = ''
         if (media_type.startsWith('audio')) {
           extension = 'm4a'

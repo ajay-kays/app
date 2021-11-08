@@ -68,6 +68,7 @@
     "react-native-qrcode-scanner": "1.5.4",
     "react-native-qrcode-svg": "6.1.1",
     "react-native-radial-gradient": "1.0.9",
+    "react-native-randombytes": "3.6.0",
     "react-native-reanimated": "2.2.3",
     "react-native-render-html": "4.2.5",
     "react-native-rncryptor": "git+https://github.com/masterial/react-native-rncryptor.git",

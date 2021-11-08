@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { AppState } from 'react-native'
+import { AppState, Platform } from 'react-native'
 import Toast from 'react-native-simple-toast'
 import { checkVersion } from 'react-native-check-version'
 import { getVersion, getBundleId } from 'react-native-device-info'
@@ -41,7 +41,10 @@ export default function Main() {
     }
     if (appState.current.match(/active/) && nextAppState === 'background') {
       const count = msg.countUnseenMessages(user.myid)
-      PushNotificationIOS.setApplicationIconBadgeNumber(count)
+
+      if (Platform.OS === 'ios') {
+        PushNotificationIOS.setApplicationIconBadgeNumber(count)
+      }
     }
 
     appState.current = nextAppState

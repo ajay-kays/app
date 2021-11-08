@@ -1,20 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { useTheme } from 'store'
+import { Typography } from 'views/common'
 
-// date label component
 export const DateLine = ({ dateString }) => {
+  const theme = useTheme()
   return (
     <View style={{ ...styles.dateLine }}>
-      <View
-        style={{
-          ...styles.dateString,
-          // , backgroundColor: theme.main
-        }}
-      >
-        <Text>{dateString}</Text>
-        {/* <Typography size={12} color={theme.subtitle}>
+      <View style={{ ...styles.dateString, backgroundColor: theme.main }}>
+        <Typography size={12} color={theme.subtitle}>
           {dateString}
-        </Typography> */}
+        </Typography>
       </View>
     </View>
   )

@@ -1,4 +1,4 @@
-import { values } from 'mobx'
+import { entries, values } from 'mobx'
 import { getRoot, Instance, SnapshotOut, types } from 'mobx-state-tree'
 import moment from 'moment'
 import { withEnvironment } from '../extensions/with-environment'
@@ -90,7 +90,12 @@ export const MsgStoreModel = types
           important: true,
         })
       } else {
-        throw 'no chat..?'
+        display({
+          name: 'setMessage',
+          preview: `Couldn't find chat. Didn't save msg ${msg.id}`,
+          value: { msg },
+          important: true,
+        })
       }
       // self.messages.set(msg.id.toString(), msg)
       // ;(self as MsgStore).rebuildCache()
@@ -185,50 +190,22 @@ export const MsgStoreModel = types
       const now = new Date().getTime()
       let unseenCount = 0
       const lastSeenObj = self.lastSeen
-      // const msgsEntries = self.messages.entries()
-      // for (let msgs in msgsEntries) {
-
-      // }
-      // console.log(msgs)
-      console.log(self.messages)
-      self.messages.forEach(function (wat) {
-        console.log(wat)
+      const msgsEntries = entries(self.messages)
+      msgsEntries.forEach(function ([id, msgs]) {
+        const lastSeen = lastSeenObj[id || '_'] || now
+        if (!msgs) return
+        values(msgs).forEach((m) => {
+          if (m.sender !== myid) {
+            const unseen = moment(new Date(lastSeen)).isBefore(moment(m.date))
+            if (unseen) unseenCount += 1
+          }
+        })
       })
-      return 0
-      // self.messages.forEach(function ([id, msgs]) {
-      //   const lastSeen = lastSeenObj[id || '_'] || now
-      //   msgs.forEach((m) => {
-      //     if (m.sender !== myid) {
-      //       const unseen = moment(new Date(lastSeen)).isBefore(moment(m.date))
-      //       if (unseen) unseenCount += 1
-      //     }
-      //   })
-      // })
-      // display({
-      //   name: 'countUnseenMessages',
-      //   preview: `Unseen messages: ${unseenCount}`,
-      //   important: true,
-      // })
-      // return unseenCount
-
-      // console.log('countUnseenMessages unimplemented')
-      // return 0
-      // const now = new Date().getTime()
-      // let unseenCount = 0
-      // const lastSeenObj = self.lastSeen
-      // ;(self as MsgStore).messagesArray.forEach(function (msg: Msg) {
-      //   const lastSeen = lastSeenObj[msg.chat_id || '_'] || now
-      //   if (msg.sender !== myid) {
-      //     const unseen = moment(new Date(lastSeen)).isBefore(moment(msg.date))
-      //     if (unseen) unseenCount += 1
-      //   }
-      // })
-      // display({
-      //   name: 'countUnseenMessages',
-      //   preview: `Unseen messages: ${unseenCount}`,
-      //   important: true,
-      // })
-      // return unseenCount
+      display({
+        name: 'countUnseenMsgs',
+        preview: `Unseen messages: ${unseenCount}`,
+      })
+      return unseenCount
     },
     filterMessagesByContent(id, filterString): any {
       const list = (self as MsgStore).msgsForChatroom(id)

@@ -242,6 +242,8 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.3):
     - React-Core
+  - react-native-randombytes (3.6.0):
+    - React-Core
   - react-native-rncryptor (1.0.0):
     - React-Core
   - react-native-rsa-native (2.0.4):
@@ -430,6 +432,7 @@ DEPENDENCIES:
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-rncryptor (from `../node_modules/react-native-rncryptor`)
   - react-native-rsa-native (from `../node_modules/react-native-rsa-native`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -530,6 +533,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-randombytes:
+    :path: "../node_modules/react-native-randombytes"
   react-native-rncryptor:
     :path: "../node_modules/react-native-rncryptor"
   react-native-rsa-native:
@@ -638,6 +643,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-image-picker: 31971f6184e7c1dcb4fc1f122e1ba2c3fb11ef1e
   react-native-netinfo: 7c14a136a9f4273d8bb16c7ea9e9bbe07ea1fa2e
+  react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
   react-native-rncryptor: e273429757c7b34d0b2f90f71ba8a592dd02f973
   react-native-rsa-native: 1f6bba06dd02f0e652a66a384c75c270f7a0062f
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
