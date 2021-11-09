@@ -65,6 +65,7 @@
     "react-native-permissions": "3.1.0",
     "react-native-popover-view": "3.1.1",
     "react-native-portalize": "1.0.7",
+    "react-native-push-notification": "7.3.1",
     "react-native-qrcode-scanner": "1.5.4",
     "react-native-qrcode-svg": "6.1.1",
     "react-native-radial-gradient": "1.0.9",

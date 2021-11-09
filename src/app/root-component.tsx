@@ -18,6 +18,7 @@ import PIN, { wasEnteredRecently } from 'views/utils/pin'
 import * as utils from 'views/utils/utils'
 import Main from './main'
 import { reportError } from 'lib/errorHelper'
+import APNManager from 'store/contexts/apn'
 
 // This is the first component where we can assume an initialized rootStore.
 const RootComponentFC = () => {
@@ -115,9 +116,9 @@ const RootComponentFC = () => {
     <PaperProvider theme={pTheme}>
       <Host>
         {ui.signedUp && (
-          // <APNManager>
-          <Main />
-          // </APNManager>
+          <APNManager>
+            <Main />
+          </APNManager>
         )}
         {!ui.signedUp && <AuthNavigator />}
       </Host>

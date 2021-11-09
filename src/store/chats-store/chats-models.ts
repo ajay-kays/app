@@ -86,9 +86,9 @@ export const CommunityModel = types
     get chat(): Chat | undefined {
       const root = getRoot(self) as RootStore
       const chat = root.chats.chatsArray.find((c) => c.uuid === self.uuid)
-      console.log('tried to get chat: got ', chat)
+      // console.log('tried to get chat: got ', chat)
       if (!chat) {
-        //  console.log ("NO CAHT W UUID", uuid)
+        console.log('NO CAHT W UUID?')
       }
       return chat
     },

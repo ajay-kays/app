@@ -18,13 +18,14 @@ import AppVersionUpdate from 'views/common/Dialogs/AppVersion'
 import ModalsN from 'views/common/Modals'
 import Root from 'nav/root-navigator'
 import { display } from 'lib/logging'
+import { useApn } from 'store/contexts/apn'
 
 export default function Main() {
   const { contacts, msg, details, user, meme, ui } = useStores()
   const [versionUpdateVisible, setVersionUpdateVisible] = useState(false)
   const [chatID, setChatID] = useState(null)
   const chats = useChats()
-  // const apn = useApn()
+  const apn = useApn()
 
   const appState = useRef(AppState.currentState)
 
@@ -137,45 +138,45 @@ export default function Main() {
     }
   }, [chatID])
 
-  // useEffect(() => {
-  //   ;(async () => {
-  //     apn.configure(
-  //       (token) => {
-  //         if ((token && !user.deviceId) || user.deviceId !== token) {
-  //           user.registerMyDeviceId(token, user.myid)
-  //         }
-  //       },
-  //       (notification) => {
-  //         const id = notification.data.aps.alert.action
+  useEffect(() => {
+    ;(async () => {
+      apn.configure(
+        (token) => {
+          if ((token && !user.deviceId) || user.deviceId !== token) {
+            user.registerMyDeviceId(token, user.myid)
+          }
+        },
+        (notification) => {
+          const id = notification.data.aps.alert.action
 
-  //         if (notification.userInteraction && notification.finish) {
-  //           if (id) {
-  //             setChatID(id)
-  //           }
-  //         }
-  //         // const count = msg.countUnseenMessages(user.myid)
-  //         // PushNotificationIOS.setApplicationIconBadgeNumber(count)
+          if (notification.userInteraction && notification.finish) {
+            if (id) {
+              setChatID(id)
+            }
+          }
+          // const count = msg.countUnseenMessages(user.myid)
+          // PushNotificationIOS.setApplicationIconBadgeNumber(count)
 
-  //         PushNotificationIOS.setApplicationIconBadgeNumber(0)
-  //         notification.finish(PushNotificationIOS.FetchResult.NoData)
-  //       }
-  //     )
+          PushNotificationIOS.setApplicationIconBadgeNumber(0)
+          notification.finish(PushNotificationIOS.FetchResult.NoData)
+        }
+      )
 
-  //     const currentVersion = getVersion()
-  //     const bundleId = getBundleId()
+      const currentVersion = getVersion()
+      const bundleId = getBundleId()
 
-  //     const version = await checkVersion({
-  //       bundleId,
-  //       currentVersion: currentVersion.toString(),
-  //     })
+      const version = await checkVersion({
+        bundleId,
+        currentVersion: currentVersion.toString(),
+      })
 
-  //     await utils.sleep(300)
-  //     if (version.needsUpdate) {
-  //       setVersionUpdateVisible(true)
-  //       console.log(`App has a ${version.updateType} update pending.`)
-  //     }
-  //   })()
-  // }, [])
+      await utils.sleep(300)
+      if (version.needsUpdate) {
+        setVersionUpdateVisible(true)
+        console.log(`App has a ${version.updateType} update pending.`)
+      }
+    })()
+  }, [])
 
   return (
     <>
