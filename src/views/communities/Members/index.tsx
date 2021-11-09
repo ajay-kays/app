@@ -25,8 +25,9 @@ function Members({ route }) {
   const tribe = route.params.tribe
 
   useEffect(() => {
+    console.log('getting contacts.')
     contacts.getContacts()
-  })
+  }, [])
 
   const contactsToShow = contacts.contactsArray.filter((c) => {
     return c.id > 1 && tribe && tribe.chat && tribe.chat.contact_ids.includes(c.id)

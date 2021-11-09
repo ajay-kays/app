@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { is24HourFormat } from 'react-native-device-time-format'
 import { useDarkMode } from 'react-native-dynamic'
+import EncryptedStorage from 'react-native-encrypted-storage'
 import { Provider as PaperProvider } from 'react-native-paper'
 import { Host } from 'react-native-portalize'
 import { observer } from 'mobx-react-lite'
@@ -16,6 +17,7 @@ import Disconnect from 'views/disconnect'
 import PIN, { wasEnteredRecently } from 'views/utils/pin'
 import * as utils from 'views/utils/utils'
 import Main from './main'
+import { reportError } from 'lib/errorHelper'
 
 // This is the first component where we can assume an initialized rootStore.
 const RootComponentFC = () => {
@@ -43,9 +45,25 @@ const RootComponentFC = () => {
     }
     check24Hour()
     ;(async () => {
+      await user.attemptRehydrateFromOldVersion()
+
       const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
 
       ui.setSignedUp(isSignedUp)
+
+      // If not signed up, let's delete PIN out if it's there. https://github.com/getZION/internal/issues/4
+      if (!isSignedUp) {
+        try {
+          const pin = await EncryptedStorage.getItem('pin')
+          if (pin) await EncryptedStorage.removeItem('pin')
+
+          const priv = await EncryptedStorage.getItem('private')
+          if (priv) await EncryptedStorage.removeItem('private')
+        } catch (e) {
+          console.log('WAT')
+          reportError(e)
+        }
+      }
 
       relay.registerWebsocketHandlers()
 

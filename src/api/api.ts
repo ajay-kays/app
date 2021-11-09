@@ -72,7 +72,11 @@ function addMethod(m: string, rootUrl: string): RelayMethod {
 
       const r = await fetchTimeout(rootUrl + url, TIMEOUT, opts)
       if (!r.ok) {
+        console.log('------')
+        console.log(r)
+        console.log('------')
         console.log('Not OK!', r.status, url)
+        console.log('------')
         return
       }
       let res

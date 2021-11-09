@@ -31,7 +31,15 @@ const Community = ({ route }) => {
 
   const uuid = route.params.tribe.uuid
   const tribe = chats.communities.get(uuid)
+
   const chatId = tribe?.chat?.id
+
+  display({
+    name: 'Community',
+    preview: ' with what ',
+    value: { uuid, tribe, chatId },
+    important: true,
+  })
 
   useEffect(() => {
     chats.getCommunities()

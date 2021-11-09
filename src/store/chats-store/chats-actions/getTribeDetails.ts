@@ -1,5 +1,6 @@
 import { ChatsStore } from '../chats-store'
 import { DEFAULT_TRIBE_SERVER } from 'lib/config'
+import { display } from 'lib/logging'
 
 export const getTribeDetails = async (self: ChatsStore, host: string, uuid: string) => {
   if (!host || !uuid) return
@@ -15,6 +16,11 @@ export const getTribeDetails = async (self: ChatsStore, host: string, uuid: stri
         j.bots = []
       }
     }
+    display({
+      name: 'getTribeDetails',
+      value: { j },
+      important: true,
+    })
     return j
   } catch (e) {
     console.log(e)

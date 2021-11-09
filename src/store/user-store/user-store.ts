@@ -25,6 +25,8 @@ export const UserStoreModel = types
   .actions((self) => ({
     attemptRehydrate: async (): Promise<boolean> =>
       await actions.attemptRehydrate(self as UserStore),
+    attemptRehydrateFromOldVersion: async (): Promise<boolean> =>
+      await actions.attemptRehydrateFromOldVersion(self as UserStore),
     finishInvite: async (): Promise<boolean> => await actions.finishInvite(self as UserStore),
     generateToken: async (pwd: string): Promise<string> =>
       await actions.generateToken(self as UserStore, pwd),
