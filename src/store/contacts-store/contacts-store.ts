@@ -38,6 +38,9 @@ export const ContactsStoreModel = types
     setContact(contact: Contact) {
       self.contacts.put(contact)
     },
+    removeContact(id) {
+      self.contacts.delete(id)
+    },
     setContacts(contacts: Contact[]) {
       const formattedArray: any[] = []
       contacts.forEach((contact) => {

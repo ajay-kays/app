@@ -9,19 +9,21 @@ import Video from 'react-native-video'
 import FastImage from 'react-native-fast-image'
 import RNFetchBlob from 'rn-fetch-blob'
 import Toast from 'react-native-simple-toast'
+
 import { useCommunityMediaType, useMsgs, useStores, useTheme } from 'store'
+import { parseLDAT } from 'lib/ldat'
 import shared from './sharedStyles'
 import { useCachedEncryptedFile } from './hooks'
+import { getRumbleLink, getYoutubeLink, verifyCommunity } from './utils'
 import AudioPlayer from './audioPlayer'
-import { parseLDAT } from 'lib/ldat'
+import EmbedVideo from './embedVideo'
 import FileMsg from './fileMsg'
 import BoostRow from './boostRow'
+import CommunityMsg from './communityMsg'
 import Typography from '../../common/Typography'
 import Button from '../../common/Button'
 import PhotoViewer from '../../common/Modals/Media/PhotoViewer'
 import { setTint } from '../../common/StatusBar'
-import EmbedVideo from './embedVideo'
-import { getRumbleLink, getYoutubeLink } from './utils'
 
 function MediaMsg(props) {
   const { id, message_content, media_type, chat, media_token } = props
@@ -32,6 +34,7 @@ function MediaMsg(props) {
   const { meme, msg } = useStores()
   const theme = useTheme()
   const isMe = props.sender === props.myid
+  const isCommunity = verifyCommunity(message_content)
 
   let ldat = parseLDAT(media_token)
   let amt = null
@@ -201,7 +204,9 @@ function MediaMsg(props) {
           </View>
         )}
 
-        {hasContent && (
+        {isCommunity && <CommunityMsg {...props} onLongPressHandler={onLongPressHandler} />}
+
+        {hasContent && !isCommunity && (
           <View style={styles.msgContentWrap}>
             <Typography size={14} color={theme.subtitle}>
               {message_content}
@@ -350,7 +355,8 @@ const styles = StyleSheet.create({
     paddingTop: 30,
   },
   photo: {
-    width: 200,
+    width: 'auto',
+    minWidth: 200,
     height: 200,
   },
   stats: {

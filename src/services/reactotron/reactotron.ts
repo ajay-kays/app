@@ -118,7 +118,7 @@ export class Reactotron {
       Tron.configure({
         name: 'Zion',
         host: this.config.host,
-        port: 9001,
+        port: 9090,
       })
 
       // https://github.com/infinitered/reactotron/issues/272

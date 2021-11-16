@@ -15,6 +15,8 @@ export const UiStoreModel = types
     addFriendDialog: false,
     /** Modal visibility */
     addContactModal: false,
+    addContactParams: types.optional(types.frozen(), {}),
+
     newTribeModal: false,
     showPayModal: false,
     /** Pay mode (Payment Modal) */
@@ -69,8 +71,14 @@ export const UiStoreModel = types
     setAddFriendDialog(openDialog: boolean) {
       self.addFriendDialog = openDialog
     },
-    setAddContactModal(openDialog: boolean) {
+    setAddContactModal(openDialog: boolean, params?: { [k: string]: any } | null) {
       self.addContactModal = openDialog
+
+      if (!params) {
+        self.addContactParams = null
+        return
+      }
+      self.addContactParams = params
     },
     setNewTribeModal(openModal: boolean) {
       self.newTribeModal = openModal

@@ -2,6 +2,7 @@ import moment from 'moment'
 import url from 'url'
 import * as linkify from 'linkifyjs'
 import { constants } from 'lib/constants'
+import { hasWhiteSpace } from 'lib/utils'
 
 export function calcExpiry(props) {
   const isInvoice = props.type === constants.message_types.invoice
@@ -41,4 +42,54 @@ export const getYoutubeVideoID = (link: string) => {
 export const getQueryParamFromLink = (link: string, queryParam: string) => {
   const urlParams = url.parse(link, true)
   return urlParams.query?.[queryParam] ?? ''
+}
+
+export const verifyPubKey = (messageContent: string): any => {
+  if (!messageContent || messageContent.length <= 0) return false
+
+  let isPubKey = false
+  let pubKey = ''
+  const words = messageContent.split(' ')
+
+  const isValid = (text) => {
+    return text.length === 66 && !hasWhiteSpace(text) && !text.startsWith('boost')
+  }
+
+  if (words.length === 1) {
+    pubKey = words[0] || messageContent
+    isPubKey = isValid(pubKey)
+  } else {
+    words.map((word) => {
+      isPubKey = isValid(word)
+      if (isPubKey) {
+        pubKey = word
+      }
+    })
+  }
+
+  return { isPubKey, pubKey }
+}
+
+export const verifyCommunity = (messageContent: string): any => {
+  if (!messageContent || messageContent.length <= 0) return false
+
+  let isCommunity = false
+  const words = messageContent.split(' ')
+
+  //  TODO: n2n2 check is temporary (check old communities since n2n2)
+  const isValid = (text) => {
+    return (
+      text.startsWith('zion.chat://?action=tribe') || text.startsWith('n2n2.chat://?action=tribe')
+    )
+  }
+
+  if (words.length === 1) {
+    isCommunity = isValid(messageContent)
+  } else {
+    words.map((word) => {
+      isCommunity = isValid(word)
+    })
+  }
+
+  return isCommunity
 }

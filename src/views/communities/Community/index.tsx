@@ -23,8 +23,8 @@ const Community = ({ route }) => {
   const isFocused = useIsFocused()
 
   const [tribeDialog, setTribeDialog] = useState(false)
-  const [index, setIndex] = React.useState(0)
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0)
+  const [routes] = useState([
     { key: 'first', title: 'Media' },
     { key: 'second', title: 'About' },
   ])

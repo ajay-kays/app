@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View } from 'react-native'
 // import {Player} from '@react-native-community/audio-toolkit'
 import { IconButton } from 'react-native-paper'
+
+import { useTheme } from 'store'
 import { reportError } from 'lib/errorHelper'
 import ARP from './audioRecorderPlayer'
 
@@ -11,6 +13,7 @@ export default function AudioPlayer(props) {
   const { source, jumpTo } = props
   const [percent, setPercent] = useState(0)
   const [playing, setPlaying] = useState(false)
+  const theme = useTheme()
 
   // useEffect(()=>{ // set back if come in from background
   //   if(playing && !ARP.isPlaying(source)) {
@@ -52,11 +55,12 @@ export default function AudioPlayer(props) {
       reportError(e)
     }
   }
+
   return (
     <View style={styles.wrap}>
-      <IconButton icon={playing ? 'pause' : 'play'} color='#ccc' size={27} onPress={toggle} />
+      <IconButton icon={playing ? 'pause' : 'play'} color={theme.icon} size={27} onPress={toggle} />
       <View style={styles.barWrap}>
-        <View style={styles.barEmpty}></View>
+        <View style={{ ...styles.barEmpty, backgroundColor: theme.grey }}></View>
         <View
           style={{
             ...styles.barFull,
@@ -75,7 +79,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    marginBottom: 10,
   },
   barWrap: {
     flex: 1,

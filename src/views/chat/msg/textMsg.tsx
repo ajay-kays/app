@@ -1,20 +1,20 @@
 import React, { useMemo } from 'react'
-import { Alert, TouchableOpacity, StyleSheet, Image, View, Linking } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Alert, Linking } from 'react-native'
 import RNUrlPreview from 'react-native-url-preview'
 import Hyperlink from 'react-native-hyperlink'
 import * as linkify from 'linkifyjs'
 
 import { useTheme } from '../../../store'
-import { useParsedGiphyMsg } from '../../../store/hooks/msg'
-import { DEFAULT_DOMAIN } from 'lib/config'
 import shared from './sharedStyles'
 import ClipMessage from './clipMsg'
 import BoostMessage from './boostMsg'
 import BoostRow from './boostRow'
-import TribeMsg from './tribeMsg'
+import CommunityMsg from './communityMsg'
 import EmbedVideo from './embedVideo'
 import Typography from '../../common/Typography'
-import { getRumbleLink, getYoutubeLink } from './utils'
+import { getRumbleLink, getYoutubeLink, verifyPubKey, verifyCommunity } from './utils'
+import PubkeyMessage from './pubMsg'
+import GiphMessage from './giphMsg'
 
 export default function TextMsg(props) {
   const theme = useTheme()
@@ -27,6 +27,8 @@ export default function TextMsg(props) {
   const isClip = message_content && message_content.startsWith('clip::')
   const isBoost = message_content?.startsWith('boost::')
   const isLink = linkify.find(message_content, 'url').length > 0
+  const { isPubKey, pubKey } = verifyPubKey(message_content)
+  const isCommunity = verifyCommunity(message_content)
 
   const onLongPressHandler = () => props.onLongPress(props)
 
@@ -34,37 +36,13 @@ export default function TextMsg(props) {
    * Returns
    */
   if (isGiphy) {
-    // TODO: Move this block to a separated component
-    const { url, aspectRatio, text } = useParsedGiphyMsg(message_content)
     return (
-      <TouchableOpacity
-        style={{ ...styles.column, maxWidth: 200 }}
-        onLongPress={onLongPressHandler}
-      >
-        <Image
-          source={{ uri: url }}
-          style={{ width: 200, height: 200 / (aspectRatio || 1) }}
-          resizeMode={'cover'}
-        />
-        {(text ? true : false) && (
-          <Typography
-            color={props.isMe ? theme.white : theme.text}
-            size={16}
-            styles={styles.textPad}
-          >
-            {text}
-          </Typography>
-        )}
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad marginTop={14} />}
-      </TouchableOpacity>
+      <GiphMessage {...props} showBoostRow={showBoostRow} onLongPressHandler={onLongPressHandler} />
     )
   }
   if (isClip)
     return (
-      <View style={styles.column}>
-        <ClipMessage {...props} />
-        {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
-      </View>
+      <ClipMessage {...props} showBoostRow={showBoostRow} onLongPressHandler={onLongPressHandler} />
     )
   if (isBoost) return <BoostMessage {...props} />
   if (rumbleLink || youtubeLink)
@@ -84,10 +62,32 @@ export default function TextMsg(props) {
         {showBoostRow && <BoostRow {...props} myAlias={props.myAlias} pad />}
       </TouchableOpacity>
     )
+
+  if (isPubKey) {
+    return (
+      <PubkeyMessage
+        {...props}
+        pubKey={pubKey}
+        showBoostRow={showBoostRow}
+        onLongPressHandler={onLongPressHandler}
+      />
+    )
+  }
+
+  if (isCommunity) {
+    return (
+      <CommunityMsg
+        {...props}
+        showBoostRow={showBoostRow}
+        onLongPressHandler={onLongPressHandler}
+      />
+    )
+  }
+
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={isLink ? { width: 280, padding: 7, minHeight: 72 } : shared.innerPad}
+      style={isLink ? { width: 280, minHeight: 72, ...shared.innerPad } : shared.innerPad}
       onLongPress={onLongPressHandler}
     >
       {isLink ? (
@@ -153,7 +153,7 @@ function linkStyles(theme) {
     },
     descriptionStyle: {
       fontSize: 11,
-      color: theme.subtitle, //"#81848A",
+      color: theme.subtitle,
       marginRight: 10,
       alignSelf: 'flex-start',
       fontFamily: 'Helvetica',
@@ -164,27 +164,5 @@ function linkStyles(theme) {
 const styles = StyleSheet.create({
   linkWrap: {
     display: 'flex',
-  },
-  link: {
-    padding: 10,
-    color: '#6289FD',
-  },
-  column: {
-    display: 'flex',
-    maxWidth: '100%',
-  },
-  textPad: {
-    // color: '#333',
-    // fontSize: 16,
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 12,
-    paddingRight: 12,
-  },
-  littleTitle: {
-    fontSize: 11,
-    paddingTop: 10,
-    paddingLeft: 12,
-    paddingRight: 12,
   },
 })

@@ -15,7 +15,8 @@
     "start": "npx react-native start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "t": "bash -c 'yarn tsc --noEmit -p ./tsconfig.json'",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "reactotron": "adb reverse tcp:9090 tcp:9090 && /opt/Reactotron/reactotron-app"
   },
   "dependencies": {
     "@bugsnag/react-native": "7.13.2",
@@ -63,7 +64,7 @@
     "react-native-modalize": "2.0.10",
     "react-native-paper": "4.9.2",
     "react-native-permissions": "3.1.0",
-    "react-native-popover-view": "3.1.1",
+    "react-native-popover-view": "4.1.0",
     "react-native-portalize": "1.0.7",
     "react-native-push-notification": "7.3.1",
     "react-native-qrcode-scanner": "1.5.4",

@@ -1,29 +1,81 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import Ionicon from 'react-native-vector-icons/Ionicons'
+import Clipboard from '@react-native-community/clipboard'
+import { IconButton } from 'react-native-paper'
+
+import { useTheme } from 'store'
+import { verifyPubKey } from './utils'
 
 export default function Popup(props) {
-  const isMe = props.sender === props.myid
+  const { isMe, messageContent, onRequestCloseHandler, onBoostHandler, onDelete } = props
+  const [deleting, setDeleting] = useState(false)
+  const theme = useTheme()
+  const { isPubKey, pubKey } = verifyPubKey(messageContent)
 
-  const sty: { [k: string]: any } = {
-    top: props.showInfoBar ? -12 : -27,
+  const allowBoost = !isMe && !(messageContent || '').startsWith('boost::')
+
+  const onCopyHandler = () => {
+    Clipboard.setString(messageContent || '')
+    onRequestCloseHandler()
   }
-  if (isMe) sty.right = 15
-  else sty.left = 15
+
+  const onPubCopyHandler = () => {
+    Clipboard.setString(pubKey || '')
+    onRequestCloseHandler()
+  }
+
+  const onDeleteHandler = async () => {
+    if (!deleting) {
+      setDeleting(true)
+      await onDelete(props.id)
+      setDeleting(false)
+      onRequestCloseHandler()
+    }
+  }
+
   return (
-    <View style={{ ...styles.wrap, ...sty }}>
-      <Text style={{ color: 'white' }}>Copied!</Text>
-    </View>
+    <>
+      {allowBoost && (
+        <IconButton
+          onPress={onBoostHandler}
+          icon={() => <Ionicon name='rocket' color={theme.primary} size={20} />}
+          style={{
+            backgroundColor: theme.lightGrey,
+            marginHorizontal: 14,
+          }}
+        />
+      )}
+
+      {isPubKey && (
+        <IconButton
+          onPress={onPubCopyHandler}
+          icon={() => <Ionicon name='qr-code' color={theme.blue} size={18} />}
+          style={{
+            backgroundColor: theme.lightGrey,
+            marginHorizontal: 14,
+          }}
+        />
+      )}
+      <IconButton
+        onPress={onCopyHandler}
+        icon={() => <Ionicon name='copy' color={theme.darkGrey} size={20} />}
+        style={{
+          backgroundColor: theme.lightGrey,
+          marginHorizontal: 14,
+        }}
+      />
+
+      {(isMe || props.isTribeOwner) && (
+        <IconButton
+          onPress={onDeleteHandler}
+          icon={() => <Ionicon name='trash' color={theme.red} size={20} />}
+          color={theme.red}
+          style={{
+            backgroundColor: theme.lightGrey,
+            marginHorizontal: 14,
+          }}
+        />
+      )}
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  wrap: {
-    position: 'absolute',
-    backgroundColor: '#999',
-    padding: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
-    borderRadius: 5,
-    zIndex: 100,
-  },
-})

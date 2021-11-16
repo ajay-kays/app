@@ -258,7 +258,9 @@ export const MsgStoreModel = types
       //   preview: `Attempting msgsForChatroom ${chatId}`,
       //   important: true,
       // })
-      const msgs = self.messages.get(chatId.toString())
+
+      // if (chatId) {
+      const msgs = self.messages.get(chatId?.toString())
       if (msgs) {
         // display({
         //   name: 'msgsForChatroom',
@@ -271,6 +273,7 @@ export const MsgStoreModel = types
         // console.log('returning nothin for msgs')
         return []
       }
+
       // const msgs = values()
     },
     // get messagesArray(): Msg[] {

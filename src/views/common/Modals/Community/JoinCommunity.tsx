@@ -6,12 +6,14 @@ import {
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
+  Linking,
 } from 'react-native'
 import { observer } from 'mobx-react-lite'
-// import { useNavigation } from '@react-navigation/native'
 import Video from 'react-native-video'
 import { IconButton, TextInput } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Hyperlink from 'react-native-hyperlink'
+
 import { useStores, useTheme } from 'store'
 import { navigate } from 'nav'
 import { DEFAULT_TRIBE_SERVER } from 'lib/config'
@@ -27,10 +29,6 @@ const JoinTribeWrap = observer((props: any) => {
 })
 
 export default JoinTribeWrap
-
-// export default function JoinTribeWrap(props) {
-//   return <>{props.visible && <JoinTribe {...props} />}</>
-// }
 
 function JoinTribe(props) {
   const { visible, close, tribe } = props
@@ -75,7 +73,7 @@ function JoinTribe(props) {
 
   async function finish() {
     close()
-    navigate('Community', { tribe: { ...tribeToCheck } })
+    setTimeout(() => navigate('Community', { tribe: { ...tribeToCheck } }), 150)
     setTimeout(() => setTint(theme.dark ? 'dark' : 'light'), 150)
   }
 
@@ -91,29 +89,29 @@ function JoinTribe(props) {
   const hasImg = tribe && tribe.img ? true : false
 
   return (
-    <>
-      <Modal
-        visible={visible}
-        animationType='slide'
-        presentationStyle='fullScreen'
-        onDismiss={close}
-      >
-        <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-          <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} keyboardVerticalOffset={1}>
-            <Header title='Join Community' onClose={close} />
-            <ScrollView>
-              {tribe && (
-                <View style={{ ...styles.content }}>
-                  <Avatar photo={hasImg && tribe.img} size={160} round={90} />
-                  <Typography
-                    size={20}
-                    fw='500'
-                    style={{
-                      marginTop: 10,
-                    }}
-                  >
-                    {tribe.name}
-                  </Typography>
+    <Modal visible={visible} animationType='slide' presentationStyle='fullScreen' onDismiss={close}>
+      <SafeAreaView style={{ ...styles.wrap, backgroundColor: theme.bg }}>
+        <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} keyboardVerticalOffset={1}>
+          <Header title='Join Community' onClose={close} />
+          <ScrollView>
+            {tribe && (
+              <View style={{ ...styles.content }}>
+                <Avatar photo={hasImg && tribe.img} size={160} round={90} />
+                <Typography
+                  size={20}
+                  fw='500'
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  {tribe.name}
+                </Typography>
+                <Hyperlink
+                  linkStyle={{ color: theme.blue }}
+                  onPress={(url) => {
+                    Linking.openURL(url)
+                  }}
+                >
                   <Typography
                     color={theme.subtitle}
                     style={{
@@ -126,85 +124,80 @@ function JoinTribe(props) {
                   >
                     {tribe.description}
                   </Typography>
-                  <View style={{ ...styles.table, borderColor: theme.border }}>
-                    {prices &&
-                      prices.map((p, i) => {
-                        return (
-                          <View
-                            key={i}
-                            style={{
-                              ...styles.tableRow,
-                              borderBottomColor: theme.border,
-                              borderBottomWidth: i === prices.length - 1 ? 0 : 1,
-                            }}
-                          >
-                            <Typography color={theme.title}>{`${p.label}`}</Typography>
-                            <Typography fw='500'>{p.value || 0}</Typography>
-                          </View>
-                        )
-                      })}
-                  </View>
-                  {!joined ? (
-                    <>
-                      <TextInput
-                        autoCompleteType='off'
-                        placeholder='Your name in this community'
-                        onChangeText={(e) => setAlias(e)}
-                        value={alias}
-                        style={{
-                          ...styles.input,
-                          backgroundColor: theme.bg,
-                          color: theme.placeholder,
-                        }}
-                        underlineColor={theme.border}
-                      />
-                      <Button
-                        style={{ marginBottom: 20 }}
-                        onPress={onJoinPress}
-                        size='large'
-                        w={240}
-                      >
-                        Join
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Typography
-                        size={16}
-                        color={theme.subtitle}
-                        style={{
-                          marginTop: 10,
-                          marginBottom: 20,
-                          maxWidth: 340,
-                          textAlign: 'center',
-                        }}
-                      >
-                        You already joined this community.
-                      </Typography>
-                      <Button w={300} onPress={finish} ph={20} style={{ marginVertically: 20 }}>
-                        Go to {tribeToCheck?.name}
-                      </Button>
-                    </>
-                  )}
+                </Hyperlink>
+                <View style={{ ...styles.table, borderColor: theme.border }}>
+                  {prices &&
+                    prices.map((p, i) => {
+                      return (
+                        <View
+                          key={i}
+                          style={{
+                            ...styles.tableRow,
+                            borderBottomColor: theme.border,
+                            borderBottomWidth: i === prices.length - 1 ? 0 : 1,
+                          }}
+                        >
+                          <Typography color={theme.title}>{`${p.label}`}</Typography>
+                          <Typography fw='500'>{p.value || 0}</Typography>
+                        </View>
+                      )
+                    })}
                 </View>
-              )}
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
+                {!joined ? (
+                  <>
+                    <TextInput
+                      autoCompleteType='off'
+                      placeholder='Your name in this community'
+                      onChangeText={(e) => setAlias(e)}
+                      value={alias}
+                      style={{
+                        ...styles.input,
+                        backgroundColor: theme.bg,
+                        color: theme.placeholder,
+                      }}
+                      underlineColor={theme.border}
+                    />
+                    <Button style={{ marginBottom: 20 }} onPress={onJoinPress} size='large' w={240}>
+                      Join
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Typography
+                      size={16}
+                      color={theme.subtitle}
+                      style={{
+                        marginTop: 10,
+                        marginBottom: 20,
+                        maxWidth: 340,
+                        textAlign: 'center',
+                      }}
+                    >
+                      You already joined this community.
+                    </Typography>
+                    <Button w={300} onPress={finish} ph={20} style={{ marginVertically: 20 }}>
+                      Go to {tribeToCheck?.name}
+                    </Button>
+                  </>
+                )}
+              </View>
+            )}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
 
-        {/* {finish && ( // TODO: WTF?? */}
-        <MemoizedVideoView
-          videoVisible={videoVisible}
-          tribe={tribeToCheck}
-          joinTribe={joinTribe}
-          close={() => {
-            setVideoVisible(false)
-            setTint(theme.dark ? 'dark' : 'light')
-          }}
-        />
-        {/* )} */}
-      </Modal>
-    </>
+      {/* {finish && ( // TODO: WTF?? */}
+      <MemoizedVideoView
+        videoVisible={videoVisible}
+        tribe={tribeToCheck}
+        joinTribe={joinTribe}
+        close={() => {
+          setVideoVisible(false)
+          setTint(theme.dark ? 'dark' : 'light')
+        }}
+      />
+      {/* )} */}
+    </Modal>
   )
 }
 

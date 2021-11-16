@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity, FlatList, Dimensions } from 'react-
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import { useChats, useChatRow, useSearchChats, useStores, useTheme } from 'store'
-import InviteRow, { styles } from './InviteRow'
+import InviteRow, { styles } from './inviteRow'
 import { useChatPicSrc } from 'views/utils/picSrc'
 import { Avatar, RefreshLoading, Typography } from 'views/common'
 import { navigate } from 'nav'

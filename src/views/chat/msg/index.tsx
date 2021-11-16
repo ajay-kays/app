@@ -3,14 +3,11 @@ import { View, StyleSheet } from 'react-native'
 import { SwipeRow } from 'react-native-swipe-list-view'
 import { IconButton as IconButtonPaper } from 'react-native-paper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import Ionicon from 'react-native-vector-icons/Ionicons'
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import Popover, { PopoverPlacement } from 'react-native-popover-view'
-import Clipboard from '@react-native-community/clipboard'
 import { useStores } from 'store'
 
-// import { useTheme } from '../../../store'
 import { useChatReply, useMsgs } from 'store/hooks'
 import { constantCodes, constants, SCREEN_HEIGHT, SCREEN_WIDTH } from 'lib/constants'
 import EE, { CLEAR_REPLY_UUID, REPLY_UUID } from 'lib/ee'
@@ -22,11 +19,12 @@ import InfoBar from './infoBar'
 import sharedStyles from './sharedStyles'
 import GroupNotification from './groupNotification'
 import ReplyContent from './replyContent'
-import Avatar from '../../common/Avatar'
 import MemberRequest from './memberRequest'
 import BotResMsg from './botResMsg'
 import BoostMsg from './boostMsg'
+import Popup from './popup'
 import Typography from '../../common/Typography'
+import Avatar from '../../common/Avatar'
 
 const IconButton = IconButtonPaper as any
 
@@ -177,14 +175,12 @@ function MsgBubble(props) {
 
   const [popoverPlacement, setPopoverPlacement] = useState(PopoverPlacement.BOTTOM)
   const [showPopover, setShowPopover] = useState(false)
-  const [deleting, setDeleting] = useState(false)
   const msgRefHeight = useRef<number>(0)
 
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
   const isMe = props.sender === props.myid
   const isDeleted = props.status === constants.statuses.deleted
-  const allowBoost = !isMe && !(props.message_content || '').startsWith('boost::')
 
   let backgroundColor = isMe ? (theme.dark ? theme.main : theme.lightGrey) : theme.bg
   if (isInvoice && !isPaid) {
@@ -203,21 +199,9 @@ function MsgBubble(props) {
     })
     setShowPopover(true)
   }
-  const onCopyHandler = () => {
-    Clipboard.setString(props.message_content || '')
-    onRequestCloseHandler()
-  }
   const onBoostHandler = async () => {
     await props.onBoostMsg(props)
     onRequestCloseHandler()
-  }
-  const onDeleteHandler = async () => {
-    if (!deleting) {
-      setDeleting(true)
-      await props.onDelete(props.id)
-      setDeleting(false)
-      onRequestCloseHandler()
-    }
   }
 
   return (
@@ -259,43 +243,24 @@ function MsgBubble(props) {
               {...props}
               id={props.id}
               onLongPress={onLongPressHandler}
-              myAlias={props.myAlias}
               myid={props.myid}
+              myAlias={props.myAlias}
+              senderPic={props.senderPic}
+              senderAlias={props.senderAlias}
+              isMe={isMe}
             />
           ) : null}
         </View>
       }
     >
-      {allowBoost ? (
-        <IconButton
-          onPress={onBoostHandler}
-          icon={() => <Ionicon name='rocket' color={theme.primary} size={20} />}
-          style={{
-            backgroundColor: theme.lightGrey,
-            marginHorizontal: 14,
-          }}
-        />
-      ) : null}
-
-      <IconButton
-        onPress={onCopyHandler}
-        icon={() => <Ionicon name='copy' color={theme.darkGrey} size={20} />}
-        style={{
-          backgroundColor: theme.lightGrey,
-          marginHorizontal: 14,
-        }}
+      <Popup
+        id={props.id}
+        isMe={isMe}
+        messageContent={props.message_content}
+        onRequestCloseHandler={onRequestCloseHandler}
+        onBoostHandler={onBoostHandler}
+        onDelete={props.onDelete}
       />
-      {(isMe || props.isTribeOwner) && (
-        <IconButton
-          onPress={onDeleteHandler}
-          icon={() => <Ionicon name='trash' color={theme.red} size={20} />}
-          color={theme.red}
-          style={{
-            backgroundColor: theme.lightGrey,
-            marginHorizontal: 14,
-          }}
-        />
-      )}
     </Popover>
   )
 }

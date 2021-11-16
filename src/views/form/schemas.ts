@@ -2,13 +2,13 @@ import * as Yup from 'yup'
 const rq = 'Required'
 
 const contact = [
-  // {
-  //   name: 'alias',
-  //   type: 'text',
-  //   label: { en: 'Name', es: 'Nombre' },
-  //   required: true,
-  //   validator: Yup.string().required(rq)
-  // },
+  {
+    name: 'alias',
+    type: 'text',
+    label: { en: 'Name', es: 'Nombre' },
+    required: true,
+    validator: Yup.string().required(rq),
+  },
   // {
   //   name:'photo',
   //   type:'photo',

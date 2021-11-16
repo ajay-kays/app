@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+
 import { useStores, useTheme } from 'store'
 import Form from '../../form'
 import * as schemas from '../../form/schemas'
@@ -13,17 +14,14 @@ export default function EditCommunity({ route }) {
   const navigation = useNavigation()
 
   const tribe = route.params.tribe
-
-  tribe.escrow_time = tribe.escrow_millis ? Math.floor(tribe.escrow_millis / (60 * 60 * 1000)) : 0
+  const escrow_time = tribe.escrow_millis ? Math.floor(tribe.escrow_millis / (60 * 60 * 1000)) : 0
 
   async function finish(v) {
     setLoading(true)
-
     await chats.editTribe({
       ...v,
       id: tribe.chat.id,
     })
-
     setTimeout(() => {
       setLoading(false)
       navigation.goBack()
@@ -45,6 +43,7 @@ export default function EditCommunity({ route }) {
               ...tribe,
               host: tribe.chat.host,
               is_private: tribe.private,
+              escrow_time,
             }}
           />
         </ScrollView>

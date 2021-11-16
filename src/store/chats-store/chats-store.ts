@@ -43,6 +43,9 @@ export const ChatsStoreModel = types
       await actions.kick(self as ChatsStore, chatID, contactID),
     loadFeed: async (host: string, uuid: string, url: string): Promise<any> =>
       await actions.loadFeed(host, uuid, url),
+    removeChat(id) {
+      self.chats.delete(id)
+    },
     muteChat: async (chatID: number, muted: boolean): Promise<void> =>
       await actions.muteChat(self as ChatsStore, chatID, muted),
     sendPayments: async (

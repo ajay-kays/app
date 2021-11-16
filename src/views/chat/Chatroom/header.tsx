@@ -8,7 +8,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather'
 import { useStores, useTheme } from 'store'
 import { Chat } from 'store/chats-store'
 import { contactForConversation } from './utils'
-import { constants } from 'lib/constants'
+import { constants, SCREEN_WIDTH } from 'lib/constants'
 import { RouteStatus } from './chat'
 import { Avatar, Typography } from 'views/common'
 import { useMemoizedIncomingPaymentsFromPodcast } from 'store/hooks'
@@ -72,7 +72,7 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
       const uuid = chat?.uuid
       const tribe = chats.communities.get(uuid)
       // const tribe = tribes.find((t) => t.chat?.uuid === chat?.uuid)
-      navigate('Tribe', { tribe: { ...tribe } })
+      navigate('Community', { tribe: { ...tribe } })
     }
   }
 
@@ -125,13 +125,10 @@ const Header = ({ chat, status, tribeParams, podId, pricePerMinute }: HeaderProp
             <View
               style={{
                 ...styles.row,
+                width: SCREEN_WIDTH - 180,
               }}
             >
-              <Typography
-                size={16}
-                numberOfLines={1}
-                // style={{ width: name?.length > 20 ? SCREEN_WIDTH - 180 : 'auto' }}
-              >
+              <Typography size={16} numberOfLines={1}>
                 {name}
               </Typography>
 

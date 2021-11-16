@@ -2,7 +2,7 @@ import { Config } from './type'
 
 const config: Config = {
   host: 'https://hub.n2n2.chat',
-  domain: 'n2n2.chat',
+  domain: 'zion.chat',
   hub: {
     api: 'https://hub.n2n2.chat/api/v1/',
   },

@@ -15,15 +15,26 @@ function AddContact() {
     ui.setAddContactModal(false)
   }
 
+  const contact = ui.addContactParams
+
   return (
     <ModalWrap onClose={close} visible={ui.addContactModal} noSwipe>
       <ModalHeader title='Add Contact' onClose={close} />
       <View style={styles.content}>
         <Form
+          forceEnable={contact ? true : false}
           schema={schemas.contact}
           loading={loading}
           buttonAccessibilityLabel='add-friend-form-button'
           buttonText='Save'
+          initialValues={
+            contact
+              ? {
+                  alias: contact.alias,
+                  public_key: contact.public_key,
+                }
+              : {}
+          }
           onSubmit={async (values) => {
             try {
               setLoading(true)

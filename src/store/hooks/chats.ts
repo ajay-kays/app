@@ -123,7 +123,7 @@ function lastMessageText(msg, myid) {
     if (msg.message_content.startsWith('clip::')) return 'Clip ' + verb
     if (msg.message_content.startsWith('boost::')) return 'Boost ' + verb
     if (msg.message_content.startsWith(`${DEFAULT_DOMAIN}://?action=tribe`))
-      return 'Tribe Link ' + verb
+      return 'Community Link ' + verb
     return msg.message_content
   }
   if (msg.amount) {

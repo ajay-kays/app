@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Linking } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import Hyperlink from 'react-native-hyperlink'
+
 import { useCommunityHistory, useStores, useTheme } from 'store'
 import { BoxHeader, Button, DialogWrap, Empty, Typography } from 'views/common'
 import TribeTags from './TribeTags'
@@ -16,9 +18,16 @@ const About = ({ tribe }) => {
           Description
         </Typography>
 
-        <Typography size={14} color={theme.darkGrey} style={{ marginBottom: 26 }}>
-          {tribe.description}
-        </Typography>
+        <Hyperlink
+          linkStyle={{ color: theme.blue }}
+          onPress={(url) => {
+            Linking.openURL(url)
+          }}
+        >
+          <Typography size={14} color={theme.darkGrey} style={{ marginBottom: 26 }}>
+            {tribe.description}
+          </Typography>
+        </Hyperlink>
 
         <View style={{ ...styles.description }}>
           <MaterialIcon name='access-time' size={26} color={theme.grey} />
