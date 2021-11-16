@@ -1,9 +1,11 @@
+import Toast from 'react-native-simple-toast'
 import { UserStore } from '../user-store'
 import { sleep } from 'lib/sleep'
 import * as api from 'api'
 import { randString } from 'lib/crypto/rand'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
+import { navigate } from 'nav'
 
 export const generateToken = async (self: UserStore, pwd: string) => {
   const root = getRoot(self) as RootStore
@@ -19,6 +21,14 @@ export const generateToken = async (self: UserStore, pwd: string) => {
     })
     if (!r) {
       console.log('failed to reach relay')
+      self.setOnboardStep(0)
+      self.logout()
+      navigate('Home')
+      Toast.showWithGravity(
+        'You already used this access key. Log in with your backup key, or reset your node to get a new access key.',
+        Toast.LONG,
+        Toast.CENTER
+      )
       return 'error'
     }
     if (r.id) self.setMyID(r.id)

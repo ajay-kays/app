@@ -153,6 +153,54 @@ export const normalizeMessage = (raw: any) => {
       boosts_total_sats: raw.boosts_total_sats,
       boosts: raw.boosts,
     })
+
+    try {
+      normalized.setChatRef(raw.chat_id.toString())
+    } catch (e) {
+      console.log(e)
+      display({
+        name: 'normalize',
+        preview: 'failed setting chatref',
+        value: { normalized, raw, e },
+        important: true,
+      })
+    }
+
+    try {
+      if (!normalized.chat) {
+        display({
+          name: 'normalize',
+          preview: 'this doesnt have a chat attached',
+          value: { normalized, raw },
+          important: true,
+        })
+        if (normalized.chatRef) {
+          normalized.chat = normalized.chatRef
+          display({
+            name: 'normalize',
+            preview: 'NOW DOES IT?',
+            value: { normalized, raw },
+            important: true,
+          })
+        } else {
+          display({
+            name: 'normalize',
+            preview: 'didnt have a chatref either',
+            value: { normalized, raw },
+            important: true,
+          })
+        }
+      }
+    } catch (e) {
+      console.log(e)
+      display({
+        name: 'normalize',
+        preview: 'failed setting chat thing',
+        value: { normalized, raw, e },
+        important: true,
+      })
+    }
+
     // display({
     //   name: `normalizeMessage `,
     //   preview: `${normalized.id} - ${normalized.message_content}`,

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, TextInput, TouchableOpacity, Linking } from 'react-native'
 import { IconButton, ActivityIndicator } from 'react-native-paper'
+import Clipboard from '@react-native-community/clipboard'
+import { Button } from 'react-native-paper'
 import RadialGradient from 'react-native-radial-gradient'
 import { decode as atob } from 'base-64'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -167,7 +169,6 @@ export default function Code(props) {
           // wrong PIN
           setShowPin(false)
           setError('You entered a wrong pin')
-
           setChecking(false)
         }
       }
@@ -249,6 +250,25 @@ export default function Code(props) {
               onPress={() => setScanning(true)}
             />
           </View>
+
+          <Button
+            mode='contained'
+            accessibilityLabel='form-submit-button'
+            onPress={async () => {
+              const text = await Clipboard.getString()
+              setCode(text)
+              checkInvite(text)
+            }}
+            style={{ borderRadius: 25, width: '48%', backgroundColor: theme.orange }}
+            labelStyle={{
+              fontSize: 14,
+              fontWeight: '500',
+              textTransform: 'uppercase',
+            }}
+            contentStyle={{ height: 45 }}
+          >
+            Paste Code
+          </Button>
         </KeyboardAwareScrollView>
 
         <View style={styles.spinWrap}>

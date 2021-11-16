@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
+import { reset } from 'store'
 import { withEnvironment, withRootStore } from '../extensions'
 import * as actions from './relay-actions'
 
@@ -26,6 +27,7 @@ export const RelayStoreModel = types
     setConnected(connected: boolean) {
       self.connected = connected
     },
+    reset: () => reset(self),
   }))
   .views((self) => ({
     placeholder: () => {},

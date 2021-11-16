@@ -1,6 +1,9 @@
 import socketio from 'socket.io-client'
 import { reportError } from 'lib/errorHelper'
 import { display } from 'lib/logging'
+import { Alert } from 'react-native'
+import Toast from 'react-native-simple-toast'
+import { useStores } from 'store'
 
 type WSMessage = { [k: string]: any }
 
@@ -67,5 +70,18 @@ export function connectWebSocket(
   io.on('error', function (e) {
     console.log('socketio error', e)
     reportError(e)
+    if (e === 'authentication error') {
+      console.log('ATTEMPTING THIS')
+
+      let handler = handlers['errorAuth']
+      if (handler) {
+        handler('errorAuth')
+      }
+
+      Toast.showWithGravity('Authentication error! Please log in again.', Toast.LONG, Toast.CENTER)
+      // const root = useStores()
+      // console.log('GOT ROOT?')
+      // root.reset()
+    }
   })
 }

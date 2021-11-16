@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/core'
 import Toast from 'react-native-simple-toast'
 import { useStores } from 'store'
 import { MsgListFC } from './MsgListFC'
+import { sleep } from 'lib/sleep'
 
 export const MsgListWrap = ({
   chat,
@@ -29,6 +30,7 @@ export const MsgListWrap = ({
 
       if (amount > details.balance) {
         Toast.showWithGravity('Not Enough Balance', Toast.SHORT, Toast.TOP)
+        await sleep(1000)
         return
       }
 

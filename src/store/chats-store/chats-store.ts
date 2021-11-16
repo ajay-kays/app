@@ -5,6 +5,7 @@ import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './chats-actions'
 import { Chat, ChatModel, Community, CommunityModel } from './chats-models'
 import { Destination } from 'store/feed'
+import { reset } from 'store'
 
 export const ChatsStoreModel = types
   .model('ChatsStore')
@@ -43,6 +44,8 @@ export const ChatsStoreModel = types
       await actions.kick(self as ChatsStore, chatID, contactID),
     loadFeed: async (host: string, uuid: string, url: string): Promise<any> =>
       await actions.loadFeed(host, uuid, url),
+    loadFeedById: async (id: string): Promise<any> =>
+      await actions.loadFeedById(self as ChatsStore, id),
     removeChat(id) {
       self.chats.delete(id)
     },
@@ -186,6 +189,7 @@ export const ChatsStoreModel = types
         })
       }
     },
+    reset: () => reset(self),
   }))
 
 type ChatsStoreType = Instance<typeof ChatsStoreModel>

@@ -13,7 +13,7 @@ import {
   SendPaymentParams,
 } from './msg-actions'
 import { display } from 'lib/logging'
-import { RootStore } from 'store'
+import { reset, RootStore } from 'store'
 
 export const MsgStoreModel = types
   .model('MsgStore')
@@ -82,17 +82,29 @@ export const MsgStoreModel = types
       // const chat = (self as MsgStore).msgsForChatroom(msg.chat_id)
       const chat = self.messages.get(msg.chat_id.toString())
       if (chat) {
-        chat.unshift(msg)
-        display({
-          name: 'setMessage',
-          preview: `Pushed msg to chat. sorted?`,
-          value: { chat, msg },
-          important: true,
-        })
+        // Ensure message doesn't already exist
+        const exists = chat.find((m) => m.id === msg.id)
+        if (!exists) {
+          chat.unshift(msg)
+          display({
+            name: 'setMessage',
+            preview: `Pushed msg to chat`,
+            value: { chat, msg },
+            important: true,
+          })
+        } else {
+          display({
+            name: 'setMessage',
+            preview: `Msg already exists, didn't set`,
+            value: { chat, msg },
+            important: true,
+          })
+        }
       } else {
+        self.messages.set(msg.chat_id.toString(), [msg])
         display({
           name: 'setMessage',
-          preview: `Couldn't find chat. Didn't save msg ${msg.id}`,
+          preview: `First message in chat? Saved first msg ${msg.id}`,
           value: { msg },
           important: true,
         })
@@ -155,6 +167,7 @@ export const MsgStoreModel = types
       })
       // self.messageCache = sortedCachedMessages
     },
+    reset: () => reset(self),
     // rebuildCache() {
     //   const msgs = Array.from(self.messages.values())
     //   const formattedArray: any[] = []
@@ -258,9 +271,11 @@ export const MsgStoreModel = types
       //   preview: `Attempting msgsForChatroom ${chatId}`,
       //   important: true,
       // })
-
-      // if (chatId) {
-      const msgs = self.messages.get(chatId?.toString())
+      if (!chatId) {
+        console.log('no msgsforchatroom for chatId', chatId)
+        return []
+      }
+      const msgs = self.messages.get(chatId.toString())
       if (msgs) {
         // display({
         //   name: 'msgsForChatroom',

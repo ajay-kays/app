@@ -49,10 +49,8 @@ export function useMsgs(chat, limit?: number) {
   }
 
   // Handle no messages - can't convert nothin to values
-  const gotmsgs = msg.messages.get(theID)
-  if (!gotmsgs) return []
-  // const msgs = values(gotmsgs) // TODO: revert to LOL
-  const msgs = gotmsgs // ??
+  const msgs = msg.messages.get(theID)
+  if (!msgs) return []
 
   const shownMsgs = msgs && msgs.slice(0, limit || 1000)
 

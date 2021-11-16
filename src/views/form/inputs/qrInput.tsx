@@ -9,6 +9,7 @@ import { SCREEN_HEIGHT, TOAST_DURATION } from 'lib/constants'
 import QR from '../../common/Accessories/QR'
 import PublicKey from '../../common/Modals/PublicKey'
 import Typography from '../../common/Typography'
+import { display } from 'lib/logging'
 
 export default function QrInput({
   name,
@@ -22,6 +23,23 @@ export default function QrInput({
   accessibilityLabel,
 }) {
   const theme = useTheme()
+
+  display({
+    name: 'QrInput',
+    preview: 'what',
+    important: true,
+    value: {
+      name,
+      label,
+      required,
+      handleChange,
+      handleBlur,
+      setValue,
+      value,
+      displayOnly,
+      accessibilityLabel,
+    },
+  })
 
   const [scanning, setScanning] = useState(false)
   function scan(data) {
@@ -73,7 +91,7 @@ export default function QrInput({
               <Typography color={theme.subtitle}>No Public key found.</Typography>
             )}
           </View>
-          {value && (
+          {value ? (
             <View
               style={{
                 borderBottomWidth: 1,
@@ -81,6 +99,8 @@ export default function QrInput({
                 marginBottom: 25,
               }}
             />
+          ) : (
+            <></>
           )}
         </>
       ) : (

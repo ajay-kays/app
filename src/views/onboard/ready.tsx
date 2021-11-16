@@ -31,7 +31,8 @@ export default function Ready(props) {
 
       // await user.reportError("ready", { break: "B" });
 
-      Alert.alert(`Skipping misc action: ${user.invite.action}`) // TODO
+      // Alert.alert(`Skipping misc action: ${user.invite.action}`) // TODO
+      await user.miscAction(user.invite.action)
       // await actions(user.invite.action)
 
       // await user.reportError("ready", { break: "C" });

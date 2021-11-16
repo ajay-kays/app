@@ -3,6 +3,7 @@ import { display } from 'lib/logging'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './contacts-actions'
 import { Contact, ContactModel, Invite } from './contacts-models'
+import { reset } from 'store'
 
 export const ContactsStoreModel = types
   .model('ContactsStore')
@@ -53,6 +54,7 @@ export const ContactsStoreModel = types
         value: { contacts, formattedArray },
       })
     },
+    reset: () => reset(self),
   }))
   .views((self) => ({
     get contactsArray(): Contact[] {

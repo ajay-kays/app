@@ -12,18 +12,27 @@ import { UserStoreModel } from 'store/user-store'
 /**
  * A RootStore model.
  */
-// prettier-ignore
-export const RootStoreModel = types.model("RootStore").props({
-  chats: types.optional(ChatsStoreModel, {} as any),
-  contacts: types.optional(ContactsStoreModel, {} as any),
-  details: types.optional(DetailsStoreModel, {} as any),
-  meme: types.optional(MemeStoreModel, {} as any),
-  msg: types.optional(MsgStoreModel, {} as any),
-  relay: types.optional(RelayStoreModel, {} as any),
-  theme: types.optional(ThemeStoreModel, {} as any),
-  ui: types.optional(UiStoreModel, {} as any),
-  user: types.optional(UserStoreModel, {} as any),
-})
+export const RootStoreModel = types
+  .model('RootStore')
+  .props({
+    chats: types.optional(ChatsStoreModel, {} as any),
+    contacts: types.optional(ContactsStoreModel, {} as any),
+    details: types.optional(DetailsStoreModel, {} as any),
+    meme: types.optional(MemeStoreModel, {} as any),
+    msg: types.optional(MsgStoreModel, {} as any),
+    relay: types.optional(RelayStoreModel, {} as any),
+    theme: types.optional(ThemeStoreModel, {} as any),
+    ui: types.optional(UiStoreModel, {} as any),
+    user: types.optional(UserStoreModel, {} as any),
+  })
+  .actions((self) => ({
+    reset() {
+      Object.keys(self).forEach((key) => {
+        // console.log('resetting', key)
+        self[key].reset && self[key].reset()
+      })
+    },
+  }))
 
 /**
  * The RootStore instance.

@@ -11,6 +11,7 @@ export const registerWebsocketHandlers = async (self: RelayStore) => {
   const contactStore = root.contacts
   const msgStore = root.msg
   const uiStore = root.ui
+  const userStore = root.user
 
   const handlers = {
     attachment: (data) => {
@@ -93,6 +94,15 @@ export const registerWebsocketHandlers = async (self: RelayStore) => {
         important: true,
       })
       msgStore.gotNewMessageFromWS(data.response)
+    },
+
+    errorAuth: (data) => {
+      display({
+        name: '[ws] ERROR AUTH',
+        value: { data },
+        important: true,
+      })
+      userStore.logout()
     },
 
     group_create: (data) => {

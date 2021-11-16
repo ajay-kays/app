@@ -17,7 +17,7 @@ const steps = [
   PIN, // set pin
   NameAndKey, // set my nickname (and RSA pubkey!)
   SuggestToUserToBackupTheirKeys, // Presents a a video saying to user backup their keys
-  ProfilePic, // SuggestToUserToBackupTheirKeys
+  // ProfilePic, // SuggestToUserToBackupTheirKeys
   Ready, // set my profile pic
 ]
 

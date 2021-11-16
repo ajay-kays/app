@@ -13,7 +13,7 @@ export const sendPayment = async (
   try {
     const myid = root.user.myid
     if (!contact_id) {
-      Alert.alert('no contact id - is that ok?! [dev]')
+      Alert.alert('Error: No contact id')
       return
     }
     const myenc = await encryptText(root, { contact_id: myid, text: memo })

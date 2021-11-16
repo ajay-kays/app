@@ -5902,7 +5902,7 @@ react-native-permissions@^2.0.2:
 
 react-native-popover-view@4.1.0:
   version "4.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-4.1.0.tgz#15ce307ac62f22673c15a054477301071c1d934f"
+  resolved "https://registry.npmjs.org/react-native-popover-view/-/react-native-popover-view-4.1.0.tgz#15ce307ac62f22673c15a054477301071c1d934f"
   integrity sha512-tfCdOaBwR9R0gFxdhyRdndTT43dkg7mvsOQSf1G96xfv+p1d0sgiJN5bhMhLKfmnDIVGEhQJXAflL0t/3CT9Vg==
 
 react-native-portalize@1.0.7:
@@ -5969,10 +5969,10 @@ react-native-render-html@4.2.5:
   version "1.0.0"
   resolved "git+https://github.com/masterial/react-native-rncryptor.git#e22b597bb52ea64512abdcfcb7e60a801109fbe1"
 
-react-native-rsa-native@2.0.4:
-  version "2.0.4"
-  resolved "https://registry.npmjs.org/react-native-rsa-native/-/react-native-rsa-native-2.0.4.tgz#8001d658f124a50c638a1f41a3abffafc32b008d"
-  integrity sha512-tD40MOLv7JAoHPwC/yYngxGrbiWW3HWT0J4ry4aX7E2I9IcICCoDKvSXaDFwrulHMQbsRphYxrd5uLjfEZkBUQ==
+react-native-rsa-native@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.npmjs.org/react-native-rsa-native/-/react-native-rsa-native-1.1.4.tgz#bce591e896ea08972189f70e665cd52bdb2f4c58"
+  integrity sha512-KgFoob40shClvLkLiIC43gtBDSiI3+fHf6rt/x+KWVpecQq4sHpxyFSvykm7sSqlC94GCYyPF6rx/7DBuV84AA==
 
 react-native-safe-area-context@3.3.2:
   version "3.3.2"

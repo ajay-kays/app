@@ -5,7 +5,7 @@ import { DEFAULT_MEME_SERVER } from 'lib/config'
 import { withEnvironment } from '../extensions/with-environment'
 import { ServerModal } from './meme-models'
 import { asyncForEach } from 'lib/async'
-import { RootStore } from 'store'
+import { reset, RootStore } from 'store'
 import { display } from 'lib/logging'
 
 export const MemeStoreModel = types
@@ -34,6 +34,12 @@ export const MemeStoreModel = types
       const r2 = await relay?.get(`signer/${r.challenge}`)
       if (!r2?.sig) return
 
+      display({
+        name: 'meme.authenticate',
+        preview: 'Here with r and r2',
+        value: { r, r2 },
+      })
+
       const r3 = await memesAPI.post(
         'verify',
         {
@@ -43,6 +49,13 @@ export const MemeStoreModel = types
         },
         'application/x-www-form-urlencoded'
       )
+
+      display({
+        name: 'meme.authenticate',
+        preview: 'r3',
+        value: { r3 },
+      })
+
       if (!r3?.token) return
       server.token = r3.token
       display({
@@ -78,6 +91,7 @@ export const MemeStoreModel = types
     setLastAuthenticated(lastAuth: any) {
       self.lastAuthenticated = lastAuth
     },
+    reset: () => reset(self),
   }))
   .views((self) => ({
     getDefaultServer() {

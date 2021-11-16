@@ -16,7 +16,8 @@ export const addContact = async (self: ContactsStore, v: any) => {
       display({
         name: 'addContact',
         preview: 'Added contact:',
-        value: contact,
+        value: { contact, r },
+        important: true,
       })
     }
     return contact

@@ -6,10 +6,11 @@ import Slider from '../utils/slider'
 import * as rsa from 'lib/crypto/rsa'
 import Button from '../common/Button'
 import Typography from '../common/Typography'
+import { display } from 'lib/logging'
 
 export default function NameAndKey(props) {
   const { onDone, z, show } = props
-  const { contacts, user } = useStores()
+  const { contacts, meme, user } = useStores()
   const [updating, setUpdating] = useState(false)
   const [text, setText] = useState('')
   const theme = useTheme()
@@ -19,12 +20,26 @@ export default function NameAndKey(props) {
   async function ok() {
     try {
       setUpdating(true)
+      display({
+        name: 'nameAndKey',
+        preview: 'Here we are',
+        important: true,
+        value: {},
+      })
       const keyPair = await rsa.generateKeyPair()
+      display({
+        name: 'nameAndKey',
+        preview: 'Back from generateKeyPair w keypair',
+        important: true,
+        value: { keyPair },
+      })
       await contacts.updateContact(user.myid, {
         alias: text,
         contact_key: keyPair.public,
       })
       user.setAlias(text)
+      user.setPublicKey(keyPair.public)
+      // await meme.authenticateAll() - nah, see https://github.com/getZION/app/issues/47#issuecomment-969164578
       inputRef?.current?.blur()
       onDone()
       setTimeout(() => {

@@ -246,7 +246,7 @@ PODS:
     - React-Core
   - react-native-rncryptor (1.0.0):
     - React-Core
-  - react-native-rsa-native (2.0.4):
+  - react-native-rsa-native (1.1.4):
     - React
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -645,7 +645,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 7c14a136a9f4273d8bb16c7ea9e9bbe07ea1fa2e
   react-native-randombytes: b6677f7d495c27e9ee0dbd77ebc97b3c59173729
   react-native-rncryptor: e273429757c7b34d0b2f90f71ba8a592dd02f973
-  react-native-rsa-native: 1f6bba06dd02f0e652a66a384c75c270f7a0062f
+  react-native-rsa-native: 348b5057073920db0e154724c3a49e6b34e1da6b
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
@@ -689,4 +689,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 6ba5a45375ead88f32d70d533ec990fda1f17e02
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2

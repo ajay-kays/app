@@ -1,7 +1,8 @@
-import { Instance, SnapshotOut, types } from 'mobx-state-tree'
+import { applySnapshot, Instance, SnapshotOut, types } from 'mobx-state-tree'
 import { UserInvite, UserInviteModel } from './user-models'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './user-actions'
+import { reset } from 'store'
 
 export const UserStoreModel = types
   .model('UserStore')
@@ -14,7 +15,7 @@ export const UserStoreModel = types
     code: types.optional(types.string, ''),
     contactKey: types.optional(types.string, ''),
     currentIP: types.optional(types.string, ''),
-    deviceId: types.optional(types.string, ''),
+    deviceId: types.maybeNull(types.string), // prev optional
     invite: types.optional(UserInviteModel, {}),
     myid: types.optional(types.number, 0), // ?
     onboardStep: types.optional(types.number, 0),
@@ -30,6 +31,9 @@ export const UserStoreModel = types
     finishInvite: async (): Promise<boolean> => await actions.finishInvite(self as UserStore),
     generateToken: async (pwd: string): Promise<string> =>
       await actions.generateToken(self as UserStore, pwd),
+    logout: async (): Promise<void> => await actions.logout(self as UserStore),
+    miscAction: async (action: string): Promise<any> =>
+      await actions.miscAction(self as UserStore, action),
     registerMyDeviceId: (device_id, myid): Promise<void> =>
       actions.registerMyDeviceId(self as UserStore, device_id, myid),
     reportError: async (label: string, error: any): Promise<any> =>
@@ -42,7 +46,6 @@ export const UserStoreModel = types
       await actions.signupWithCode(self as UserStore, code),
     signupWithIP: async (ip: string): Promise<string | null> =>
       await actions.signupWithIP(self as UserStore, ip),
-    reset: () => actions.reset(self),
     setAuthToken: (authToken: string) => {
       self.authToken = authToken
     },
@@ -82,6 +85,7 @@ export const UserStoreModel = types
         action: '',
       }
     },
+    reset: () => reset(self),
   }))
   .views((self) => ({
     loggedIn(): boolean {

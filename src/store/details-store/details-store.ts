@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from 'mobx-state-tree'
+import { reset } from 'store'
 import { Msg } from 'store/msg-store'
 import { withEnvironment } from '../extensions/with-environment'
 import * as actions from './details-actions'
@@ -24,7 +25,7 @@ export const DetailsStoreModel = types
     getUSDollarRate: async () => await actions.getUSDollarRate(self as DetailsStore),
     getVersions: async (): Promise<any> => await actions.getVersions(self as DetailsStore),
     clearLogs: (): void => actions.clearLogs(self as DetailsStore),
-    reset: (): void => actions.reset(self as DetailsStore),
+    // reset: (): void => actions.reset(self as DetailsStore),
     addToBalance(x: number) {
       self.balance = self.balance + x
     },
@@ -43,6 +44,7 @@ export const DetailsStoreModel = types
     setLogs(logs: string) {
       self.logs = logs
     },
+    reset: () => reset(self),
   }))
 // .views((self) => ({
 //   get filteredLogs() {

@@ -13,11 +13,11 @@ export const getContacts = async (self: ContactsStore) => {
   const userStore = root.user
   try {
     const r = await relay?.get('contacts')
-    // display({
-    //   name: 'getContacts',
-    //   preview: `Returned with...`,
-    //   value: { r },
-    // })
+    display({
+      name: 'getContacts',
+      preview: `Returned with...`,
+      value: { r },
+    })
 
     if (!r) return
     if (r.contacts) {
@@ -34,7 +34,12 @@ export const getContacts = async (self: ContactsStore) => {
       if (me) {
         userStore.setMyID(me.id)
         userStore.setAlias(me.alias)
-        userStore.setDeviceId(me.device_id)
+        try {
+          userStore.setDeviceId(me.device_id)
+        } catch (e) {
+          console.log(e)
+        }
+
         userStore.setPublicKey(me.public_key)
         if (me.tip_amount || me.tip_amount === 0) {
           userStore.setTipAmount(me.tip_amount)

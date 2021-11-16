@@ -29,6 +29,9 @@ export const ListItem = React.memo(
 
     // SKIPPING - this needs to be MST'ized
     const msg = m
+    if (!m.chat) {
+      console.log('whats this nochat')
+    }
     // if (!m.chat) msg.chat = chat
 
     return (

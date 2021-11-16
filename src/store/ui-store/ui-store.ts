@@ -3,6 +3,7 @@ import { Chat, ChatModel } from 'store/chats-store'
 import { InvoiceMsg, InvoiceMsgModel } from './ui-models'
 import { withEnvironment } from '../extensions/with-environment'
 import { sleep } from 'lib/sleep'
+import { reset } from 'store'
 
 export const UiStoreModel = types
   .model('UiStore')
@@ -175,6 +176,7 @@ export const UiStoreModel = types
         self.podcastBoostAmount = amount
       }
     },
+    reset: () => reset(self),
   }))
 
 type UiStoreType = Instance<typeof UiStoreModel>
