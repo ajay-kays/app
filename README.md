@@ -2,7 +2,7 @@
 
 The Zion mobile app for Android and iOS.
 
-This new codebase for 1.17+ includes upgraded packages and a refactor to use `mobx-state-tree` instead of vanilla mobx.
+This new codebase for 1.17+ includes upgraded packages and a [refactor](https://github.com/getZION/app/issues/9) to use `mobx-state-tree` instead of vanilla mobx.
 
 ### Tech Stack
 
