@@ -18,6 +18,8 @@ export const UiStoreModel = types
     addContactModal: false,
     addContactParams: types.optional(types.frozen(), {}),
 
+    chatMsgsLoading: types.maybeNull(types.number),
+
     newTribeModal: false,
     showPayModal: false,
     /** Pay mode (Payment Modal) */
@@ -175,6 +177,9 @@ export const UiStoreModel = types
       } else {
         self.podcastBoostAmount = amount
       }
+    },
+    setChatMsgsLoading(value: number | null) {
+      self.chatMsgsLoading = value
     },
     reset: () => reset(self),
   }))

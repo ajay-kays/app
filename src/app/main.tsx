@@ -141,15 +141,16 @@ export default function Main() {
 
     msg.getDirectMessages() // should we wait for this or not
 
+    await sleep(500)
+    details.getBalance()
+    await sleep(500)
+    meme.authenticateAll()
+
     // await msg.getMessages()
     // await msg.getMessages(false, true)
     ui.setLoadingHistory(false)
 
     // msg.initLastSeen()
-    await sleep(500)
-    details.getBalance()
-    await sleep(500)
-    meme.authenticateAll()
   }
 
   useEffect(() => {

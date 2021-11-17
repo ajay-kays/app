@@ -8,9 +8,10 @@ import MediaItem from './MediaItem'
 import { Icon, Empty, Typography } from 'views/common'
 import { setTint } from 'views/common/StatusBar'
 import PhotoViewer from 'views/common/Modals/Media/PhotoViewer'
+import { ActivityIndicator } from 'react-native-paper'
 
 const Media = observer(({ tribe }: any) => {
-  const { msg, user } = useStores()
+  const { msg, ui, user } = useStores()
   const [mediaModal, setMediaModal] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState(null)
   const theme = useTheme()
@@ -33,7 +34,8 @@ const Media = observer(({ tribe }: any) => {
 
   const msgs = useMsgs(tribe.chat, 2500) || []
   const media = useOwnerMedia(msgs, tribe, 6, user.myid)
-  // console.log(media)
+
+  const loading = ui.chatMsgsLoading === tribe.chat.id
 
   return (
     <>
@@ -52,6 +54,20 @@ const Media = observer(({ tribe }: any) => {
                 />
               )
             })
+          ) : loading ? (
+            <View style={{ ...styles.empty }}>
+              <View style={styles.spinWrap}>
+                <ActivityIndicator animating={true} color={theme.icon} />
+              </View>
+              <Typography
+                size={14}
+                fw='500'
+                color={theme.subtitle}
+                style={{ marginTop: 10, marginBottom: 10 }}
+              >
+                Checking for media
+              </Typography>
+            </View>
           ) : (
             <Empty h={200}>
               {tribe.owner ? (
@@ -120,6 +136,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginRight: 'auto',
     marginLeft: 'auto',
+  },
+  spinWrap: {
+    marginTop: 20,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

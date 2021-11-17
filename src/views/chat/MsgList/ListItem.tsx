@@ -27,12 +27,14 @@ export const ListItem = React.memo(
       return <DateLine dateString={m.dateLine} />
     }
 
-    // SKIPPING - this needs to be MST'ized
     const msg = m
-    if (!m.chat) {
-      console.log('whats this nochat')
+    try {
+      if (!m.chat) {
+        msg.chat = chat
+      }
+    } catch (e) {
+      console.log(e)
     }
-    // if (!m.chat) msg.chat = chat
 
     return (
       <Message

@@ -1,4 +1,5 @@
 import { display, log } from 'lib/logging'
+import { tryReference } from 'mobx-state-tree'
 import { Chat, ChatModel, Community, CommunityModel } from './chats-store'
 import { Contact, ContactModel } from './contacts-store'
 import { Msg, MsgModel } from './msg-store'
@@ -154,52 +155,59 @@ export const normalizeMessage = (raw: any) => {
       boosts: raw.boosts,
     })
 
-    try {
-      normalized.setChatRef(raw.chat_id.toString())
-    } catch (e) {
-      console.log(e)
-      display({
-        name: 'normalize',
-        preview: 'failed setting chatref',
-        value: { normalized, raw, e },
-        important: true,
-      })
-    }
+    // try {
+    //   normalized.setChatRef(raw.chat_id.toString())
+    //   console.log('we set this chatref to', raw.chat_id.toString())
+    // } catch (e) {
+    //   console.log(e)
+    //   display({
+    //     name: 'normalize',
+    //     preview: 'failed setting chatref',
+    //     value: { normalized, raw, e },
+    //     important: true,
+    //   })
+    // }
 
-    try {
-      if (!normalized.chat) {
-        display({
-          name: 'normalize',
-          preview: 'this doesnt have a chat attached',
-          value: { normalized, raw },
-          important: true,
-        })
-        if (normalized.chatRef) {
-          normalized.chat = normalized.chatRef
-          display({
-            name: 'normalize',
-            preview: 'NOW DOES IT?',
-            value: { normalized, raw },
-            important: true,
-          })
-        } else {
-          display({
-            name: 'normalize',
-            preview: 'didnt have a chatref either',
-            value: { normalized, raw },
-            important: true,
-          })
-        }
-      }
-    } catch (e) {
-      console.log(e)
-      display({
-        name: 'normalize',
-        preview: 'failed setting chat thing',
-        value: { normalized, raw, e },
-        important: true,
-      })
-    }
+    // try {
+    //   if (!normalized.chat) {
+    //     // display({
+    //     //   name: 'normalize',
+    //     //   preview: 'this doesnt have a chat attached',
+    //     //   value: { normalized, raw },
+    //     //   important: true,
+    //     // })
+    //     // const maybeValidRef = tryReference(() => normalized.chatRef)
+    //     // console.log('maybeValidRef?', maybeValidRef)
+    //     // return
+    //     console.log('chatref here is:', normalized.chatRef)
+
+    //     if (normalized.chatRef) {
+    //       console.log('skipping this thing')
+    //       // normalized.chat = normalized.chatRef
+    //       // display({
+    //       //   name: 'normalize',
+    //       //   preview: 'NOW DOES IT?',
+    //       //   value: { normalized, raw },
+    //       //   important: true,
+    //       // })
+    //     } else {
+    //       display({
+    //         name: 'normalize',
+    //         preview: 'didnt have a chatref either',
+    //         value: { normalized, raw },
+    //         important: true,
+    //       })
+    //     }
+    //   }
+    // } catch (e) {
+    //   console.log(e)
+    //   display({
+    //     name: 'normalize',
+    //     preview: 'failed setting chat thing',
+    //     value: { normalized, raw, e },
+    //     important: true,
+    //   })
+    // }
 
     // display({
     //   name: `normalizeMessage `,

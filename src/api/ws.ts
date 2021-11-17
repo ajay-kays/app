@@ -63,6 +63,7 @@ export function connectWebSocket(
         handler(msg)
       }
     } catch (e) {
+      console.log(e)
       reportError(e)
     }
   })

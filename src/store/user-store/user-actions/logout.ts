@@ -1,9 +1,10 @@
 import { getRoot } from 'mobx-state-tree'
 import EncryptedStorage from 'react-native-encrypted-storage'
 import { reportError } from 'lib/errorHelper'
-import { RootStore } from 'store'
+import { RootStore, ROOT_STATE_STORAGE_KEY } from 'store'
 import { UserStore } from '../user-store'
 import { display } from 'lib/logging'
+import storage from '@react-native-async-storage/async-storage'
 
 export const logout = async (self: UserStore) => {
   try {
@@ -11,6 +12,13 @@ export const logout = async (self: UserStore) => {
     root.reset()
   } catch (e) {
     reportError(e)
+  }
+
+  try {
+    await storage.removeItem(ROOT_STATE_STORAGE_KEY)
+    console.log('storage cleared')
+  } catch (e) {
+    console.log(e)
   }
 
   try {

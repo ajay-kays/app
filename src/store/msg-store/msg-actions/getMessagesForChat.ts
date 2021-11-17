@@ -4,10 +4,17 @@ import moment from 'moment'
 import { display, log } from 'lib/logging'
 import { normalizeMessage } from 'store/normalize'
 import { decodeMessages, Msg, skinny } from '..'
+import { getRoot } from 'mobx-state-tree'
+import { RootStore } from 'store'
 
 const MSGS_PER_CHAT = 250
 
 export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
+  if (!chatId) return
+
+  const root = getRoot(self) as RootStore
+  root.ui.setChatMsgsLoading(chatId)
+
   // display({
   //   name: 'getMessagesForChat',
   //   preview: `Lets grab messages for chatId ${chatId}`,
@@ -92,6 +99,7 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
     // })
 
     self.setMessages(normalizedMsgs)
+    root.ui.setChatMsgsLoading(null)
   }
   return
 }

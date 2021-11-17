@@ -1,22 +1,24 @@
 import React, { useCallback, useState } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import Toast from 'react-native-simple-toast'
-import { useStores } from 'store'
+import { useMsgs, useStores } from 'store'
 import { MsgListFC } from './MsgListFC'
 import { sleep } from 'lib/sleep'
+import { Alert } from 'react-native'
+import { display } from 'lib/logging'
 
 export const MsgListWrap = ({
   chat,
-  msgs,
   pricePerMessage,
 }: {
   chat: any // Chat
-  msgs: any
   pricePerMessage: number
 }) => {
   const { msg, user, chats, details } = useStores()
   const [limit, setLimit] = useState(40)
   const navigation = useNavigation()
+
+  console.log(`chat.id ${chat.id} limit: ${limit}`)
 
   function onLoadMoreMsgs() {
     setLimit((c) => c + 40)
@@ -43,6 +45,8 @@ export const MsgListWrap = ({
         reply_uuid: uuid,
         message_price: pricePerMessage,
       })
+
+      Toast.showWithGravity('Boosted!', Toast.LONG, Toast.CENTER)
     },
     [chat.id, details.balance, msg, pricePerMessage, user.tipAmount]
   )
@@ -65,6 +69,18 @@ export const MsgListWrap = ({
     navigation.navigate('Home' as never, { params: { rnd: Math.random() } } as never)
     await chats.exitGroup(chat.id)
   }, [chat.id, chats, navigation])
+
+  const msgs = useMsgs(chat, limit)
+
+  if (!msgs || (msgs && msgs.length === 0)) {
+    display({
+      name: 'MsgListWrap',
+      preview: `Fetching messages for chat ID ${chat.id}`,
+      important: true,
+      value: { chat, msgs, pricePerMessage, chatID: chat.id },
+    })
+    msg.getMessagesForChat(chat.id)
+  }
 
   return (
     <MsgListFC

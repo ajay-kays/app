@@ -102,8 +102,8 @@ export function useCachedEncryptedFile(
         Authorization: `Bearer ${server.token}`,
       })
 
-      console.log(res)
-      console.log('The file saved to ', res.path())
+      // console.log(res)
+      // console.log('The file saved to ', res.path())
 
       const headers = res.info().headers
       const disp = headers['Content-Disposition']

@@ -144,7 +144,7 @@ function SwipeItem(props) {
       message_price: pricePerMessage,
     })
 
-    Alert.alert('Boosted!')
+    Toast.showWithGravity('Boosted!', Toast.LONG, Toast.CENTER)
   }
 
   const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60

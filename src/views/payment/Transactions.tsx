@@ -168,12 +168,6 @@ type PaymentProps = {
 function Payment(props: PaymentProps) {
   const { user, contacts, chats } = useStores()
   const theme = useTheme()
-  display({
-    name: 'Payment',
-    preview: 'payment we got what',
-    value: { props },
-    important: true,
-  })
   const {
     amount,
     date,
@@ -188,12 +182,6 @@ function Payment(props: PaymentProps) {
 
   const chat = useMemo(() => chats.chats.get(chat_id), [chat_id])
   // const chat = useMemo(() => chats.chatsArray.find((c) => c.id.toString() === chat_id), [])
-  display({
-    name: 'Payment',
-    preview: 'whatS THIS',
-    important: true,
-    value: { chat },
-  })
 
   // TODO: check if is necessary to move it to <PerTribe/>
   useEffect(() => {
@@ -235,30 +223,28 @@ function Payment(props: PaymentProps) {
 
     if (chat?.name && showTribeName) return chat.name
     if (chat?.contact_ids?.length !== 2) {
-      console.log(
-        `returning dash cuz donno CONTACTIDs for id ${chat?.id} - showTribeName is ${showTribeName}`,
-        chat?.name
-      )
-      console.log('contactids:', chat?.contact_ids)
+      // console.log(
+      //   `returning dash cuz donno CONTACTIDs for id ${chat?.id} - showTribeName is ${showTribeName}`,
+      //   chat?.name
+      // )
+      // console.log('contactids:', chat?.contact_ids)
       return '-'
     }
 
     const oid = chat.contact_ids.find((id) => id !== user.myid)
     const contact = contacts.contactsArray.find((c) => c.id === oid)
 
-    display({
-      name: 'transaction',
-      value: { oid, contact, chat },
-      important: true,
-    })
+    // display({
+    //   name: 'transaction',
+    //   value: { oid, contact, chat },
+    //   important: true,
+    // })
 
     if (contact) return contact.alias || contact.public_key
-    console.log('so dash')
     return '-'
   }, [contacts, chats, user, type])
   const { earned, spent } = useMemoizedIncomingPaymentsFromPodcast(podId, user.myid)
   const p = params[type]
-  console.log('TEXT:', text)
   return (
     <View style={{ backgroundColor: p.background }}>
       <View style={{ ...styles.paymentBox, borderBottomColor: theme.border }}>

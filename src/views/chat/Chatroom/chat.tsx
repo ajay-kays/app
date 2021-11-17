@@ -136,17 +136,17 @@ const ChatroomFC = () => {
   const showPod = feedURL ? true : false
 
   // const msgs = chatID ? msg.messages.get(chatID.toString()) : []
-  const msgs = useMsgs(chat)
+  // const msgs = useMsgs(chat)
 
-  if (!msgs || (msgs && msgs.length === 0)) {
-    display({
-      name: 'ChatroomFC',
-      preview: `Fetching messages for chat ID ${chatID}`,
-      important: true,
-      value: { chat, msgs, pricePerMessage, chatID, route },
-    })
-    msg.getMessagesForChat(chatID)
-  }
+  // if (!msgs || (msgs && msgs.length === 0)) {
+  //   display({
+  //     name: 'ChatroomFC',
+  //     preview: `Fetching messages for chat ID ${chatID}`,
+  //     important: true,
+  //     value: { chat, msgs, pricePerMessage, chatID, route },
+  //   })
+  //   msg.getMessagesForChat(chatID)
+  // }
 
   // display({
   //   name: 'ChatroomFC',
@@ -181,7 +181,7 @@ const ChatroomFC = () => {
           <ActivityIndicator animating={true} />
         </View>
       ) : (
-        <MsgList chat={chat} msgs={msgs} pricePerMessage={pricePerMessage} />
+        <MsgList chat={chat} pricePerMessage={pricePerMessage} />
       )}
 
       {showPod && <Podcast pod={pod} chat={chat} onBoost={onBoost} podError={podError} />}

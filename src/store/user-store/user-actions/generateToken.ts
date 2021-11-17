@@ -21,15 +21,15 @@ export const generateToken = async (self: UserStore, pwd: string) => {
     })
     if (!r) {
       console.log('failed to reach relay')
-      self.setOnboardStep(0)
-      self.logout()
-      navigate('Home')
       Toast.showWithGravity(
         'You already used this access key. Log in with your backup key, or reset your node to get a new access key.',
         Toast.LONG,
         Toast.CENTER
       )
-      return 'error'
+      await self.logout()
+      self.setOnboardStep(0)
+      navigate('Home')
+      return false
     }
     if (r.id) self.setMyID(r.id)
     self.setAuthToken(token)
