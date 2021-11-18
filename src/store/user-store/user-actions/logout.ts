@@ -16,7 +16,12 @@ export const logout = async (self: UserStore) => {
 
   try {
     await storage.removeItem(ROOT_STATE_STORAGE_KEY)
-    console.log('storage cleared')
+
+    display({
+      name: 'logout',
+      preview: 'Storage cleared',
+      important: true,
+    })
   } catch (e) {
     console.log(e)
   }

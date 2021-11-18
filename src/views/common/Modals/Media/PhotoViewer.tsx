@@ -22,6 +22,7 @@ export default function PhotoViewer({ visible, close, photos, chat, initialIndex
   const theme = useTheme()
   return (
     <Modal
+      noSwipe
       visible={visible}
       animationType='slide'
       presentationStyle='fullScreen'

@@ -6,6 +6,7 @@ import { MsgListFC } from './MsgListFC'
 import { sleep } from 'lib/sleep'
 import { Alert } from 'react-native'
 import { display } from 'lib/logging'
+import { reportError } from 'lib/errorHelper'
 
 export const MsgListWrap = ({
   chat,
@@ -67,19 +68,27 @@ export const MsgListWrap = ({
 
   const onDeleteChat = useCallback(async () => {
     navigation.navigate('Home' as never, { params: { rnd: Math.random() } } as never)
-    await chats.exitGroup(chat.id)
+    try {
+      await chats.exitGroup(chat.id)
+    } catch (e) {
+      reportError(e)
+    }
   }, [chat.id, chats, navigation])
 
   const msgs = useMsgs(chat, limit)
 
-  if (!msgs || (msgs && msgs.length === 0)) {
-    display({
-      name: 'MsgListWrap',
-      preview: `Fetching messages for chat ID ${chat.id}`,
-      important: true,
-      value: { chat, msgs, pricePerMessage, chatID: chat.id },
-    })
-    msg.getMessagesForChat(chat.id)
+  try {
+    if (!msgs || (msgs && msgs.length === 0)) {
+      display({
+        name: 'MsgListWrap',
+        preview: `Fetching messages for chat ID ${chat.id}`,
+        important: true,
+        value: { chat, msgs, pricePerMessage, chatID: chat.id },
+      })
+      msg.getMessagesForChat(chat.id)
+    }
+  } catch (e) {
+    reportError(e)
   }
 
   return (

@@ -142,7 +142,11 @@ function ChatDetails({ route }) {
 
   async function exitGroup() {
     setLoading(true)
-    await chats.exitGroup(group.id)
+    try {
+      await chats.exitGroup(group.id)
+    } catch (e) {
+      reportError(e)
+    }
     setLoading(false)
     EE.emit(LEFT_GROUP)
   }

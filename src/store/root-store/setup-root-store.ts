@@ -7,7 +7,7 @@ import storage from '@react-native-async-storage/async-storage'
 /**
  * The key we'll be saving our state as within async storage.
  */
-export const ROOT_STATE_STORAGE_KEY = 'ROOT2'
+export const ROOT_STATE_STORAGE_KEY = 'ROOT-117-3'
 
 /**
  * Setup the environment that all the models will be sharing.

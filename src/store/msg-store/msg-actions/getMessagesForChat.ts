@@ -99,7 +99,7 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
     // })
 
     self.setMessages(normalizedMsgs)
-    root.ui.setChatMsgsLoading(null)
   }
+  root.ui.setChatMsgsLoading(null)
   return
 }
