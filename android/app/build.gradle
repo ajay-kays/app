@@ -141,7 +141,7 @@ android {
         applicationId "com.getzion.zion"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11701
+        versionCode 11704
         versionName "1.17.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
@@ -206,6 +206,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    // implementation 'com.google.firebase:firebase-analytics:17.3.0'
+
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 

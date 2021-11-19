@@ -35,6 +35,7 @@ function ChatList(props) {
    */
   const renderItem: any = ({ item, index }) => {
     const chatID = (item.id || rando()) + ''
+    console.log(item)
     // display({
     //   name: 'ChatList renderItem',
     //   preview: `${item.name} - chatID ${chatID}`,
@@ -71,7 +72,8 @@ function ChatList(props) {
           return key
           // return String(item.id)
         }}
-        refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+        // This causes a blank screen on Android:
+        // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         ListHeaderComponent={props.listHeader}
       />
     </View>

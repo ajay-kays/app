@@ -32,10 +32,10 @@ const Media = observer(({ tribe }: any) => {
   //   msgs = []
   // }
 
-  const msgs = useMsgs(tribe.chat, 2500) || []
+  const msgs = tribe.chat ? useMsgs(tribe.chat, 2500) || [] : []
   const media = useOwnerMedia(msgs, tribe, 6, user.myid)
 
-  const loading = ui.chatMsgsLoading === tribe.chat.id
+  const loading = ui.chatMsgsLoading === tribe?.chat?.id
 
   return (
     <>

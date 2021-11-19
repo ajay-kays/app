@@ -34,11 +34,13 @@ export function useBoostSender(m, contactList, isTribe) {
 
 export function useMsgs(chat, limit?: number) {
   const { chats, user, msg, contacts } = useStores()
+
   const myid = user.myid
 
   if (!chat) return
 
-  let theID = chat.id
+  let theID = chat.id ?? undefined
+  console.log('theID...', theID)
   const isTribe = chat.type === tribe
   if (!theID) {
     // for very beginning, where chat doesnt have id

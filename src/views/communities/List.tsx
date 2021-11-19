@@ -35,7 +35,8 @@ function ListFC(props) {
           ListEmptyComponent={listEmpty}
           refreshing={refreshing}
           onRefresh={onRefresh && onRefresh}
-          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+          // This causes a blank screen on Android:
+          // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         />
       )}
     </View>
