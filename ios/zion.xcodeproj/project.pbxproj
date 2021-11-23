@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2C3743CA274D5798000B1C9E /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2C3743C9274D5798000B1C9E /* AppCenter-Config.plist */; };
 		2C4225AA27336F81000E9165 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C4225A927336F81000E9165 /* BootSplash.storyboard */; };
 		2C90C72427317DD1004106C9 /* ProximaNova-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C90C72327317DD1004106C9 /* ProximaNova-Regular.otf */; };
 		2C90C726273186DE004106C9 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C90C725273186DE004106C9 /* icomoon.ttf */; };
@@ -37,6 +38,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = zion/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = zion/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = zion/main.m; sourceTree = "<group>"; };
+		2C3743C9274D5798000B1C9E /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "zion/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		2C4225A927336F81000E9165 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = zion/BootSplash.storyboard; sourceTree = "<group>"; };
 		2C50D8EF273B1F1300058E25 /* zion.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = zion.entitlements; path = zion/zion.entitlements; sourceTree = "<group>"; };
 		2C90C72327317DD1004106C9 /* ProximaNova-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Regular.otf"; path = "../../src/assets/fonts/ProximaNova-Regular.otf"; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 		13B07FAE1A68108700A75B9A /* zion */ = {
 			isa = PBXGroup;
 			children = (
+				2C3743C9274D5798000B1C9E /* AppCenter-Config.plist */,
 				2C50D8EF273B1F1300058E25 /* zion.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -247,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C4225AA27336F81000E9165 /* BootSplash.storyboard in Resources */,
+				2C3743CA274D5798000B1C9E /* AppCenter-Config.plist in Resources */,
 				2C90C72427317DD1004106C9 /* ProximaNova-Regular.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				2C90C726273186DE004106C9 /* icomoon.ttf in Resources */,
@@ -416,7 +420,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = zion/zion.entitlements;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = 5ZGU9RL6KG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = zion/Info.plist;
@@ -446,7 +450,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = zion/zion.entitlements;
-				CURRENT_PROJECT_VERSION = 32;
+				CURRENT_PROJECT_VERSION = 34;
 				DEVELOPMENT_TEAM = 5ZGU9RL6KG;
 				INFOPLIST_FILE = zion/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

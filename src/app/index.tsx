@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
+import codePush from 'react-native-code-push'
 import Bugsnag from '@bugsnag/react-native'
 import { RootStore, RootStoreProvider, setupRootStore } from 'store'
 import { navigationRef } from 'nav'
@@ -33,4 +34,4 @@ const App = () => {
   )
 }
 
-export default App
+export default codePush({ checkFrequency: codePush.CheckFrequency.ON_APP_RESUME })(App)
