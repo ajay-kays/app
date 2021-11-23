@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">zion</string>
+  <string name="app_name">Zion</string>
+  <string moduleConfig="true" name="CodePushDeploymentKey">gKzIkUk09rGxUnLpK0YC8_HkT3RKQNpzmefx4</string>
 </resources>
