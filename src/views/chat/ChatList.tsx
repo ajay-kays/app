@@ -73,7 +73,7 @@ function ChatList(props) {
           // return String(item.id)
         }}
         // This causes a blank screen on Android:
-        refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+        // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         ListHeaderComponent={props.listHeader}
       />
     </View>
