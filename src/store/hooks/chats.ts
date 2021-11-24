@@ -23,21 +23,28 @@ export function useChatRow(id) {
 
   const now = new Date().getTime()
 
-  let unseenCount = 0
-  msgs.forEach((msg) => {
-    if (!msg.seen) {
-      unseenCount++
-    }
-  })
+  // let unseenCount = 0
+  // msgs.forEach((msg) => {
+  //   if (!msg.seen) {
+  //     unseenCount++
+  //   }
+  // })
 
-  if (unseenCount > 99) {
-    unseenCount = 99
-  }
+  // if (unseenCount > 99) {
+  //   unseenCount = 99
+  // }
 
-  // const lastSeen = msg.lastSeen[id || '_'] || now
-  // console.log(`lastSeen for ${id}?`, msg.lastSeen[id || '_'])
-  // const unseenCount = countUnseen(msgs, lastSeen, myid)
+  // display({
+  //   name: 'useChatRow',
+  //   preview: 'lastSeen',
+  //   value: { lastSeen: msg.lastSeen },
+  // })
+  const lastSeen = msg.lastSeen[id || '_'] || now
+
+  const unseenCount = countUnseen(msgs, lastSeen, myid)
   const hasUnseen = unseenCount > 0 ? true : false
+
+  // console.log(`lastSeen for ${id}?`, msg.lastSeen[id || '_'], unseenCount)
 
   const lastMsgDate = lastMessageDate(lastMsg)
 

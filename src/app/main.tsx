@@ -153,10 +153,8 @@ export default function Main() {
     meme.authenticateAll()
 
     await msg.getRecentMessages()
-    // await msg.getMessages(false, true)
+    msg.initLastSeen()
     ui.setLoadingHistory(false)
-
-    // msg.initLastSeen()
   }
 
   useEffect(() => {

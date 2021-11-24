@@ -47,6 +47,7 @@ export const MsgStoreModel = types
     gotNewMessage: async (m: any): Promise<any> => await actions.gotNewMessage(self as MsgStore, m),
     gotNewMessageFromWS: async (m: any): Promise<any> =>
       await actions.gotNewMessageFromWS(self as MsgStore, m),
+    initLastSeen: async (): Promise<any> => await actions.initLastSeen(self as MsgStore),
     invoicePaid: async (m: any): Promise<any> => await actions.invoicePaid(self as MsgStore, m),
     payInvoice: async ({
       payment_request,
@@ -78,6 +79,9 @@ export const MsgStoreModel = types
       await actions.setMessageAsReceived(self as MsgStore, m),
     setLastFetched(lastFetched: number) {
       self.lastFetched = lastFetched
+    },
+    setLastSeen(lastSeen: any) {
+      self.lastSeen = lastSeen
     },
     setMessage: (msg: Msg) => {
       // const chat = (self as MsgStore).msgsForChatroom(msg.chat_id)

@@ -17,6 +17,7 @@ import QR from '../common/Accessories/QR'
 import JoinTribe from '../common/Modals/Community/JoinCommunity'
 import { setTint } from '../common/StatusBar'
 import List from './List'
+import { display } from 'lib/logging'
 
 function Discover() {
   const [loading, setLoading] = useState(true)
@@ -42,6 +43,13 @@ function Discover() {
 
   const tribes = chats.communitiesArray
   const tribesToShow = useSearchCommunities(tribes)
+
+  display({
+    name: 'Discover',
+    preview: '',
+    value: { tribesToShow },
+    important: true,
+  })
 
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>

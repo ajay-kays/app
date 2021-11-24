@@ -47,18 +47,18 @@ function ListFC(props) {
 export default observer(ListFC)
 
 function Item(props) {
-  display({
-    name: 'community item',
-    value: props,
-    important: true,
-  })
+  // display({
+  //   name: 'community item',
+  //   value: props,
+  //   important: true,
+  // })
   const { name, description, img, joined, uuid, owner, owner_alias } = props // , chat
   const { chats } = useStores()
   const chat = chats.chatsArray.find((c) => c.uuid === uuid)
   const theme = useTheme()
   const [joinTribe, setJoinTribe] = useState({ visible: false, tribe: null })
   const { unseenCount, hasUnseen } = useChatRow(chat?.id ?? '')
-  if (!chat) return <></>
+  // if (!chat) return <></>
   const onItemPress = () => navigate('Community', { tribe: { ...props } })
 
   async function onJoinPress() {
