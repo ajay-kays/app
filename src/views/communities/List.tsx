@@ -11,6 +11,7 @@ import Button from '../common/Button'
 import RefreshLoading from '../common/RefreshLoading'
 import JoinCommunity from '../common/Modals/Community/JoinCommunity'
 import { navigate } from 'nav'
+import { display } from 'lib/logging'
 
 function ListFC(props) {
   const { data, loading, listEmpty, refreshing, onRefresh } = props
@@ -46,12 +47,18 @@ function ListFC(props) {
 export default observer(ListFC)
 
 function Item(props) {
-  const { name, description, img, joined, uuid, owner, owner_alias, chat } = props
+  display({
+    name: 'community item',
+    value: props,
+    important: true,
+  })
+  const { name, description, img, joined, uuid, owner, owner_alias } = props // , chat
   const { chats } = useStores()
+  const chat = chats.chatsArray.find((c) => c.uuid === uuid)
   const theme = useTheme()
   const [joinTribe, setJoinTribe] = useState({ visible: false, tribe: null })
   const { unseenCount, hasUnseen } = useChatRow(chat?.id ?? '')
-
+  if (!chat) return <></>
   const onItemPress = () => navigate('Community', { tribe: { ...props } })
 
   async function onJoinPress() {

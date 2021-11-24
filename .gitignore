@@ -62,3 +62,4 @@ buck-out/
 .env
 
 AppCenter-Config.plist
+appcenter-config.json

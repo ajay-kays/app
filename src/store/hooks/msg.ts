@@ -40,7 +40,7 @@ export function useMsgs(chat, limit?: number) {
   if (!chat) return
 
   let theID = chat.id ?? undefined
-  console.log('theID...', theID)
+  // console.log('theID...', theID)
   const isTribe = chat.type === tribe
   if (!theID) {
     // for very beginning, where chat doesnt have id

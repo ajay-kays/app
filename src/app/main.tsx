@@ -60,39 +60,39 @@ export default function Main() {
     const priv = await rsa.getPrivateKey()
     const me = contacts.contactsArray.find((c) => c.id === user.myid)
 
-    display({
-      name: 'createPrivateKeyIfNotExists',
-      important: true,
-      value: { priv, me },
-    })
+    // display({
+    //   name: 'createPrivateKeyIfNotExists',
+    //   important: true,
+    //   value: { priv, me },
+    // })
 
     // private key has been made
     if (priv) {
-      display({
-        name: 'createPrivateKeyIfNotExists',
-        important: true,
-        preview: 'Yes priv.',
-      })
+      // display({
+      //   name: 'createPrivateKeyIfNotExists',
+      //   important: true,
+      //   preview: 'Yes priv.',
+      // })
       // set into user.contactKey
       if (me?.contact_key && !user.contactKey) {
-        display({
-          name: 'createPrivateKeyIfNotExists',
-          important: true,
-          preview: 'Setting user contact key to',
-          value: me.contact_key,
-        })
+        // display({
+        //   name: 'createPrivateKeyIfNotExists',
+        //   important: true,
+        //   preview: 'Setting user contact key to',
+        //   value: me.contact_key,
+        // })
         user.setContactKey(me.contact_key)
         contacts.updateContact(user.myid, {
           contact_key: me.contact_key,
         })
         // set into me Contact
       } else if (user.contactKey) {
-        display({
-          name: 'createPrivateKeyIfNotExists',
-          important: true,
-          preview: 'Just updating w',
-          value: user.contactKey,
-        })
+        // display({
+        //   name: 'createPrivateKeyIfNotExists',
+        //   important: true,
+        //   preview: 'Just updating w',
+        //   value: user.contactKey,
+        // })
         contacts.updateContact(user.myid, {
           contact_key: user.contactKey,
         })
@@ -133,20 +133,26 @@ export default function Main() {
   }
 
   async function loadHistory(skipLoadingContacts?: boolean) {
+    display({
+      name: 'loadHistory',
+      preview: `In loadHistory w skipLoadingContacts ${skipLoadingContacts}`,
+      important: true,
+    })
+
     ui.setLoadingHistory(true)
 
     if (!skipLoadingContacts) {
       await contacts.getContacts()
     }
 
-    msg.getDirectMessages() // should we wait for this or not
+    await msg.getDirectMessages() // should we wait for this or not
 
     await sleep(500)
     details.getBalance()
     await sleep(500)
     meme.authenticateAll()
 
-    // await msg.getMessages()
+    await msg.getRecentMessages()
     // await msg.getMessages(false, true)
     ui.setLoadingHistory(false)
 

@@ -34,12 +34,12 @@ const Community = ({ route }) => {
 
   const chatId = tribe?.chat?.id
 
-  display({
-    name: 'Community',
-    preview: ' with what ',
-    value: { uuid, tribe, chatId },
-    important: true,
-  })
+  // display({
+  //   name: 'Community',
+  //   preview: ' with what ',
+  //   value: { uuid, tribe, chatId },
+  //   important: true,
+  // })
 
   useEffect(() => {
     chats.getCommunities()

@@ -10,6 +10,7 @@
     "android:buildmove": "yarn android:build && mv ./android/app/build/outputs/bundle/release/app-release.aab ~/Desktop",
     "android:clean": "cd android && ./gradlew clean",
     "ios": "npx react-native run-ios",
+    "ios:codepush": "appcenter codepush release-react -a Zion-Create-Openly/Zion-iOS -d Production --plist-file ios/zion/Info.plist --xp ios/zion.xcodeproj/project.pbxproj",
     "xcode": "open ios/zion.xcworkspace",
     "pods": "npx pod-install ios",
     "start": "npx react-native start",
@@ -37,6 +38,7 @@
     "buffer": "6.0.3",
     "eventemitter3": "4.0.7",
     "formik": "2.2.9",
+    "json-schema": "0.4.0",
     "linkifyjs": "3.0.3",
     "lottie-react-native": "^4.0.2",
     "mobx": "6.3.5",
@@ -112,7 +114,8 @@
     "typescript": "4.4.4"
   },
   "resolutions": {
-    "@types/react": "^17"
+    "@types/react": "^17",
+    "json-schema": "0.4.0"
   },
   "prettier": {
     "arrowParens": "always",
