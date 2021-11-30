@@ -13,6 +13,11 @@ let handlers: { [k: string]: DataHandler } = {}
 
 export function registerWsHandlers(hs: { [k: string]: DataHandler }) {
   handlers = hs
+  display({
+    name: 'registerWsHandlers',
+    preview: 'Handlers set',
+    important: true,
+  })
 }
 
 let io: any = null
