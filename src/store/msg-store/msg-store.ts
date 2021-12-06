@@ -41,8 +41,8 @@ export const MsgStoreModel = types
     getDirectMessages: async (): Promise<any> => await actions.getDirectMessages(self as MsgStore),
     getMessages: async (forceMore: boolean = false): Promise<any> =>
       await actions.getMessages(self as MsgStore, forceMore),
-    getMessagesForChat: async (chatId: number): Promise<any> =>
-      await actions.getMessagesForChat(self as MsgStore, chatId),
+    getMessagesForChat: async (chatId: number, limit: number = 0): Promise<any> =>
+      await actions.getMessagesForChat(self as MsgStore, chatId, limit),
     getRecentMessages: async (): Promise<any> => await actions.getRecentMessages(self as MsgStore),
     gotNewMessage: async (m: any): Promise<any> => await actions.gotNewMessage(self as MsgStore, m),
     gotNewMessageFromWS: async (m: any): Promise<any> =>

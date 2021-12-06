@@ -7,26 +7,28 @@ import { decodeMessages, Msg, skinny } from '..'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
 
-const MSGS_PER_CHAT = 250
+const MSGS_PER_CHAT = 350
 
-export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
+export const getMessagesForChat = async (self: MsgStore, chatId: number, limit: number = 0) => {
   if (!chatId) return
+
+  const msgLimit = Math.max(MSGS_PER_CHAT, limit)
 
   const root = getRoot(self) as RootStore
   root.ui.setChatMsgsLoading(chatId)
 
-  // display({
-  //   name: 'getMessagesForChat',
-  //   preview: `Lets grab messages for chatId ${chatId}`,
-  //   important: true,
-  // })
+  display({
+    name: 'getMessagesForChat',
+    preview: `Lets grab messages for chatId ${chatId} - limit ${msgLimit}`,
+    important: true,
+  })
   let route = `msgsForChat?chatId=${chatId}`
   const r = await relay?.get(route)
-  // display({
-  //   name: 'getMessagesForChat',
-  //   preview: `Fetched messages for chatId ${chatId}`,
-  //   value: { r, route },
-  // })
+  display({
+    name: 'getMessagesForChat',
+    preview: `Fetched messages for chatId ${chatId}`,
+    value: { r, route },
+  })
 
   /**
    * SORT MESSAGES BY CHATROOM
@@ -66,14 +68,14 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number) => {
           const ad: any = new Date(a.created_at)
           return bd - ad
         })
-        .slice(0, MSGS_PER_CHAT)
+        .slice(0, msgLimit) // MSGS_PER_CHAT
     })
 
-    // display({
-    //   name: 'getMessagesForChat',
-    //   preview: 'Finished sorting and pruning messages',
-    //   value: { msgs, sortedAndFilteredMsgs },
-    // })
+    display({
+      name: 'getMessagesForChat',
+      preview: 'Finished sorting and pruning messages',
+      value: { msgs, sortedAndFilteredMsgs },
+    })
 
     /**
      * NORMALIZE AND DECODE ONLY THESE MESSAGES
