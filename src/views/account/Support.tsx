@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, TextInput, Linking, ScrollView } from 'react-native'
+import { StyleSheet, View, TextInput, Linking, ScrollView } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import Clipboard from '@react-native-community/clipboard'
 import { ActivityIndicator } from 'react-native-paper'

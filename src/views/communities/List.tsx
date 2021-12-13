@@ -53,6 +53,7 @@ function Item(props) {
   //   important: true,
   // })
   const { name, description, img, joined, uuid, owner, owner_alias } = props // , chat
+
   const { chats } = useStores()
   const chat = chats.chatsArray.find((c) => c.uuid === uuid)
   const theme = useTheme()
@@ -86,20 +87,9 @@ function Item(props) {
       <View style={styles.itemContent}>
         <View style={{ ...styles.row }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Typography
-              size={16}
-              fw='500'
-              // numberOfLines={1}
-              style={{ width: SCREEN_WIDTH - 180 }}
-            >
+            <Typography size={16} fw='500' numberOfLines={2} style={{ width: SCREEN_WIDTH - 190 }}>
               {name}
             </Typography>
-            {/* {!owner && (
-              <>
-                <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
-                <Typography size={12}>{owner_alias?.trim()}</Typography>
-              </>
-            )} */}
           </View>
 
           <View style={{ paddingRight: 4 }}>

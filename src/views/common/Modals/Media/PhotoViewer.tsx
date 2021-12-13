@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, StyleSheet, View } from 'react-native' // , Modal
+import { StyleSheet, View, ScrollView } from 'react-native'
 import Modal from '../ModalWrap'
 import FastImage from 'react-native-fast-image'
 import { IconButton } from 'react-native-paper'
@@ -7,10 +7,11 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import Swiper from 'react-native-swiper'
 import Ionicon from 'react-native-vector-icons/Ionicons'
 import { isIphoneX, getBottomSpace } from 'react-native-iphone-x-helper'
-import ViewMoreText from 'react-native-view-more-text'
 import Toast from 'react-native-simple-toast'
+import ReadMore from 'react-native-read-more-text'
+
 import { useStores, useTheme } from 'store'
-import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from 'lib/constants'
+import { SCREEN_WIDTH, STATUS_BAR_HEIGHT } from 'lib/constants'
 import { parseLDAT } from 'lib/ldat'
 import { useCachedEncryptedFile } from 'views/chat/msg/hooks'
 import Button from 'views/common/Button'
@@ -59,7 +60,7 @@ function SwipeItem(props) {
   const [onlyOneClick, setOnlyOnClick] = useState(false)
   const [buying, setBuying] = useState(false)
   const [pricePerMessage, setPricePerMessage] = useState(0)
-  const { meme, ui, chats, msg, user, details } = useStores()
+  const { chats, msg, user, details } = useStores()
   const theme = useTheme()
 
   const ldat = parseLDAT(media_token)
@@ -148,26 +149,8 @@ function SwipeItem(props) {
     Toast.showWithGravity('Boosted!', Toast.LONG, Toast.CENTER)
   }
 
-  const h = SCREEN_HEIGHT - STATUS_BAR_HEIGHT - 60
   const w = SCREEN_WIDTH
-
   const showBoostRow = boosts_total_sats ? true : false
-
-  function renderViewMore(onPress) {
-    return (
-      <Typography onPress={onPress} color={theme.darkGrey} fw='600'>
-        more
-      </Typography>
-    )
-  }
-
-  function renderViewLess(onPress) {
-    return (
-      <Typography onPress={onPress} color={theme.darkGrey} fw='600'>
-        less
-      </Typography>
-    )
-  }
 
   return (
     <View style={{ ...styles.swipeItem }}>
@@ -205,16 +188,6 @@ function SwipeItem(props) {
               </Typography>
             </View>
           )}
-          {/* <View
-            style={{
-              // width: w,
-              // height: photoH,
-              // height: 200,
-              justifyContent: 'center',
-              alignItems: 'center'
-              // height: w
-            }}
-          > */}
           <FastImage
             resizeMode='cover'
             source={{ uri: data || uri }}
@@ -227,36 +200,22 @@ function SwipeItem(props) {
               height: photoH,
             }}
           />
-          {/* </View> */}
         </View>
       )}
 
       <View style={{ ...styles.footer }}>
-        <View style={{ ...styles.row, marginBottom: 10 }}>
-          {hasContent && (
-            <>
-              {message_content.length > 50 ? (
-                <ViewMoreText
-                  numberOfLines={1}
-                  renderViewMore={renderViewMore}
-                  renderViewLess={renderViewLess}
-                >
-                  <Typography size={16} color={theme.white}>
-                    {message_content}
-                  </Typography>
-                </ViewMoreText>
-              ) : (
-                <Typography size={16} color={theme.white}>
-                  {message_content}
-                </Typography>
-              )}
-            </>
-          )}
-        </View>
+        {hasContent && (
+          <View style={{ ...styles.msgContent, backgroundColor: theme.transparent }}>
+            <ScrollView style={{ ...styles.msgScroll }}>
+              <ReadMore numberOfLines={3}>
+                <Typography color={theme.white}>{message_content}</Typography>
+              </ReadMore>
+            </ScrollView>
+          </View>
+        )}
 
-        <View style={styles.row}>
+        <View style={{ ...styles.row, ...styles.boostRow }}>
           {!isMe ? <Boost onPress={onBoostPress} /> : <View></View>}
-
           <View>
             {showBoostRow && <BoostDetails {...props} myAlias={user.alias} myid={user.myid} />}
           </View>
@@ -290,18 +249,15 @@ const styles = StyleSheet.create({
   footer: {
     position: 'absolute',
     bottom: isIphoneX() ? getBottomSpace() : 15,
-    // height: isIphoneX() ? 100 + getBottomSpace() : 90,
     width: '100%',
     paddingTop: 10,
-    paddingRight: 16,
-    paddingLeft: 16,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   closeButton: {
     position: 'absolute',
-    top: STATUS_BAR_HEIGHT + 1,
+    top: STATUS_BAR_HEIGHT + (isIphoneX() ? 16 : 2),
     right: 0,
     zIndex: 1,
   },
@@ -341,5 +297,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 4,
     overflow: 'hidden',
+  },
+  msgContent: {
+    paddingTop: 20,
+    flex: 1,
+    width: '100%',
+  },
+  msgScroll: {
+    flex: 1,
+    display: 'flex',
+    overflow: 'scroll',
+    maxHeight: 250,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+  },
+  boostRow: {
+    paddingTop: 10,
+    paddingRight: 16,
+    paddingLeft: 16,
   },
 })

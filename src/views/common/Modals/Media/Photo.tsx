@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { StyleSheet, View, Modal } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import { IconButton } from 'react-native-paper'
+import { isIphoneX } from 'react-native-iphone-x-helper'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useTheme } from 'store'
 import { SCREEN_WIDTH, SCREEN_HEIGHT, STATUS_BAR_HEIGHT } from 'lib/constants'
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     position: 'absolute',
-    top: STATUS_BAR_HEIGHT + 1,
+    top: STATUS_BAR_HEIGHT + (isIphoneX() ? 16 : 2),
     right: 0,
     zIndex: 1,
   },

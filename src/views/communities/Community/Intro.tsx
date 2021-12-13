@@ -22,7 +22,7 @@ const Intro = ({ tribe }) => {
   const [uploading, setUploading] = useState(false)
   const [uploadPercent, setUploadedPercent] = useState(0)
   const [photoModal, setPhotoModal] = useState(false)
-  const [tribePhoto, setTribePhoto] = useState('')
+  const [community, setCommunity] = useState(tribe)
 
   async function tookPic(img) {
     setUploading(true)
@@ -66,10 +66,19 @@ const Intro = ({ tribe }) => {
         let json = resp.json()
 
         if (json.muid) {
-          setTribePhoto(`https://${server.host}/public/${json.muid}`)
+          const tribePhoto = `https://${server.host}/public/${json.muid}`
+
+          const communityToUpdate = {
+            ...community,
+            img: tribePhoto,
+          }
+
+          setCommunity({
+            ...communityToUpdate,
+          })
 
           await chats.editTribe({
-            ...tribe,
+            ...communityToUpdate,
             id: tribe.chat.id,
           })
         }
@@ -86,18 +95,16 @@ const Intro = ({ tribe }) => {
     navigate('CommunityMembers', { tribe })
   }
 
-  if (tribePhoto) tribe.img = tribePhoto
-
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
       <View style={{ ...styles.header }}>
         <View style={{ ...styles.avatarWrap }}>
           <AvatarEdit
             onPress={() => {
-              if (tribe.owner) {
+              if (community.owner) {
                 setImageDialog(true)
               } else {
-                if (tribe.img) {
+                if (community.img) {
                   setPhotoModal(true)
                   setTimeout(() => {
                     setTint('dark')
@@ -107,12 +114,12 @@ const Intro = ({ tribe }) => {
             }}
             uploading={uploading}
             uploadPercent={uploadPercent}
-            display={!tribe.owner}
+            display={!community.owner}
             size={80}
             round={50}
             top='40%'
           >
-            <Avatar photo={tribe.img} size={80} round={50} />
+            <Avatar photo={community.img} size={80} round={50} />
           </AvatarEdit>
         </View>
 
@@ -125,13 +132,13 @@ const Intro = ({ tribe }) => {
             }}
           >
             <Typography size={22} fw='600' numberOfLines={1}>
-              {tribe.name}
+              {community.name}
             </Typography>
-            {!tribe.owner && (
+            {!community.owner && (
               <>
                 <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
                 <Typography size={14} fw='500' color={theme.subtitle} numberOfLines={1}>
-                  {tribe.owner_alias?.trim()}
+                  {community.owner_alias?.trim()}
                 </Typography>
               </>
             )}
@@ -151,7 +158,7 @@ const Intro = ({ tribe }) => {
             >
               <MaterialIcon name='public' size={18} color={theme.grey} />
               <Typography size={14} style={{ paddingLeft: 4 }}>
-                {tribe.private ? 'Private Community' : 'Public Community'}
+                {community.private ? 'Private Community' : 'Public Community'}
               </Typography>
               <View style={{ ...styles.dot, backgroundColor: theme.text }}></View>
             </View>
@@ -165,7 +172,7 @@ const Intro = ({ tribe }) => {
               onPress={onCommunityMembersPress}
             >
               <Typography size={14} fw='600' numberOfLines={1}>
-                {tribe.member_count}{' '}
+                {community.member_count}{' '}
               </Typography>
               <Typography size={14} numberOfLines={1} style={{ flexShrink: 1 }}>
                 members
@@ -181,7 +188,7 @@ const Intro = ({ tribe }) => {
             {/* )} */}
           </View>
 
-          <TribeActions tribe={tribe} />
+          <TribeActions tribe={community} />
         </View>
       </View>
       <ImageDialog
@@ -197,7 +204,7 @@ const Intro = ({ tribe }) => {
           setPhotoModal(false)
           setTint(theme.dark ? 'dark' : 'light')
         }}
-        photo={tribe.img}
+        photo={community.img}
       />
     </View>
   )

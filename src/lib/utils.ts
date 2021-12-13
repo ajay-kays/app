@@ -1,4 +1,5 @@
 export const hasWhiteSpace = (s) => /\s/g.test(s)
+export const isAlphaNumeric = (s) => /^[0-9a-z]+$/g.test(s)
 
 export const extractURLSearchParams = (url: string) => {
   let regex = /[?&]([^=#]+)=([^&#]*)/g

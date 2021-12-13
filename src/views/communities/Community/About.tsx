@@ -36,7 +36,7 @@ const About = ({ tribe }) => {
               History
             </Typography>
             <Typography size={13} color={theme.darkGrey}>
-              Tribe created on {createdDate}. Last Active {lastActiveDate}
+              Community created on {createdDate}. Last Active {lastActiveDate}
             </Typography>
           </View>
         </View>
@@ -67,9 +67,12 @@ const Tags = observer((props: any) => {
   const [topicsEditDialog, setTopicsEditDialog] = useState(false)
 
   async function finish(tags) {
-    theTribe.tags = tags
-    await chats.editTribe({
+    const communityToUpdate = {
       ...theTribe,
+      tags,
+    }
+    await chats.editTribe({
+      ...communityToUpdate,
       id: theTribe.chat.id,
     })
 

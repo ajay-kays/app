@@ -142,9 +142,11 @@ export const ChatsStoreModel = types
       comms.forEach((comm) => {
         const grab = self.communities.get(comm.uuid)
         if (!grab) return
+
         commsToReturn.push({
           ...grab,
           joined: grab.joined,
+          owner: grab.owner,
         })
       })
 

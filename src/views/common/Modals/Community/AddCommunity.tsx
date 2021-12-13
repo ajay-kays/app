@@ -75,7 +75,7 @@ function AddTribe() {
     } else if (next === 2) {
       return 'Add Photo'
     } else if (next === 3) {
-      return 'Add Community Values'
+      return 'Add Community Topics'
     }
   }
 

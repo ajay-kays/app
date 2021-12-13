@@ -1,6 +1,7 @@
 import { ChatsStore } from '../chats-store'
 import { relay } from 'api'
 import { display, log } from 'lib/logging'
+import { normalizeChat } from 'store/normalize'
 
 export const editTribe = async (self: ChatsStore, params: EditCommunityParams) => {
   display({
@@ -8,6 +9,7 @@ export const editTribe = async (self: ChatsStore, params: EditCommunityParams) =
     preview: 'Attempting editTribe with params',
     value: params,
   })
+
   const {
     id,
     name,
@@ -38,8 +40,12 @@ export const editTribe = async (self: ChatsStore, params: EditCommunityParams) =
     app_url: app_url || '',
     feed_url: feed_url || '',
   })
+
   if (!r) return
-  self.gotChat(r)
+  const chat = normalizeChat(r)
+  if (chat) {
+    self.gotChat(chat)
+  }
   return r
 }
 

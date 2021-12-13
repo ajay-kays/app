@@ -2,7 +2,7 @@ import moment from 'moment'
 import url from 'url'
 import * as linkify from 'linkifyjs'
 import { constants } from 'lib/constants'
-import { hasWhiteSpace } from 'lib/utils'
+import { hasWhiteSpace, isAlphaNumeric } from 'lib/utils'
 
 export function calcExpiry(props) {
   const isInvoice = props.type === constants.message_types.invoice
@@ -52,7 +52,12 @@ export const verifyPubKey = (messageContent: string): any => {
   const words = messageContent.split(' ')
 
   const isValid = (text) => {
-    return text.length === 66 && !hasWhiteSpace(text) && !text.startsWith('boost')
+    return (
+      text.length === 66 &&
+      !hasWhiteSpace(text) &&
+      !text.startsWith('boost') &&
+      isAlphaNumeric(text)
+    )
   }
 
   if (words.length === 1) {

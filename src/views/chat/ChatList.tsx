@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { observer } from 'mobx-react-lite'
-import { StyleSheet, View, TouchableOpacity, FlatList, Dimensions } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback'
 import { useChats, useChatRow, useSearchChats, useStores, useTheme } from 'store'
@@ -9,6 +9,7 @@ import { useChatPicSrc } from 'views/utils/picSrc'
 import { Avatar, RefreshLoading, Typography } from 'views/common'
 import { navigate } from 'nav'
 import { display } from 'lib/logging'
+import { SCREEN_WIDTH } from 'lib/constants'
 
 function ChatList(props) {
   const { ui, user, contacts, msg, details, chats } = useStores()
@@ -99,7 +100,6 @@ function ChatRowFC(props) {
 
   const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
 
-  const w = Math.round(Dimensions.get('window').width)
   return (
     <TouchableOpacity
       style={{
@@ -114,7 +114,7 @@ function ChatRowFC(props) {
       </View>
       <View style={{ ...styles.chatContent }}>
         <View style={styles.top}>
-          <Typography size={16} fw='500'>
+          <Typography size={16} fw='500' numberOfLines={1} style={{ maxWidth: SCREEN_WIDTH - 190 }}>
             {name}
           </Typography>
           <Typography size={13} style={{ ...styles.chatDate }} color={theme.subtitle}>
@@ -129,7 +129,7 @@ function ChatRowFC(props) {
               fw={hasUnseen ? '500' : '400'}
               size={13}
               style={{
-                maxWidth: w - 150,
+                maxWidth: SCREEN_WIDTH - 150,
               }}
             >
               {lastMsgText}

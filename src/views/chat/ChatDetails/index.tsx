@@ -141,6 +141,8 @@ function ChatDetails({ route }) {
   const showValueSlider = isTribe && !isTribeAdmin && group && group.feed_url ? true : false
 
   async function exitGroup() {
+    EE.emit(LEFT_GROUP)
+
     setLoading(true)
     try {
       await chats.exitGroup(group.id)
@@ -148,7 +150,6 @@ function ChatDetails({ route }) {
       reportError(e)
     }
     setLoading(false)
-    EE.emit(LEFT_GROUP)
   }
 
   function onExitGroup() {
@@ -186,7 +187,7 @@ function ChatDetails({ route }) {
             <View style={styles.groupInfoLeft}>
               {group && <Avatar size={50} aliasSize={18} big alias={group.name} photo={uri} />}
               <View style={styles.groupInfoText}>
-                <Typography size={16} style={{ marginBottom: 4 }}>
+                <Typography size={16} style={{ marginBottom: 4 }} numberOfLines={1}>
                   {group.name}
                 </Typography>
                 <Typography
