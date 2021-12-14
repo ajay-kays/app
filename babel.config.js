@@ -10,6 +10,7 @@ module.exports = {
           dev: './src/dev',
           lib: './src/lib',
           nav: './src/nav',
+          realm: './src/realm',
           services: './src/services',
           store: './src/store',
           theme: './src/theme',
