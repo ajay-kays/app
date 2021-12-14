@@ -3,6 +3,7 @@ import { RootStoreModel, RootStore } from './root-store'
 import { Environment } from '../environment'
 // import * as storage from '../../utils/storage'
 import storage from '@react-native-async-storage/async-storage'
+import { initialLoad, updateRealmMsg } from 'services/realm/exports'
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -61,10 +62,23 @@ export async function setupRootStore() {
     secondsSinceLastSent = dif / 1000
 
     if (!lastSaved || secondsSinceLastSent > SAVE_INTERVAL) {
+      const updateRealmWith = {
+        messages: rootStore.msg.messages,
+        lastSeen: rootStore.msg.lastSeen,
+        lastFetched: Date.now(),
+      }
+      updateRealmMsg(updateRealmWith)
+
       lastSaved = new Date()
       storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
-      console.log('Saved', lastSaved)
+      // console.log('Saved', lastSaved)
     }
+  })
+
+  initialLoad({
+    contacts: rootStore.contacts.contactsArray,
+    chats: rootStore.chats.chatsArray,
+    msg: rootStore.msg,
   })
 
   return rootStore

@@ -2,7 +2,7 @@
  * Chats model for realm
  */
 
- export default {
+export default {
   name: 'Chats',
   properties: {
     app_url: { type: 'string', default: '', optional: true },
@@ -29,5 +29,5 @@
     unlisted: { type: 'int', default: 0 },
     updated_at: { type: 'string', default: '' },
     uuid: { type: 'string', default: '' },
-  }
+  },
 }

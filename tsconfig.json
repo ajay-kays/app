@@ -66,8 +66,6 @@
       "lib/*": ["src/lib/*"],
       "nav": ["src/nav"],
       "nav/*": ["src/nav/*"],
-      "realm": ["src/realm"],
-      "realm/*": ["src/realm/*"],
       "services": ["src/services"],
       "services/*": ["src/services/*"],
       "store": ["src/store"],
