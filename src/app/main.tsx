@@ -145,6 +145,7 @@ export default function Main() {
       await contacts.getContacts()
     }
 
+    await msg.getMessages2()
     await msg.getDirectMessages() // should we wait for this or not
 
     await sleep(500)
