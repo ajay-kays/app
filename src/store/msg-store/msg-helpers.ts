@@ -145,6 +145,11 @@ const typesToDecrypt = [
   constants.message_types.boost,
 ]
 export async function decodeMessages(messages: Msg[]) {
+  // display({
+  //   name: 'decodeMessages',
+  //   preview: `${messages.length} messages [getMessages2]`,
+  //   value: { messages },
+  // })
   const msgs: any[] = []
   for (const m of messages) {
     if (typesToDecrypt.includes(m.type)) {
@@ -166,6 +171,12 @@ export async function decodeMessages(messages: Msg[]) {
       msgs.push(m)
     }
   }
+  // display({
+  //   name: 'decodeMessages',
+  //   preview: `RETUTNINGFFFFFFF getMessages2`,
+  //   value: { msgs },
+  //   important: true,
+  // })
   return msgs
 }
 
