@@ -13,6 +13,8 @@ interface Data {
   messages: { [k: number]: Msg[] }
   lastSeen: { [k: number]: number }
   lastFetched: number
+  oldestMessage: number | null
+  newestMessage: number | null
 }
 
 export function getRealmMessages() {
@@ -20,11 +22,14 @@ export function getRealmMessages() {
     messages: {},
     lastSeen: {},
     lastFetched: new Date().getTime(),
+    oldestMessage: null,
+    newestMessage: null,
   }
   const hasRealmData = hasData()
   if (hasRealmData.msg) {
     const [realmMsg] = get({ schema: 'Msg' })
     const parsedData = JSON.parse(JSON.stringify(realmMsg))
+
     if (parsedData.messages) {
       const organizedMsgs = orgMsgsFromRealm(parsedData.messages)
       if (parsedData.lastSeen.length) {
@@ -35,6 +40,25 @@ export function getRealmMessages() {
         ret.lastSeen = obj
       }
       ret.messages = organizedMsgs
+
+      const sortedMsgs = parsedData.messages.sort((a, b) => {
+        const bd: any = new Date(b.created_at)
+        const ad: any = new Date(a.created_at)
+        return bd - ad
+      })
+      // display({
+      //   name: 'getRealmMessages',
+      //   preview: 'parsedData+sortedMsgs for getRealmMessages to getMessages2',
+      //   value: {
+      //     parsedData,
+      //     sortedMsgs,
+      //     oldest: new Date(sortedMsgs[sortedMsgs.length - 1].created_at).getTime(),
+      //     newest: new Date(sortedMsgs[0].created_at).getTime(),
+      //   },
+      //   important: true,
+      // })
+      ret.oldestMessage = new Date(sortedMsgs[sortedMsgs.length - 1].created_at).getTime()
+      ret.newestMessage = new Date(sortedMsgs[0].created_at).getTime()
     }
   }
   return ret
