@@ -241,12 +241,11 @@ export const MsgStoreModel = types
     },
     lengthOfAllMessages(): number {
       let l = 0
-      for (let i in self.messages.values()) {
-        console.log(i)
+      const msgs = Array.from(self.messages.values())
+      for (let i in msgs) {
+        l += msgs[i].length
       }
-      // self.messages.values().forEach((msgs) => {
-      //   l += msgs.length
-      // })
+      console.log('lengthOfAllMessages:', l)
       return l
     },
     msgsForChatroomByUuid(uuid: string) {
