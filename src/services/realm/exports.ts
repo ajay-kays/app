@@ -116,14 +116,19 @@ export function updateRealmMsg(data: any) {
 
     display({
       name: 'updateRealmMsg',
-      preview: 'What we got?',
-      important: true,
+      preview: `Updating realm with ${msgStructure.messages.length} messages`,
       value: { hasRealmData, msgStructure },
     })
 
     update({
       schema: 'Msg',
       body: { ...msgStructure },
+    })
+
+    display({
+      name: 'updateRealmMsg',
+      preview: `Updated realm with ${msgStructure.messages.length} messages.`,
+      value: { hasRealmData, msgStructure },
     })
   } else {
     display({
