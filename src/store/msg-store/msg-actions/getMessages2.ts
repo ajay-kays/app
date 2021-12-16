@@ -105,8 +105,17 @@ export const getMessages2 = async (self: MsgStore) => {
   }
 
   // Regardless of whether new messages were found or not, let's now go back and see ALL messages.
-  const newRoute = 'messages'
+  const newRoute = 'messages?limit=20000'
   const r2 = await relay?.get(newRoute)
+  if (!r2) {
+    display({
+      name: 'getMessages2',
+      preview: `All messages check failed!`,
+      important: true,
+    })
+    return
+  }
+
   display({
     name: 'getMessages2',
     preview: `Returned from all messages check with...`,
@@ -124,6 +133,14 @@ export const getMessages2 = async (self: MsgStore) => {
         important: true,
         value: { totalRealmMessages, totalRelayMessages },
       })
+    } else {
+      display({
+        name: 'getMessages2',
+        preview: `Missing messages! ${totalRelayMessages} in relay, ${totalRealmMessages} in realm.`,
+        important: true,
+        value: { totalRealmMessages, totalRelayMessages },
+      })
+      // Now we format this entire blob and throw into the thing
     }
   }
 }

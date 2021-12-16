@@ -49,7 +49,10 @@ export function useCommunityMediaType(msgs, type) {
 
 export function useOwnedCommunities(tribes) {
   // tribes = tribes.filter(t => t.owner)
+  console.log('tribes before:', tribes.length)
   tribes = tribes.filter((t) => t.joined)
+  console.log('tribes after:', tribes.length)
+  // console.log('returning tribes:', tribes)
   return useSortTribesByLastMsg(tribes)
 
   // return tribes.sort((a, b) => {

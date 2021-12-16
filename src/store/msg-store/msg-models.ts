@@ -2,7 +2,7 @@ import { Platform } from 'react-native'
 import { Instance, types } from 'mobx-state-tree'
 import { ChatModel } from 'store/chats-store'
 
-export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 1000
+export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 500 // 1000
 export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
 
 export const BoostMsgModel = types.model('BoostMsg').props({})
