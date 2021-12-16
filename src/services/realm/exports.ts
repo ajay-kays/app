@@ -18,6 +18,7 @@ interface Data {
 }
 
 export function getRealmMessages() {
+  let parsedData: any = null
   const ret: Data = {
     messages: {},
     lastSeen: {},
@@ -28,7 +29,7 @@ export function getRealmMessages() {
   const hasRealmData = hasData()
   if (hasRealmData.msg) {
     const [realmMsg] = get({ schema: 'Msg' })
-    const parsedData = JSON.parse(JSON.stringify(realmMsg))
+    parsedData = JSON.parse(JSON.stringify(realmMsg))
 
     if (parsedData.messages) {
       const organizedMsgs = orgMsgsFromRealm(parsedData.messages)
@@ -61,6 +62,11 @@ export function getRealmMessages() {
       ret.newestMessage = new Date(sortedMsgs[0].created_at).getTime()
     }
   }
+  display({
+    name: 'getRealmMessages',
+    preview: `Got ${parsedData.messages?.length ?? 0} realm messages`,
+    value: { ret, parsedData },
+  })
   return ret
 }
 
