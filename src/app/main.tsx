@@ -146,14 +146,14 @@ export default function Main() {
     }
 
     await msg.getMessages2()
-    await msg.getDirectMessages() // should we wait for this or not
+    // await msg.getDirectMessages() // should we wait for this or not
 
     await sleep(500)
     details.getBalance()
     await sleep(500)
     meme.authenticateAll()
 
-    await msg.getRecentMessages()
+    // await msg.getRecentMessages()
     msg.initLastSeen()
     ui.setLoadingHistory(false)
   }
