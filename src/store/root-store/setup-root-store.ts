@@ -4,6 +4,7 @@ import { Environment } from '../environment'
 // import * as storage from '../../utils/storage'
 import storage from '@react-native-async-storage/async-storage'
 import { initialLoad, updateRealmMsg } from 'services/realm/exports'
+import { display } from 'lib/logging'
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -53,7 +54,8 @@ export async function setupRootStore() {
 
   let lastSaved = new Date()
   let secondsSinceLastSent: number | null = null
-  let SAVE_INTERVAL = 5
+  let SAVE_INTERVAL = 6
+  let numMessagesLastUpdated = 0
 
   // track changes & save to storage
   onSnapshot(rootStore, (snapshot) => {
@@ -62,15 +64,25 @@ export async function setupRootStore() {
     secondsSinceLastSent = dif / 1000
 
     if (!lastSaved || secondsSinceLastSent > SAVE_INTERVAL) {
-      const updateRealmWith = {
-        messages: rootStore.msg.messages,
-        lastSeen: rootStore.msg.lastSeen,
-        lastFetched: Date.now(),
-      }
-      updateRealmMsg(updateRealmWith)
-
       lastSaved = new Date()
       storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
+
+      const len = rootStore.msg.lengthOfAllMessages()
+      if (len > numMessagesLastUpdated) {
+        const updateRealmWith = {
+          messages: rootStore.msg.messages,
+          lastSeen: rootStore.msg.lastSeen,
+          lastFetched: Date.now(),
+        }
+        updateRealmMsg(updateRealmWith)
+        numMessagesLastUpdated = len
+      } else {
+        display({
+          name: 'onSnapshot',
+          preview: `Skipping realm update - ${len} messages in both realm and store`,
+        })
+      }
+
       // console.log('Saved', lastSaved)
     }
   })
