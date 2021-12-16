@@ -136,10 +136,26 @@ export const getMessages2 = async (self: MsgStore) => {
     } else {
       display({
         name: 'getMessages2',
-        preview: `Missing messages! ${totalRelayMessages} in relay, ${totalRealmMessages} in realm.`,
+        preview: `Missing messages! ${totalRelayMessages} in relay, ${totalRealmMessages} in realm. RESTORING`,
         important: true,
         value: { totalRealmMessages, totalRelayMessages },
       })
+
+      const updateRealmWith = {
+        messages: self.messages,
+        lastSeen: self.lastSeen,
+        lastFetched: Date.now(),
+      }
+
+      await self.batchDecodeMessages(r2.new_messages)
+      display({
+        name: 'getMessages2',
+        preview: `DONE! UPDATING REALM AGAIN`,
+        important: true,
+        value: { updateRealmWith },
+      })
+
+      updateRealmMsg(updateRealmWith)
       // Now we format this entire blob and throw into the thing
     }
   }

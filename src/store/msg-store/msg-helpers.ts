@@ -254,9 +254,9 @@ export function putIn(orged, msg, chatID) {
       // Add to the beginning of the chat array a skinnier version of this message (no chat obj or remote_message_content)
       orged[chatID].unshift(skinny(msg))
       // If this chatroom now exceeds the number of max_msgs, remove one
-      if (orged[chatID].length > MAX_MSGS_PER_CHAT) {
-        orged[chatID].pop() // remove the oldest msg if too many
-      }
+      // if (orged[chatID].length > MAX_MSGS_PER_CHAT) {
+      //   orged[chatID].pop() // remove the oldest msg if too many
+      // }
     } else {
       orged[chatID][idx] = skinny(msg)
     }
