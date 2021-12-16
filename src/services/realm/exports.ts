@@ -15,6 +15,7 @@ interface Data {
   lastFetched: number
   oldestMessage: number | null
   newestMessage: number | null
+  totalMessages: number
 }
 
 export function getRealmMessages() {
@@ -62,11 +63,13 @@ export function getRealmMessages() {
       ret.newestMessage = new Date(sortedMsgs[0].created_at).getTime()
     }
   }
+  const totalMessages = parsedData.messages?.length ?? 0
   display({
     name: 'getRealmMessages',
-    preview: `Got ${parsedData.messages?.length ?? 0} realm messages`,
+    preview: `Got ${totalMessages} realm messages`,
     value: { ret, parsedData },
   })
+  ret.totalMessages = totalMessages
   return ret
 }
 

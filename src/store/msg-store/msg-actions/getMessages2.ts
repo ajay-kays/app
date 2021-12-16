@@ -4,21 +4,24 @@ import { relay } from 'api'
 import { getRealmMessages, hasData, initialLoad, updateRealmMsg } from 'services/realm/exports'
 import { MsgStore } from '../msg-store'
 
+// First we check Realm for the most recent message and check relay to see if there are any new messages since then.
+// Then we make sure we have all messages from relay stored in Realm. (Do this check only once every how often...?)
 export const getMessages2 = async (self: MsgStore) => {
+  // First we ensure we have all messages from relay in Realm.
+  const len = self.lengthOfAllMessages()
+
   display({
     name: 'getMessages2',
-    preview: 'Beginning new message fetching.',
-    important: true,
+    preview: `${len} current messages. Checking for new messages...`,
   })
 
   // Check Realm for existing data.
   const hasRealmData = hasData()
-  display({
-    name: 'getMessages2',
-    preview: `hasRealmData: [con] ${hasRealmData.contacts}, [ch] ${hasRealmData.chats}, [msg] ${hasRealmData.msg}`,
-    important: true,
-    value: { hasRealmData },
-  })
+  // display({
+  //   name: 'getMessages2',
+  //   preview: `hasRealmData: [con] ${hasRealmData.contacts}, [ch] ${hasRealmData.chats}, [msg] ${hasRealmData.msg}`,
+  //   value: { hasRealmData },
+  // })
 
   if (hasRealmData.msg) {
     // Messages exist. Let's get them.
@@ -34,17 +37,17 @@ export const getMessages2 = async (self: MsgStore) => {
     display({
       name: 'getMessages2',
       preview: `Messages fetched. Newest: ${start}`,
-      important: true,
+      // important: true,
       value: { rs },
     })
 
     route += `?date=${start}`
-    display({
-      name: 'getMessages2',
-      preview: route,
-      important: true,
-      value: { route },
-    })
+    // display({
+    //   name: 'getMessages2',
+    //   preview: route,
+    //   important: true,
+    //   value: { route },
+    // })
 
     const r = await relay?.get(route)
 
@@ -86,7 +89,7 @@ export const getMessages2 = async (self: MsgStore) => {
     } else {
       display({
         name: 'getMessages2',
-        preview: `No new messages.`,
+        preview: `No new messages from relay.`,
         important: true,
         value: { r },
       })
@@ -99,5 +102,28 @@ export const getMessages2 = async (self: MsgStore) => {
       important: true,
       value: { hasRealmData },
     })
+  }
+
+  // Regardless of whether new messages were found or not, let's now go back and see ALL messages.
+  const newRoute = 'messages'
+  const r2 = await relay?.get(newRoute)
+  display({
+    name: 'getMessages2',
+    preview: `Returned from all messages check with...`,
+    value: { r2 },
+  })
+
+  if (r2.new_messages && r2.new_messages.length) {
+    const totalRelayMessages = r2.new_messages.length
+    const realmMessages = getRealmMessages()
+    const totalRealmMessages = realmMessages.totalMessages
+    if (totalRelayMessages <= totalRealmMessages) {
+      display({
+        name: 'getMessages2',
+        preview: `All relay messages loaded into Realm!`,
+        important: true,
+        value: { totalRealmMessages, totalRelayMessages },
+      })
+    }
   }
 }

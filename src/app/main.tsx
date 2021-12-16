@@ -136,7 +136,7 @@ export default function Main() {
     display({
       name: 'loadHistory',
       preview: `In loadHistory w skipLoadingContacts ${skipLoadingContacts}`,
-      important: true,
+      // important: true,
     })
 
     ui.setLoadingHistory(true)
