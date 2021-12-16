@@ -32,7 +32,7 @@ export function getRealmMessages() {
     const [realmMsg] = get({ schema: 'Msg' })
     parsedData = JSON.parse(JSON.stringify(realmMsg))
 
-    if (parsedData.messages) {
+    if (parsedData.messages && parsedData.messages.length) {
       const organizedMsgs = orgMsgsFromRealm(parsedData.messages)
       if (parsedData.lastSeen.length) {
         const obj = {}
