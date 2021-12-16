@@ -10,6 +10,12 @@ import { RootStore } from 'store'
 const MSGS_PER_CHAT = 350
 
 export const getMessagesForChat = async (self: MsgStore, chatId: number, limit: number = 0) => {
+  display({
+    name: 'getMessagesForChat',
+    preview: `SKIPPING`,
+    important: true,
+  })
+  return
   if (!chatId) return
 
   const msgLimit = Math.max(MSGS_PER_CHAT, limit)
