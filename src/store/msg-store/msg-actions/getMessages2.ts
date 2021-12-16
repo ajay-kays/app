@@ -23,19 +23,21 @@ export const getMessages2 = async (self: MsgStore) => {
   if (hasRealmData.msg) {
     // Messages exist. Let's get them.
     const rs = getRealmMessages()
+
+    // Determine the dates of the newest messages.
+    const newestMessage = rs.newestMessage as number
+
+    // See if there were any new messages since then.
+    let route = 'messages'
+    const start = moment.utc(newestMessage + 1000).format('YYYY-MM-DD%20HH:mm:ss')
+
     display({
       name: 'getMessages2',
-      preview: `Messages exist. Fetched...`,
+      preview: `Messages fetched. Newest: ${start}`,
       important: true,
       value: { rs },
     })
 
-    // Determine the dates of the newest messages.
-    const newestMessage = rs.newestMessage
-
-    // See if there were any new messages since then.
-    let route = 'messages'
-    const start = moment(newestMessage).format('YYYY-MM-DD%20HH:mm:ss')
     route += `?date=${start}`
     display({
       name: 'getMessages2',
