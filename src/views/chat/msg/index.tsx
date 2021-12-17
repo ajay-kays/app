@@ -115,7 +115,7 @@ export default function MsgRow(props) {
           stopRightSwipe={-60}
           onRowOpen={onRowOpenHandler}
           onRowDidOpen={onRowDidOpenHandler}
-          // onRowClose={onRowCloseHandler}
+        // onRowClose={onRowCloseHandler}
         >
           <View />
           <View
@@ -179,6 +179,7 @@ function MsgBubble(props) {
 
   const isInvoice = props.type === constants.message_types.invoice
   const isPaid = props.status === constants.statuses.confirmed
+  const isTribeOwner = props?.chat?.owner_pubkey === props.myPubkey
   const isMe = props.sender === props.myid
   const isDeleted = props.status === constants.statuses.deleted
 
@@ -255,6 +256,7 @@ function MsgBubble(props) {
     >
       <Popup
         id={props.id}
+        isTribeOwner={isTribeOwner}
         isMe={isMe}
         messageContent={props.message_content}
         onRequestCloseHandler={onRequestCloseHandler}
