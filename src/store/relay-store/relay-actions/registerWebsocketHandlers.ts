@@ -256,10 +256,5 @@ export const registerWebsocketHandlers = async (self: RelayStore) => {
 
   registerWsHandlers(handlers)
 
-  display({
-    name: 'registerWsHdlrs',
-    preview: 'Websocket handlers registered.',
-  })
-
   return true
 }

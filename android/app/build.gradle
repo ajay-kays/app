@@ -79,11 +79,11 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: true,  // clean and rebuild if changing
+    enableHermes: false,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 apply plugin: "com.bugsnag.android.gradle"
 
 /**
@@ -141,7 +141,7 @@ android {
         applicationId "com.getzion.zion"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11704
+        versionCode 11705
         versionName "1.17.0"
         missingDimensionStrategy 'react-native-camera', 'general'
     }

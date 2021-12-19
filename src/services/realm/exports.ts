@@ -1,0 +1,214 @@
+import { hasData, get, getRealmMessagesForChat, update, initialLoad } from './api'
+import { Platform } from 'react-native'
+import { Msg, orgMsgsFromRealm } from 'store/msg-store'
+import { display } from 'lib/logging'
+// import { Msg } from '../store/msg'
+// import { orgMsgsFromRealm } from '../store/msgHelpers'
+
+export { hasData, initialLoad, getRealmMessagesForChat }
+/***
+ * Update Msg schema in realm
+ ***/
+interface Data {
+  messages: { [k: number]: Msg[] }
+  lastSeen: { [k: number]: number }
+  lastFetched: number
+  oldestMessage: number | null
+  newestMessage: number | null
+  totalMessages: number
+}
+
+// export function getRealmMessagesForChatId(id: number) {
+//   const rm = getRealmMessages()
+//   const messages = rm.messages[id].slice(0, 500)
+//   display({
+//     name: 'getRealmMessagesForChatId',
+//     preview: `Fetching realm messages for chat id ${id}. All:`,
+//     important: true,
+//     value: { rm, messages },
+//   })
+//   return messages
+// }
+
+export function getRealmMessagesForChatId2(id: number) {
+  const rm = getRealmMessages()
+  const messages = rm.messages[id].slice(0, 500)
+  display({
+    name: 'getRealmMessagesForChatId',
+    preview: `Fetching realm messages for chat id ${id}. All:`,
+    important: true,
+    value: { rm, messages },
+  })
+  return messages
+}
+
+export function getRealmMessages() {
+  let parsedData: any = null
+  const ret: Data = {
+    messages: {},
+    lastSeen: {},
+    lastFetched: new Date().getTime(),
+    oldestMessage: null,
+    newestMessage: null,
+    totalMessages: 0,
+  }
+  const hasRealmData = hasData()
+  if (hasRealmData.msg) {
+    const [realmMsg] = get({ schema: 'Msg' })
+    parsedData = JSON.parse(JSON.stringify(realmMsg))
+
+    if (parsedData.messages && parsedData.messages.length) {
+      const organizedMsgs = orgMsgsFromRealm(parsedData.messages)
+      if (parsedData.lastSeen.length) {
+        const obj = {}
+        parsedData.lastSeen.forEach((ls: any) => {
+          obj[ls.key] = ls.seen
+        })
+        ret.lastSeen = obj
+      }
+      ret.messages = organizedMsgs
+
+      const sortedMsgs = parsedData.messages.sort((a, b) => {
+        const bd: any = new Date(b.created_at)
+        const ad: any = new Date(a.created_at)
+        return bd - ad
+      })
+      // display({
+      //   name: 'getRealmMessages',
+      //   preview: 'parsedData+sortedMsgs for getRealmMessages to getMessages2',
+      //   value: {
+      //     parsedData,
+      //     sortedMsgs,
+      //     oldest: new Date(sortedMsgs[sortedMsgs.length - 1].created_at).getTime(),
+      //     newest: new Date(sortedMsgs[0].created_at).getTime(),
+      //   },
+      //   important: true,
+      // })
+      ret.oldestMessage = new Date(sortedMsgs[sortedMsgs.length - 1].created_at).getTime()
+      ret.newestMessage = new Date(sortedMsgs[0].created_at).getTime()
+    }
+  }
+  const totalMessages = parsedData.messages?.length ?? 0
+  display({
+    name: 'getRealmMessages',
+    preview: `Got ${totalMessages} realm messages`,
+    value: { ret, parsedData },
+  })
+  ret.totalMessages = totalMessages
+  return ret
+}
+
+export function updateRealmMsg2({ lastFetched, lastSeen, msgs }) {
+  const allMessages: any = []
+  const messagesArray = Object.values(msgs)
+
+  display({
+    name: 'updateRealmMsg2',
+    preview: `Here with...`,
+    value: { messagesArray },
+  })
+
+  messagesArray.forEach((c: any) => {
+    c.forEach((msg: any) => {
+      allMessages.push({
+        ...msg,
+        amount: parseInt(msg.amount) || 0,
+        seen: msg.seen === 1 ? true : false,
+      })
+    })
+  })
+
+  const msgStructure = {
+    messages: allMessages,
+    lastSeen,
+    lastFetched: lastFetched || null,
+  }
+
+  display({
+    name: 'updateRealmMsg2',
+    preview: `Updating realm with ${msgStructure.messages.length} messages`,
+    value: { msgStructure },
+  })
+
+  update({
+    schema: 'Msg',
+    body: { ...msgStructure },
+  })
+
+  display({
+    name: 'updateRealmMsg2',
+    preview: `Updated realm with ${msgStructure.messages.length} messages.`,
+    value: { msgStructure },
+  })
+}
+
+export function updateRealmMsg(data: any) {
+  console.log('SKIPPING UPDATEREALMMSG')
+  return
+  // Data
+  if (Platform.OS === 'web') return
+
+  console.log('UPDATE DATA IN REALM NOW!')
+
+  const hasRealmData = hasData()
+
+  if (hasRealmData.msg) {
+    const allMessages: any = []
+
+    const messagesArray = Array.from(data.messages)
+    messagesArray.forEach((c: any) => {
+      c[1].forEach((msg: any) => {
+        allMessages.push({
+          ...msg,
+          amount: parseInt(msg.amount) || 0,
+          // seen: +msg.seen,
+          seen: msg.seen === 1 ? true : false,
+        })
+      })
+    })
+
+    // Object.values(data.messages).forEach((c: any) => {
+    //   c.forEach((msg: any) => {
+    //     allMessages.push({
+    //       ...msg,
+    //       amount: parseInt(msg.amount) || 0,
+    //     })
+    //   })
+    // })
+
+    const lastSeen = Object.keys(data.lastSeen).map((key) => ({
+      key: parseInt(key),
+      seen: data.lastSeen[key],
+    }))
+
+    const msgStructure = {
+      messages: allMessages,
+      lastSeen,
+      lastFetched: data.lastFetched || null,
+    }
+
+    display({
+      name: 'updateRealmMsg',
+      preview: `Updating realm with ${msgStructure.messages.length} messages`,
+      value: { hasRealmData, msgStructure },
+    })
+
+    update({
+      schema: 'Msg',
+      body: { ...msgStructure },
+    })
+
+    display({
+      name: 'updateRealmMsg',
+      preview: `Updated realm with ${msgStructure.messages.length} messages.`,
+      value: { hasRealmData, msgStructure },
+    })
+  } else {
+    display({
+      name: 'updateRealmMsg',
+      preview: 'No realm data to update.',
+      important: true,
+      value: { hasRealmData },
+    })
+  }
+}

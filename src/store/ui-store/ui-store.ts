@@ -17,6 +17,8 @@ export const UiStoreModel = types
     /** Modal visibility */
     addContactModal: false,
     addContactParams: types.optional(types.frozen(), {}),
+    restoringModal: false,
+    restoredMessages: 0,
 
     chatMsgsLoading: types.maybeNull(types.number),
 
@@ -62,6 +64,12 @@ export const UiStoreModel = types
   })
   .extend(withEnvironment)
   .actions((self) => ({
+    setRestoringModal(show: boolean) {
+      self.restoringModal = show
+    },
+    setMessagesRestored(num: number) {
+      self.restoredMessages = num
+    },
     setSearchTerm(term: string) {
       self.searchTerm = term
     },

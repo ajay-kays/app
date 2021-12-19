@@ -136,7 +136,6 @@ export default function Main() {
     display({
       name: 'loadHistory',
       preview: `In loadHistory w skipLoadingContacts ${skipLoadingContacts}`,
-      important: true,
     })
 
     ui.setLoadingHistory(true)
@@ -145,16 +144,18 @@ export default function Main() {
       await contacts.getContacts()
     }
 
-    await msg.getDirectMessages() // should we wait for this or not
+    await msg.getMessages2()
+    // await msg.getDirectMessages() // should we wait for this or not
+
+    ui.setLoadingHistory(false)
 
     await sleep(500)
     details.getBalance()
     await sleep(500)
     meme.authenticateAll()
 
-    await msg.getRecentMessages()
+    // await msg.getRecentMessages()
     msg.initLastSeen()
-    ui.setLoadingHistory(false)
   }
 
   useEffect(() => {

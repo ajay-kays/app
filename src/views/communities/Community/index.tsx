@@ -42,8 +42,13 @@ const Community = ({ route }) => {
   // })
 
   useEffect(() => {
-    chats.getCommunities()
+    // chats.getCommunities() -- for now
     if (chatId) {
+      display({
+        name: 'Community index',
+        preview: 'getMessagesForChat going now...',
+        important: true,
+      })
       msg.getMessagesForChat(chatId)
     } else {
       console.log('NO CHATID...?')

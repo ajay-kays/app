@@ -25,7 +25,7 @@ export const ContactModel = types.model('Contact').props({
   node_alias: types.maybeNull(types.string),
   photo_url: types.maybeNull(types.string),
   private_photo: types.boolean,
-  public_key: types.string,
+  public_key: types.maybeNull(types.string),
   remote_id: types.maybeNull(types.number),
   route_hint: types.maybeNull(types.string),
   status: types.maybeNull(types.number),

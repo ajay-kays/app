@@ -106,6 +106,11 @@ const RootComponentFC = () => {
 
   console.log('signedup:', ui.signedUp)
 
+  const community = useStores().chats.communities.get(
+    'YNzR0h_54n6O1zjeKKEM6vSzwO6yq3N-3aYSpAaeZ04C72dYISzw5UQEAeB3nvwVXspEnAFavDaE0o-bmxZiw_2CNpL1'
+  )
+  console.log('COMMUNITY:', community)
+
   return (
     <PaperProvider theme={pTheme}>
       <Host>

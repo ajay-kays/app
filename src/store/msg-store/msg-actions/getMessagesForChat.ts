@@ -6,102 +6,55 @@ import { normalizeMessage } from 'store/normalize'
 import { decodeMessages, Msg, skinny } from '..'
 import { getRoot } from 'mobx-state-tree'
 import { RootStore } from 'store'
+import { getById, getRealmMessagesForChat } from 'services/realm/api'
+// import { getRealmMessagesForChatId } from 'services/realm/exports'
+import { sleep } from 'lib/sleep'
+// import { getRealmMessagesForChatId, getRealmMessagesForChatId2 } from 'services/realm/exports'
 
 const MSGS_PER_CHAT = 350
 
 export const getMessagesForChat = async (self: MsgStore, chatId: number, limit: number = 0) => {
-  if (!chatId) return
+  display({
+    name: 'getMessagesForChat',
+    preview: `Loading getMessagesForChat ${chatId} from Realm`,
+  })
+  // return
+  await sleep(1000)
 
-  const msgLimit = Math.max(MSGS_PER_CHAT, limit)
+  const messages = getRealmMessagesForChat({ id: chatId, schema: 'Message' }) as Msg[]
 
   const root = getRoot(self) as RootStore
-  root.ui.setChatMsgsLoading(chatId)
+  // root.ui.setChatMsgsLoading(chatId)
+  // const messages = getRealmMessagesForChatId(chatId)
 
   display({
     name: 'getMessagesForChat',
-    preview: `Lets grab messages for chatId ${chatId} - limit ${msgLimit}`,
+    preview: `Retrieved from Realm ${messages.length} messages for chat ID ${chatId}`, //
     important: true,
+    value: { messages },
   })
-  let route = `msgsForChat?chatId=${chatId}`
-  const r = await relay?.get(route)
+
+  let normalizedMsgs: { [k: number]: any[] } = ({} = {}) // collapse all these down to 1 obj?
+  // const sortedChats = Object.entries(messages)
+  // for (const chat of sortedChats) {
+  // const msgs = await decodeMessages(chat[1])
+  const msgsToSave: Msg[] = []
+  messages.forEach((msg) => {
+    const normMsg = normalizeMessage(msg)
+    if (normMsg) {
+      msgsToSave.push(normMsg)
+    }
+  })
+  normalizedMsgs[chatId] = msgsToSave
+  // }
+
+  self.setMessages(normalizedMsgs)
+  root.ui.setChatMsgsLoading(null)
+
   display({
     name: 'getMessagesForChat',
-    preview: `Fetched messages for chatId ${chatId}`,
-    value: { r, route },
+    preview: `Done fetching ${messages.length} messages for chat ${chatId}`,
+    value: { messages },
   })
-
-  /**
-   * SORT MESSAGES BY CHATROOM
-   */
-
-  let msgs: { [k: number]: any[] } = ({} = {})
-
-  if (r.new_messages && r.new_messages.length) {
-    display({
-      name: 'getMessagesForChat',
-      preview: `Fetched ${r.new_messages.length} new messages for chatId ${chatId}`,
-      value: { route, r },
-    })
-
-    r.new_messages.forEach((msg) => {
-      if (msgs[msg.chat_id]) {
-        msgs[msg.chat_id].push(skinny(msg))
-      } else {
-        msgs[msg.chat_id] = [skinny(msg)]
-      }
-    })
-
-    // display({
-    //   name: 'getMessagesForChat',
-    //   preview: `Finished building unsorted msgs map`,
-    //   value: { msgs },
-    // })
-
-    /**
-     * SORT BY DATE AND PRUNE TO {MSGS_PER_CHAT} MESSAGES PER CHATROOM
-     */
-    let sortedAndFilteredMsgs: { [k: number]: any[] } = ({} = {})
-    Object.entries(msgs).forEach((chat) => {
-      sortedAndFilteredMsgs[chat[0]] = chat[1]
-        .sort((a, b) => {
-          const bd: any = new Date(b.created_at)
-          const ad: any = new Date(a.created_at)
-          return bd - ad
-        })
-        .slice(0, msgLimit) // MSGS_PER_CHAT
-    })
-
-    display({
-      name: 'getMessagesForChat',
-      preview: 'Finished sorting and pruning messages',
-      value: { msgs, sortedAndFilteredMsgs },
-    })
-
-    /**
-     * NORMALIZE AND DECODE ONLY THESE MESSAGES
-     */
-    let normalizedMsgs: { [k: number]: any[] } = ({} = {}) // collapse all these down to 1 obj?
-    const sortedChats = Object.entries(sortedAndFilteredMsgs)
-    for (const chat of sortedChats) {
-      const msgs = await decodeMessages(chat[1])
-      const msgsToSave: Msg[] = []
-      msgs.forEach((msg) => {
-        const normMsg = normalizeMessage(msg)
-        if (normMsg) {
-          msgsToSave.push(normMsg)
-        }
-      })
-      normalizedMsgs[chat[0]] = msgsToSave
-    }
-
-    // display({
-    //   name: 'getMessagesForChat',
-    //   preview: 'Finished decoding+normalizing messages',
-    //   value: { normalizedMsgs },
-    // })
-
-    self.setMessages(normalizedMsgs)
-  }
-  root.ui.setChatMsgsLoading(null)
   return
 }

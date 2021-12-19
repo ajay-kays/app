@@ -44,14 +44,33 @@ export function useCachedEncryptedFile(
   }
 
   async function trigger() {
-    // console.log('trigger...', loading, data, uri, paidMessageText)
     if (loading || data || uri || paidMessageText) return // already done
-    if (!ldat?.host || !ldat?.sig) return
+
+    if (!(ldat && ldat.host)) {
+      return
+    }
+
+    if (!ldat.sig) {
+      return
+    }
+
+    // console.log('actually trigger...', loading, data, uri, paidMessageText)
+    // display({
+    //   name: 'trigger',
+    //   value: { loading, data, uri, paidMessageText },
+    //   important: true,
+    // })
+    // if (!ldat?.host || !ldat?.sig) return
     // console.log('past dat look')
 
     const url = `https://${ldat.host}/file/${media_token}`
 
     const server = meme.servers.find((s) => s.host === ldat.host)
+
+    // const theHost = ldat.host === 'memes.n2n2.chat' ? 'memes.getzion.com' : ldat.host
+    // const url = `https://${theHost}/file/${media_token}`
+    // console.log(ldat.host, theHost)
+    // const server = meme.servers.find((s) => s.host === theHost)
 
     setLoading(true)
     // if img already exists return it
@@ -92,7 +111,7 @@ export function useCachedEncryptedFile(
     }
 
     if (!server) {
-      console.log('no server, returning')
+      console.log('no server, returning. looked for', ldat.host)
       return
     }
     try {
@@ -126,7 +145,9 @@ export function useCachedEncryptedFile(
         }
 
         if (isPaidMessage) {
+          console.log('IS PAID MESSAGE - LETS TRY THIS')
           const txt = await aes.decryptFileAndSaveReturningContent(path, media_key, extension)
+          console.log(media_type, txt)
           setPaidMessageText(media_type === 'n2n2/text' ? isBase64(txt).text : txt)
         } else {
           const newpath = await aes.decryptFileAndSave(path, media_key, extension)
@@ -159,10 +180,25 @@ export function useCachedEncryptedFile(
     }
   }
 
-  useEffect(() => {
-    if (!media_token || paidMessageText || !dispatchTrigger) return
-    trigger()
-  }, [media_token, paidMessageText, ldat])
+  // useEffect(() => {
+  //   if (!media_token || paidMessageText || !dispatchTrigger) return
+  //   display({
+  //     name: 'useCachedEtc',
+  //     important: true,
+  //     preview: 'about to trigger...',
+  //     value: { media_token, paidMessageText, ldat },
+  //   })
+  //   if (paidMessageText === '') {
+  //     display({
+  //       name: 'useCachedEtc',
+  //       important: true,
+  //       preview: 'EMPTY STRING PAIDMESSAGE TEXT - SKIPPING TRIGGER',
+  //       value: { media_token, paidMessageText, ldat },
+  //     })
+  //     return
+  //   }
+  //   trigger()
+  // }, [media_token, paidMessageText, ldat])
 
   // display({
   //   name: 'trigger returning',

@@ -25,7 +25,7 @@ export const MsgListWrap = ({
     setLimit((c) => c + 40)
     // First let's see if the limit exceeds the number of messages we have.
     // If so, query the backend with some offset or limit
-    msg.getMessagesForChat(chat.id, limit)
+    // msg.getMessagesForChat(chat.id, limit)
   }
 
   const onBoostMsg = useCallback(

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import { PERMISSIONS, check, RESULTS } from 'react-native-permissions'
@@ -44,7 +44,7 @@ function MediaMsg(props) {
     if (ldat.sig) purchased = true
   }
 
-  let { data, uri, loading, paidMessageText } = useCachedEncryptedFile(props, ldat, true)
+  let { data, uri, loading, paidMessageText, trigger } = useCachedEncryptedFile(props, ldat, true)
 
   const rumbleLink = useMemo(
     () => paidMessageText && getRumbleLink(paidMessageText),
@@ -55,6 +55,10 @@ function MediaMsg(props) {
     [paidMessageText]
   )
   const isEmbedVideo = youtubeLink || rumbleLink
+
+  useEffect(() => {
+    trigger()
+  }, [props.media_token])
 
   const hasImgData = data || uri ? true : false
   // console.log('mediaMsg hasImgData:', hasImgData)
