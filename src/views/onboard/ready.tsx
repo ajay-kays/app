@@ -11,7 +11,7 @@ import Typography from '../common/Typography'
 
 export default function Ready(props) {
   const { z, show, onDone } = props
-  const { user, contacts, chats } = useStores()
+  const { user, contacts, chats, relay } = useStores()
   const [loading, setLoading] = useState(false)
   const theme = useTheme()
 
@@ -37,6 +37,7 @@ export default function Ready(props) {
 
       // await user.reportError("ready", { break: "C" });
 
+      await relay.registerWebsocketHandlers()
       await chats.joinDefaultTribe()
 
       onDone()

@@ -1,4 +1,4 @@
-import { hasData, get, getRealmMessagesForChat, update, initialLoad } from './api'
+import { create, hasData, get, getRealmMessagesForChat, update, initialLoad, upsert } from './api'
 import { Platform } from 'react-native'
 import { Msg, orgMsgsFromRealm } from 'store/msg-store'
 import { display } from 'lib/logging'
@@ -130,10 +130,24 @@ export function updateRealmMsg2({ lastFetched, lastSeen, msgs }) {
     value: { msgStructure },
   })
 
-  update({
-    schema: 'Msg',
-    body: { ...msgStructure },
+  allMessages.forEach((m) => {
+    console.log('Upserting', m.id)
+    upsert({
+      schema: 'Message',
+      body: m,
+      id: m.id,
+    })
   })
+
+  // update({ ??
+  //   schema: 'Msg',
+  //   body: { ...msgStructure },
+  // })
+
+  // update({
+  //   schema: 'Message',
+  //   body: allMessages,
+  // })
 
   display({
     name: 'updateRealmMsg2',

@@ -36,10 +36,10 @@ export async function setupRootStore() {
   try {
     // load data from storage
     data = (await storage.getItem(ROOT_STATE_STORAGE_KEY)) || {}
-    if (data && data.msg && data.msg.messages) {
-      delete data.msg.messages
-      console.log('DELETED MESSAGES EHEHEHE')
-    }
+    // if (data && data.msg && data.msg.messages) {
+    //   delete data.msg.messages
+    //   console.log('DELETED MESSAGES EHEHEHE')
+    // }
     rootStore = RootStoreModel.create(JSON.parse(data), env)
   } catch (e) {
     // if there's any problems loading, then let's at least fallback to an empty state
@@ -72,13 +72,13 @@ export async function setupRootStore() {
     //   snapshot.msg.messages = {}
     // }
 
-    const snapshotMinusMessages = {
-      ...snapshot,
-      msg: {
-        ...snapshot.msg,
-        messages: {},
-      },
-    }
+    // const snapshotMinusMessages = {
+    //   ...snapshot,
+    //   msg: {
+    //     ...snapshot.msg,
+    //     messages: {},
+    //   },
+    // }
 
     // display({
     //   name: 'onSnapshot',
@@ -91,7 +91,7 @@ export async function setupRootStore() {
 
     if (!lastSaved || secondsSinceLastSent > SAVE_INTERVAL) {
       lastSaved = new Date()
-      storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshotMinusMessages)) //  snapshot
+      storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot)) //   snapshotMinusMessages
 
       // const len = rootStore.msg.lengthOfAllMessages()
       // if (len > numMessagesLastUpdated) {

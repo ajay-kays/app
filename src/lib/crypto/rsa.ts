@@ -67,11 +67,11 @@ export async function decrypt(data) {
 
     const buf = Buffer.from(data, 'base64')
 
-    display({
-      name: 'decrypt',
-      value: { priv, key, data, buf },
-      important: true,
-    })
+    // display({
+    //   name: 'decrypt',
+    //   value: { priv, key, data, buf },
+    //   important: true,
+    // })
 
     let dataArray: any[] = []
     let finalDec = ''

@@ -1,3 +1,4 @@
+import { display } from 'lib/logging'
 import { realm } from './realm.instance'
 import { Update } from './types/update.interface'
 
@@ -8,36 +9,58 @@ import { Update } from './types/update.interface'
  * @param {object | any} props.body - Object with the structure of the schema
  */
 export default (props: Update) => {
-  const { schema, id, body } = props
+  const { schema, id = 1, body } = props
+  display({
+    name: 'realm UPSERT',
+    preview: 'In realm UPSERT with...',
+    important: true,
+    value: { props, schema, id, body },
+  })
   let response: any = null
   try {
-    realm.write(() => {
-      // console.log(`Updating object in schema: ${schema}`);
-      response = realm.objects(schema).find((e: any) => e.id === id)
-      if (schema === 'Msg') response = realm.objects(schema)[0]
-      const availableFields: any[] = []
-      for (let key in response) availableFields.push(key)
-      let hasEqualBody = true
-
-      Object.keys(body).forEach((key: string) => {
-        if (!availableFields.includes(key)) {
-          console.log(`Invalid key: ${key} trying to update schema ${schema}`)
-          hasEqualBody = false
-          response = null
-        }
-      })
-
-      if (hasEqualBody) {
-        if (schema !== 'Msg') Object.assign(response, body)
-        if (schema === 'Msg') {
-          response.messages = body.messages
-          response.lastSeen = body.lastSeen
-          response.lastFetched = body.lastFetched
-        }
-        // if (schema === 'Msg') console.log('updatedObject: ', response.messages.length);
-        // if (schema !== 'Msg') console.log('updatedObject: ', response);
-      }
+    const existsObject = realm.objectForPrimaryKey(schema, id)
+    display({
+      name: 'realm UPSERT',
+      preview: `EXISTS OBJECT ${schema} ID ${id}??`,
+      important: true,
+      value: { existsObject },
     })
+
+    if (!existsObject) {
+      realm.write(() => {
+        response = realm.create(schema, body)
+        console.log(`Created object in schema: ${schema}`)
+        console.log('response: ', response)
+      })
+    }
+
+    // realm.write(() => {
+    //   // console.log(`Updating object in schema: ${schema}`);
+    //   response = realm.objects(schema).find((e: any) => e.id === id)
+    //   if (schema === 'Msg') response = realm.objects(schema)[0]
+    //   const availableFields: any[] = []
+    //   for (let key in response) availableFields.push(key)
+    //   let hasEqualBody = true
+
+    //   Object.keys(body).forEach((key: string) => {
+    //     if (!availableFields.includes(key)) {
+    //       console.log(`Invalid key: ${key} trying to update schema ${schema}`)
+    //       hasEqualBody = false
+    //       response = null
+    //     }
+    //   })
+
+    //   if (hasEqualBody) {
+    //     if (schema !== 'Msg') Object.assign(response, body)
+    //     if (schema === 'Msg') {
+    //       response.messages = body.messages
+    //       response.lastSeen = body.lastSeen
+    //       response.lastFetched = body.lastFetched
+    //     }
+    //     // if (schema === 'Msg') console.log('updatedObject: ', response.messages.length);
+    //     // if (schema !== 'Msg') console.log('updatedObject: ', response);
+    //   }
+    // })
     return response
   } catch (e) {
     console.log(`Error on update the schema: ${schema}`)

@@ -3,6 +3,7 @@
  */
 export default {
   name: 'Message',
+  primaryKey: 'id',
   properties: {
     id: { type: 'int', default: null, optional: true },
     chat_id: { type: 'int', default: null, optional: true }, // id that indicate where does this message belong
@@ -38,5 +39,5 @@ export default {
     reply_message_sender_alias: { type: 'string', default: null, optional: true },
     reply_message_sender: { type: 'int', default: null, optional: true },
     temp_uid: { type: 'string', default: null, optional: true },
-  }
+  },
 }

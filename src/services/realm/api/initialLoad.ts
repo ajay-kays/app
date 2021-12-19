@@ -65,7 +65,22 @@ export default (props: InitialLoad) => {
       })
     }
 
-    if (msg && msg.messages && !hasRealmData.msg) {
+    display({
+      name: 'initialLoad',
+      preview: 'Msg wat.',
+      value: {
+        msg,
+        messages: msg.messages,
+        messagesArray: Array.from(msg.messages),
+        wat: hasRealmData.msg,
+        hasRealmData,
+        // messagesObject: Object.values(msg.messages),
+      },
+      important: true,
+    })
+
+    if (msg && !hasRealmData.msg) {
+      // && msg.messages
       display({
         name: 'initialLoad',
         preview: 'ATTEMPTING MSG CREATE WITH:',
@@ -156,7 +171,7 @@ export default (props: InitialLoad) => {
     display({
       name: 'initialLoad',
       preview: 'error',
-      value: { e, msg: e.message },
+      value: { e },
       important: true,
     })
     return {
