@@ -21,6 +21,7 @@ export const UserStoreModel = types
     onboardStep: types.optional(types.number, 0),
     publicKey: types.optional(types.string, ''),
     tipAmount: types.optional(types.number, 100),
+    isPinChanged: types.optional(types.boolean, false),
   })
   .extend(withEnvironment)
   .actions((self) => ({
@@ -85,6 +86,9 @@ export const UserStoreModel = types
         action: '',
       }
     },
+    setIsPinChanged(bool: boolean) {
+      self.isPinChanged = bool
+    },
     reset: () => reset(self),
   }))
   .views((self) => ({
@@ -95,7 +99,7 @@ export const UserStoreModel = types
 
 type ArrayObject = { [k: string]: string }
 type UserStoreType = Instance<typeof UserStoreModel>
-export interface UserStore extends UserStoreType {}
+export interface UserStore extends UserStoreType { }
 type UserStoreSnapshotType = SnapshotOut<typeof UserStoreModel>
-export interface UserStoreSnapshot extends UserStoreSnapshotType {}
+export interface UserStoreSnapshot extends UserStoreSnapshotType { }
 export const createUserStoreDefaultModel = () => types.optional(UserStoreModel, {})

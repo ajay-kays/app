@@ -1,6 +1,6 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { useTheme } from 'store'
+import { useTheme, useStores } from 'store'
 import { Chatroom as Chat, ChatDetails, Chats } from 'views/chat'
 import {
   Communities,
@@ -18,9 +18,10 @@ const RootStack = createNativeStackNavigator()
 
 export default function Root() {
   const theme = useTheme()
+  const { user } = useStores()
 
   return (
-    <RootStack.Navigator initialRouteName='Communities'>
+    <RootStack.Navigator initialRouteName={user.isPinChanged ? 'Account' : 'Communities'}>
       <RootStack.Screen
         name='Chats'
         component={Chats}

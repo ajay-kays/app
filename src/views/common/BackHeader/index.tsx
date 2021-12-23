@@ -7,7 +7,7 @@ import { useTheme } from 'store'
 import Typography from '../Typography'
 import { navigate } from 'nav'
 
-export default function BackHeader({ title, screen, action, border, navigate }) {
+export default function BackHeader({ title, screen, action, border, navigate, backDisabled = false }) {
   const theme = useTheme()
   const navigation = useNavigation()
 
@@ -31,9 +31,9 @@ export default function BackHeader({ title, screen, action, border, navigate }) 
         borderBottomWidth: border ? 1 : 0,
       }}
     >
-      <TouchableOpacity onPress={onBack} style={{ ...styles.left }}>
+      {!backDisabled && <TouchableOpacity onPress={onBack} style={{ ...styles.left }}>
         <FeatherIcon name='chevron-left' size={28} color={theme.icon} />
-      </TouchableOpacity>
+      </TouchableOpacity>}
       <View>
         <Typography color={theme.text} size={16} fw='500'>
           {title}

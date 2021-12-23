@@ -19,11 +19,11 @@ export default function PIN(props) {
   const [chosenPin, setChosenPin] = useState('')
   const [checking, setChecking] = useState(false)
   const [err, setErr] = useState(false)
-  const [mode, setMode] = useState('choose')
+  const [mode, setMode] = useState(props?.mode || 'choose')
   const theme = useTheme()
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       if (props.forceEnterMode) {
         setMode('enter')
         return
@@ -32,6 +32,7 @@ export default function PIN(props) {
       const storedPin = await EncryptedStorage.getItem('pin')
 
       if (storedPin) setMode('enter')
+      if (storedPin && mode === 'change') setMode(mode)
     })()
   }, [])
 
@@ -52,6 +53,7 @@ export default function PIN(props) {
           await setPinCode(thePin)
 
           props.onFinish()
+          user.setIsPinChanged(true)
         } else {
           setErr(true)
           setPin('')
@@ -61,6 +63,12 @@ export default function PIN(props) {
         setChosenPin(thePin)
         setPin('')
       }
+    }
+    if (mode === 'change') {
+      const storedPin = await EncryptedStorage.getItem('pin')
+      if (storedPin === thePin) setMode('choose')
+      setPin('')
+      setChosenPin('')
     }
     if (mode === 'enter') {
       setChecking(true)
@@ -72,6 +80,7 @@ export default function PIN(props) {
           AsyncStorage.setItem('pin_entered', ts())
 
           props.onFinish()
+          user.setIsPinChanged(true)
         } else {
           setErr(true)
           setPin('')
@@ -100,6 +109,7 @@ export default function PIN(props) {
     txt = 'CHOOSE PIN'
     if (chosenPin) txt = 'CONFIRM PIN'
   }
+  if (mode === 'change') txt = 'ENTER OLD PIN'
   if (err) txt = 'TRY AGAIN!'
 
   return (
@@ -109,6 +119,9 @@ export default function PIN(props) {
         backgroundColor: theme.blue,
       }}
     >
+      {props.onBack && <View style={{ marginTop: "10%", marginLeft: 20, position: "absolute", zIndex: 9 }}>
+        <Icon name='chevron-left' size={25} color={theme.white} onPress={props.onBack} />
+      </View>}
       <View style={{ ...styles.top, height: SCREEN_HEIGHT / 3 }}>
         <View style={styles.lock}>
           <Icon name='lock-outline' size={25} color={theme.white} />

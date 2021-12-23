@@ -1,6 +1,6 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { useTheme } from 'store'
+import { useTheme, useStores } from 'store'
 import { setTint } from 'views/common/StatusBar'
 import {
   Account,
@@ -16,9 +16,10 @@ const Stack = createNativeStackNavigator()
 
 export default function Navigation() {
   const theme = useTheme()
+  const { user } = useStores()
 
   return (
-    <Stack.Navigator initialRouteName='AccountMain'>
+    <Stack.Navigator initialRouteName={user.isPinChanged ? 'Security' : 'AccountMain'}>
       <Stack.Screen
         name='AccountMain'
         component={Account}
@@ -49,6 +50,7 @@ export default function Navigation() {
         listeners={{ focus: () => setTint(theme.dark ? 'dark' : 'light') }}
         options={{
           headerShown: false,
+          gestureEnabled: false,
         }}
       />
       <Stack.Screen
