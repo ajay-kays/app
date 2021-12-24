@@ -104,7 +104,10 @@ function Security(props: any) {
       {
         title: 'Set Pin',
         icon: 'ChevronRight',
-        action: () => setIsChangePin(true),
+        action: () => Alert.alert("Notice", "Are you sure you want to change you PIN?", [
+          { text: "OK", onPress: () => setIsChangePin(true) },
+          { text: "Cancel" }
+        ]),
       },
     ],
   ]
