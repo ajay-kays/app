@@ -130,11 +130,11 @@ function Security(props: any) {
   const onPinChanged = () => {
     setIsChangePin(false)
     setIsPinChanged(true)
-    Toast.showWithGravity('Pin has been changed successfully.', Toast.LONG, Toast.BOTTOM)
+    Toast.showWithGravity('Your PIN has been updated. Please re-export your keys using this new PIN.', Toast.LONG, Toast.BOTTOM)
   }
 
   useEffect(() => {
-    if (user.isPinChanged) Alert.alert(`Hey! backup your${isPinChanged ? ' new ' : ''} key`)
+    if (user.isPinChanged) Alert.alert(`Your PIN has been updated. Please re-export your keys using this new PIN`)
   }, [user.isPinChanged])
 
   return (

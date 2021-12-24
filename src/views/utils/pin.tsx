@@ -107,9 +107,10 @@ export default function PIN(props) {
   let txt = 'ENTER PIN'
   if (mode === 'choose') {
     txt = 'CHOOSE PIN'
+    if (props?.mode === 'change') txt = 'ENTER NEW PIN'
     if (chosenPin) txt = 'CONFIRM PIN'
   }
-  if (mode === 'change') txt = 'ENTER OLD PIN'
+  if (mode === 'change') txt = 'ENTER CURRENT PIN'
   if (err) txt = 'TRY AGAIN!'
 
   return (
