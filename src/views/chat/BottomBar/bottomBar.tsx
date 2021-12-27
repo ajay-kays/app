@@ -62,15 +62,16 @@ function BottomBar({ chat, pricePerMessage, tribeBots }) {
   const [extraTextContent, setExtraTextContent] = useState(null)
   const myid = user.myid
   const modalizeRef = useRef<Modalize>(null)
+  const [isSearchCompleted, setIsSearchCompleted] = useState(true)
 
   const inputRef = useRef(null)
 
   const hasLoopout =
     tribeBots &&
-    tribeBots.length &&
-    tribeBots.find(
-      (tb) => tb.prefix === '/loopout' && tb.commands && tb.commands.find((c) => c.command === '*')
-    )
+      tribeBots.length &&
+      tribeBots.find(
+        (tb) => tb.prefix === '/loopout' && tb.commands && tb.commands.find((c) => c.command === '*')
+      )
       ? true
       : false
 
@@ -279,7 +280,7 @@ function BottomBar({ chat, pricePerMessage, tribeBots }) {
             })
           }
         },
-        onPanResponderRelease: (evt, gestureState) => {},
+        onPanResponderRelease: (evt, gestureState) => { },
       }),
     []
   )
@@ -304,11 +305,11 @@ function BottomBar({ chat, pricePerMessage, tribeBots }) {
 
   async function onGiphyHandler() {
     try {
-      const gifs = await fetchGifs(searchGif)
-      if (gifs.meta.status === 200) setGifs(gifs.data)
       setDialogOpen(false)
       setShowGiphyModal(true)
       openGiphyModal()
+      const gifs = await fetchGifs(searchGif)
+      if (gifs.meta.status === 200) setGifs(gifs.data)
     } catch (e) {
       console.warn(e)
       reportError(e)
@@ -316,8 +317,12 @@ function BottomBar({ chat, pricePerMessage, tribeBots }) {
   }
 
   async function getGifsBySearch() {
+    setIsSearchCompleted(false)
     const gifs = await fetchGifs(searchGif)
-    if (gifs.meta.status === 200) setGifs(gifs.data)
+    if (gifs.meta.status === 200) {
+      setGifs(gifs.data)
+      setIsSearchCompleted(true)
+    } else setIsSearchCompleted(false)
   }
 
   async function onSendGifHandler(gif: any) {
@@ -519,7 +524,9 @@ function BottomBar({ chat, pricePerMessage, tribeBots }) {
           setSearchGif={setSearchGif}
           onSendGifHandler={onSendGifHandler}
           getGifsBySearch={getGifsBySearch}
+          isSearchCompleted={isSearchCompleted}
         />
+
 
         <EmbedVideo ref={embedVideoModalRef} onSendEmbedVideo={onSendEmbedVideoHandler} />
       </View>
