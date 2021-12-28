@@ -36,8 +36,8 @@ export const MemeStoreModel = types
 
       // display({
       //   name: 'meme.authenticate',
-      //   preview: 'Here with r and r2',
-      //   value: { r, r2 },
+      //   preview: 'Here with r and r2 and pubkey',
+      //   value: { r, r2, pubkey },
       // })
 
       const r3 = await memesAPI.post(

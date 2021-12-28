@@ -1,10 +1,12 @@
+import { Platform } from 'react-native'
 import * as api from 'api'
 
 export const requestInvite = async (_, email) => {
   try {
     if (!email) return
 
-    const r = await api.shop.post('invite_request', { email }, '', {
+    const platform = Platform
+    const r = await api.shop.post('invite_request', { email, platform }, '', {
       rawValue: true,
     })
     if (!r) throw new Error('Failed')

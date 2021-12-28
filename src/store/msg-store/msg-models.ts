@@ -2,7 +2,7 @@ import { Platform } from 'react-native'
 import { Instance, types } from 'mobx-state-tree'
 import { ChatModel } from 'store/chats-store'
 
-export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 1000
+export const MAX_MSGS_PER_CHAT = Platform.OS === 'android' ? 100 : 500 // 1000
 export const MAX_MSGS_RESTORE = Platform.OS === 'android' ? 5000 : 50000
 
 export const BoostMsgModel = types.model('BoostMsg').props({})
@@ -26,7 +26,7 @@ export const MsgModel = types
     expiration_date: types.maybeNull(types.string),
     message_content: types.maybeNull(types.string),
     remote_message_content: types.maybeNull(types.string),
-    status: types.number,
+    status: types.maybeNull(types.number),
     status_map: types.frozen(),
     parent_id: types.maybeNull(types.number),
     subscription_id: types.maybeNull(types.number),

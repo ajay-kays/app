@@ -7,11 +7,14 @@ import { navigationRef } from 'nav'
 import Splash from 'views/common/Splash'
 import { ErrorSimple } from 'views/error/error-simple'
 import { RootComponent } from './root-component'
+import Demo from 'services/realm/demo/demo'
 
-Bugsnag.start()
-const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React)
+// Bugsnag.start()
+// const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React)
 
 const App = () => {
+  return <Demo />
+
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
 
   useEffect(() => {

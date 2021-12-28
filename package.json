@@ -1,6 +1,6 @@
 {
   "name": "getzion",
-  "version": "1.17.0",
+  "version": "1.18.0",
   "private": true,
   "scripts": {
     "android": "npx react-native run-android",
@@ -31,6 +31,7 @@
     "@react-native-seoul/masonry-list": "1.1.1",
     "@react-navigation/native": "6.0.6",
     "@react-navigation/native-stack": "6.2.5",
+    "ansi-regex": "5.0.1",
     "appcenter": "4.3.0",
     "appcenter-analytics": "4.3.0",
     "base-64": "1.0.0",
@@ -46,6 +47,8 @@
     "mobx-state-tree": "5.0.3",
     "moment": "2.29.1",
     "moment-duration-format": "2.3.2",
+    "node-fetch": "2.6.1",
+    "nth-check": "2.0.1",
     "react": "17.0.2",
     "react-native": "0.66.1",
     "react-native-audio-recorder-player": "3.2.0",
@@ -94,6 +97,7 @@
     "react-native-vector-icons": "7.1.0",
     "react-native-video": "5.2.0",
     "react-native-webview": "11.14.1",
+    "realm": "10.10.1",
     "rn-fetch-blob": "0.12.0",
     "socket.io-client": "2.4.0",
     "yup": "0.28.5"
@@ -114,8 +118,7 @@
     "typescript": "4.4.4"
   },
   "resolutions": {
-    "@types/react": "^17",
-    "json-schema": "0.4.0"
+    "@types/react": "^17"
   },
   "prettier": {
     "arrowParens": "always",

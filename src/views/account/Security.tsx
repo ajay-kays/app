@@ -186,7 +186,7 @@ function Security(props: any) {
                             w='70%'
                             h={50}
                         >
-                            <Typography color={theme.white}>Export keys</Typography>
+                            <Typography color={theme.white}>Copy key</Typography>
                             <View style={{ width: 12, height: 1 }}></View>
                             <Icon name='key' color={theme.white} size={18} />
                         </Button>

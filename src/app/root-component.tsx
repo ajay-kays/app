@@ -17,6 +17,7 @@ import PIN, { wasEnteredRecently } from 'views/utils/pin'
 import * as utils from 'views/utils/utils'
 import Main from './main'
 import APNManager from 'store/contexts/apn'
+// import { testRealm } from 'services/realm/testing'
 
 // This is the first component where we can assume an initialized rootStore.
 const RootComponentFC = () => {
@@ -45,6 +46,10 @@ const RootComponentFC = () => {
     check24Hour()
     ;(async () => {
       // await user.attemptRehydrateFromOldVersion()
+
+      // console.log('TESTING REALM')
+      // testRealm()
+      // console.log('DONE TESTING REALM')
 
       const isSignedUp = user.currentIP && user.authToken && !user.onboardStep ? true : false
 
@@ -103,8 +108,6 @@ const RootComponentFC = () => {
   }
 
   const pTheme = paperTheme(theme)
-
-  console.log('signedup:', ui.signedUp)
 
   return (
     <PaperProvider theme={pTheme}>

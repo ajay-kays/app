@@ -3,6 +3,7 @@ import { RSAKeychain, RSA } from 'react-native-rsa-native'
 import { Buffer } from 'buffer'
 import EncryptedStorage from 'react-native-encrypted-storage'
 import { reportError } from 'lib/errorHelper'
+import { display } from 'lib/logging'
 
 const KEY_SIZE = 2048
 const KEY_TAG = 'sphinx'
@@ -65,6 +66,13 @@ export async function decrypt(data) {
     const key = privcert(priv)
 
     const buf = Buffer.from(data, 'base64')
+
+    // display({
+    //   name: 'decrypt',
+    //   value: { priv, key, data, buf },
+    //   important: true,
+    // })
+
     let dataArray: any[] = []
     let finalDec = ''
     const n = Math.ceil(buf.length / BLOCK_SIZE)
@@ -80,6 +88,7 @@ export async function decrypt(data) {
 
     return finalDec
   } catch (e) {
+    console.log('DECRYPTION ERROR')
     reportError(e)
   }
   return ''

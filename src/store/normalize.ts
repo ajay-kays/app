@@ -140,16 +140,16 @@ export const normalizeMessage = (raw: any) => {
       original_muid: raw.original_muid,
       reply_uuid: raw.reply_uuid,
 
-      text: raw.text,
+      text: raw.text ?? undefined,
 
       chat: raw.chat, //ChatModel,
 
-      sold: raw.sold, // this is a marker to tell if a media has been sold
-      showInfoBar: raw.showInfoBar, // marks whether to show the date and name
+      sold: raw.sold ?? undefined, // this is a marker to tell if a media has been sold
+      showInfoBar: raw.showInfoBar ?? undefined, // marks whether to show the date and name
 
-      reply_message_content: raw.reply_message_content,
-      reply_message_sender_alias: raw.reply_message_sender_alias,
-      reply_message_sender: raw.reply_message_sender,
+      reply_message_content: raw.reply_message_content ?? undefined,
+      reply_message_sender_alias: raw.reply_message_sender_alias ?? undefined,
+      reply_message_sender: raw.reply_message_sender ?? undefined,
 
       boosts_total_sats: raw.boosts_total_sats,
       boosts: raw.boosts,

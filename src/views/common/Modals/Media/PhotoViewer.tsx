@@ -64,6 +64,7 @@ function SwipeItem(props) {
   const theme = useTheme()
 
   const ldat = parseLDAT(media_token)
+  console.log('LDAT:', ldat)
   let { data, uri, loading, trigger, paidMessageText } = useCachedEncryptedFile(props, ldat)
 
   useEffect(() => {

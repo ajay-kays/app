@@ -24,7 +24,7 @@ function ChatList(props) {
 
     setRefreshing(true)
     await contacts.getContacts()
-    await msg.getMessages()
+    await msg.getMessages2()
     await details.getBalance()
     setRefreshing(false)
   }, [refreshing])
@@ -74,7 +74,7 @@ function ChatList(props) {
           // return String(item.id)
         }}
         // This causes a blank screen on Android:
-        refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+        // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         ListHeaderComponent={props.listHeader}
       />
     </View>
@@ -89,7 +89,7 @@ function ChatRowFC(props) {
   const onSeeChatHandler = () => {
     requestAnimationFrame(() => {
       msg.seeChat(props.id)
-      msg.getMessages()
+      msg.getMessages2()
       navigate('Chat', { ...props })
     })
   }

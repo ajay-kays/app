@@ -15,8 +15,7 @@ export function registerWsHandlers(hs: { [k: string]: DataHandler }) {
   handlers = hs
   display({
     name: 'registerWsHandlers',
-    preview: 'Handlers set',
-    important: true,
+    preview: 'Websocket handlers registered.',
   })
 }
 

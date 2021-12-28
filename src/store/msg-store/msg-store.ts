@@ -41,6 +41,7 @@ export const MsgStoreModel = types
     getDirectMessages: async (): Promise<any> => await actions.getDirectMessages(self as MsgStore),
     getMessages: async (forceMore: boolean = false): Promise<any> =>
       await actions.getMessages(self as MsgStore, forceMore),
+    getMessages2: async (): Promise<any> => await actions.getMessages2(self as MsgStore),
     getMessagesForChat: async (chatId: number, limit: number = 0): Promise<any> =>
       await actions.getMessagesForChat(self as MsgStore, chatId, limit),
     getRecentMessages: async (): Promise<any> => await actions.getRecentMessages(self as MsgStore),
@@ -123,7 +124,11 @@ export const MsgStoreModel = types
       //   preview: `Setting messages for ${Object.entries(msgs).length} chats`,
       //   value: { msgs },
       // })
-      self.messages.merge(msgs)
+
+      // WE DON'T MERGE ANYMORE?
+      self.messages.replace(msgs)
+
+      // self.messages.merge(msgs)
       const len = Object.entries(msgs).length
       if (len > 1) {
         display({
@@ -240,12 +245,11 @@ export const MsgStoreModel = types
     },
     lengthOfAllMessages(): number {
       let l = 0
-      for (let i in self.messages.values()) {
-        console.log(i)
+      const msgs = Array.from(self.messages.values())
+      for (let i in msgs) {
+        l += msgs[i].length
       }
-      // self.messages.values().forEach((msgs) => {
-      //   l += msgs.length
-      // })
+      console.log('lengthOfAllMessages:', l)
       return l
     },
     msgsForChatroomByUuid(uuid: string) {
@@ -277,7 +281,7 @@ export const MsgStoreModel = types
       //   important: true,
       // })
       if (!chatId) {
-        console.log('no msgsforchatroom for chatId', chatId)
+        // console.log('no msgsforchatroom for chatId', chatId)
         return []
       }
       const msgs = self.messages.get(chatId.toString())
@@ -329,7 +333,7 @@ export const MsgStoreModel = types
     //   return msgs
     // },
     sortAllMsgs(allms: { [k: number]: Msg[] }) {
-      return false
+      // return false
       const final = {}
       let toSort: { [k: number]: Msg[] } = allms || JSON.parse(JSON.stringify(self.messages)) // ??
 
@@ -339,18 +343,19 @@ export const MsgStoreModel = types
         value: { toSort, allms },
       })
 
-      // Object.entries(toSort).forEach((entries) => {
-      //   const k = entries[0]
-      //   const v: Msg[] = entries[1]
-      //   v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
-      //   final[k] = v
-      // })
+      Object.entries(toSort).forEach((entries) => {
+        const k = entries[0]
+        const v: Msg[] = entries[1]
+        v.sort((a, b) => moment(b.date).unix() - moment(a.date).unix())
+        final[k] = v
+      })
 
       display({
         name: 'sortAllMsgs',
-        preview: `Skipping some set of messages...`,
+        preview: `Finished sorting these messages.`,
         value: { final },
       })
+      return final
       // this.messages = final
     },
   }))

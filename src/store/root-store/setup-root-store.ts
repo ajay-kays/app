@@ -3,6 +3,8 @@ import { RootStoreModel, RootStore } from './root-store'
 import { Environment } from '../environment'
 // import * as storage from '../../utils/storage'
 import storage from '@react-native-async-storage/async-storage'
+import { initialLoad, updateRealmMsg } from 'services/realm/exports'
+import { display } from 'lib/logging'
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -34,6 +36,10 @@ export async function setupRootStore() {
   try {
     // load data from storage
     data = (await storage.getItem(ROOT_STATE_STORAGE_KEY)) || {}
+    // if (data && data.msg && data.msg.messages) {
+    //   delete data.msg.messages
+    //   console.log('DELETED MESSAGES EHEHEHE')
+    // }
     rootStore = RootStoreModel.create(JSON.parse(data), env)
   } catch (e) {
     // if there's any problems loading, then let's at least fallback to an empty state
@@ -45,6 +51,8 @@ export async function setupRootStore() {
     // __DEV__ && console.tron.error(e.message, null)
   }
 
+  rootStore.ui.setRestoringModal(false)
+
   // reactotron logging
   if (__DEV__) {
     env.reactotron.setRootStore(rootStore, data)
@@ -52,19 +60,63 @@ export async function setupRootStore() {
 
   let lastSaved = new Date()
   let secondsSinceLastSent: number | null = null
-  let SAVE_INTERVAL = 5
+  let SAVE_INTERVAL = 6
+  let numMessagesLastUpdated = 0
 
   // track changes & save to storage
   onSnapshot(rootStore, (snapshot) => {
+    // LETS BLOW AWAY THE ENTIRE MESSAGE BUFFER - except a chatroom/community we're actively looking at
+    // rootStore.msg.setMessages({})
+
+    // if (snapshot.msg.messages) {
+    //   snapshot.msg.messages = {}
+    // }
+
+    // const snapshotMinusMessages = {
+    //   ...snapshot,
+    //   msg: {
+    //     ...snapshot.msg,
+    //     messages: {},
+    //   },
+    // }
+
+    // display({
+    //   name: 'onSnapshot',
+    //   // important: true,
+    //   value: { snapshot }, // , snapshotMinusMessages
+    // })
     const now = new Date()
     const dif = now.getTime() - lastSaved.getTime()
     secondsSinceLastSent = dif / 1000
 
     if (!lastSaved || secondsSinceLastSent > SAVE_INTERVAL) {
       lastSaved = new Date()
-      storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot))
+      storage.setItem(ROOT_STATE_STORAGE_KEY, JSON.stringify(snapshot)) //   snapshotMinusMessages
+
+      // const len = rootStore.msg.lengthOfAllMessages()
+      // if (len > numMessagesLastUpdated) {
+      //   const updateRealmWith = {
+      //     messages: rootStore.msg.messages,
+      //     lastSeen: rootStore.msg.lastSeen,
+      //     lastFetched: Date.now(),
+      //   }
+      //   updateRealmMsg(updateRealmWith)
+      //   numMessagesLastUpdated = len
+      // } else {
+      //   display({
+      //     name: 'onSnapshot',
+      //     preview: `Skipping realm update - ${len} messages in both realm and store`,
+      //   })
+      // }
+
       console.log('Saved', lastSaved)
     }
+  })
+
+  initialLoad({
+    contacts: rootStore.contacts.contactsArray,
+    chats: rootStore.chats.chatsArray,
+    msg: rootStore.msg,
   })
 
   return rootStore

@@ -3,11 +3,12 @@ import { normalizeMessage } from 'store/normalize'
 import { Msg } from '../msg-models'
 import { MsgStore } from '../msg-store'
 import { display, log } from 'lib/logging'
+import { orgMsgs } from '../msg-helpers'
 
 export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
   display({
     name: 'batchDecodeMessages',
-    preview: `Batch decoding ${msgs.length} messages`,
+    preview: `Batch decoding ${msgs.length} messages [getMessages2]`,
     value: { msgs },
   })
 
@@ -24,7 +25,16 @@ export const batchDecodeMessages = async (self: MsgStore, msgs: Msg[]) => {
     normalizedMessage && messagesToSave.push(normalizedMessage)
   })
 
-  self.setMessages(messagesToSave)
+  display({
+    name: 'batchDecodeMessages',
+    preview: `About to call setMessages with...`,
+    value: { messagesToSave },
+    important: true,
+  })
+
+  const formattedMessages = orgMsgs(messagesToSave)
+  self.setMessages(formattedMessages)
+  // self.setMessagesOld(messagesToSave)
 
   // messagesToSave = []
   // const decodedRest = await decodeMessages(rest)
