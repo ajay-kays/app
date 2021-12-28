@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ActivityIndicator } from 'react-native-paper'
 import EncryptedStorage from 'react-native-encrypted-storage'
@@ -36,6 +36,13 @@ export default function PIN(props) {
     })()
   }, [])
 
+  const pinChangeSuccessCall = async (thePin) => {
+    setChecking(true)
+    await setPinCode(thePin)
+    props.onFinish()
+    user.setIsPinChanged(true)
+  }
+
   async function check(thePin) {
     if (props.forceEnterMode) {
       setChecking(true)
@@ -48,12 +55,18 @@ export default function PIN(props) {
     if (mode === 'choose') {
       if (chosenPin) {
         if (thePin === chosenPin) {
-          // success!
-          setChecking(true)
-          await setPinCode(thePin)
+          if (props?.mode === 'change') {
+            Alert.alert("Notice", "Are you sure you want to change you PIN?", [
+              { text: "OK", onPress: () => pinChangeSuccessCall(thePin) },
+              {
+                text: "Cancel", onPress: () => onBack()
+              }
+            ])
+            return
+          }
+          // success! 
+          pinChangeSuccessCall(thePin)
 
-          props.onFinish()
-          user.setIsPinChanged(true)
         } else {
           setErr(true)
           setPin('')
@@ -113,6 +126,14 @@ export default function PIN(props) {
   if (mode === 'change') txt = 'ENTER CURRENT PIN'
   if (err) txt = 'TRY AGAIN!'
 
+
+  const onBack = () => {
+    props.onBack()
+    setChosenPin("")
+    setPin('')
+    setMode("change")
+  }
+
   return (
     <View
       style={{
@@ -121,7 +142,7 @@ export default function PIN(props) {
       }}
     >
       {props.onBack && <View style={{ marginTop: "10%", marginLeft: 20, position: "absolute", zIndex: 9 }}>
-        <Icon name='chevron-left' size={25} color={theme.white} onPress={props.onBack} />
+        <Icon name='chevron-left' size={25} color={theme.white} onPress={onBack} />
       </View>}
       <View style={{ ...styles.top, height: SCREEN_HEIGHT / 3 }}>
         <View style={styles.lock}>
