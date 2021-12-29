@@ -102,8 +102,8 @@ const PerTribeFC = (props: PerTribeProps) => {
           ListEmptyComponent={<ListEmpty />}
           refreshing={refreshing}
           onRefresh={onRefresh}
-        // This causes a blank screen on Android:
-        // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+          // This causes a blank screen on Android:
+          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         />
       )}
     </View>
@@ -145,8 +145,8 @@ const AllTransactionsFC = (props: AllTransactionsProps) => {
           ListEmptyComponent={<ListEmpty />}
           refreshing={refreshing}
           onRefresh={onRefresh} // was doubled?
-        // This causes a blank screen on Android:
-        // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+          // This causes a blank screen on Android:
+          refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         />
       )}
     </View>
