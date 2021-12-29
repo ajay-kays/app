@@ -56,7 +56,7 @@ export default function PIN(props) {
       if (chosenPin) {
         if (thePin === chosenPin) {
           if (props?.mode === 'change') {
-            Alert.alert("Notice", "Are you sure you want to change you PIN?", [
+            Alert.alert("Confirm", "Are you sure you want to change you PIN?", [
               { text: "OK", onPress: () => pinChangeSuccessCall(thePin) },
               {
                 text: "Cancel", onPress: () => onBack()
