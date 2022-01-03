@@ -163,7 +163,7 @@ const ListHeader = () => {
               color={theme.subtitle}
               style={{ marginBottom: 4 }}
             >
-              Your node capacity
+              You can receive
             </Typography>
             <View
               style={{
