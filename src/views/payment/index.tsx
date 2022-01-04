@@ -174,7 +174,7 @@ const ListHeader = () => {
               }}
             >
               <Typography size={16} fw='500' textAlign='center' color={theme.white} lh={30}>
-                {details?.localBalance + details?.remoteBalance}{' '}
+                {details?.remoteBalance}{' '}
               </Typography>
             </View>
           </View>
