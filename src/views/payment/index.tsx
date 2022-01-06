@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { observer } from 'mobx-react-lite'
+import moment from 'moment'
 import { useStores, useTheme } from '../../store'
 import { isLN, parseLightningInvoice, removeLightningPrefix } from '../utils/ln'
 import TabBar from '../common/TabBar'
@@ -120,6 +121,9 @@ const ListHeader = () => {
         <View style={styles.wallet}>
           <Typography size={30} fw='500' style={{ marginBottom: 10 }}>
             My Wallet
+          </Typography>
+          <Typography size={20} fw='400' style={{ marginBottom: 10 }}>
+            {moment(new Date()).format('ddd MMM DD, hh:mm A')}
           </Typography>
           <View>
             <Typography size={12} fw='500' textAlign='center' color={theme.subtitle}>
