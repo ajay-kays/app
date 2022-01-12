@@ -7,5 +7,6 @@
   "prettier.semi": false,
   "prettier.printWidth": 90,
   "javascript.preferences.quoteStyle": "single",
-  "typescript.preferences.quoteStyle": "single"
+  "typescript.preferences.quoteStyle": "single",
+  "java.configuration.updateBuildConfiguration": "disabled"
 }
