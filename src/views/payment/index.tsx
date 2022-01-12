@@ -163,7 +163,7 @@ const ListHeader = () => {
               color={theme.subtitle}
               style={{ marginBottom: 4 }}
             >
-              Your node capacity
+              You can receive
             </Typography>
             <View
               style={{
@@ -174,7 +174,7 @@ const ListHeader = () => {
               }}
             >
               <Typography size={16} fw='500' textAlign='center' color={theme.white} lh={30}>
-                {details?.localBalance + details?.remoteBalance}{' '}
+                {details?.remoteBalance}{' '}
               </Typography>
             </View>
           </View>
