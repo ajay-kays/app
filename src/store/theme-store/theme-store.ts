@@ -46,8 +46,8 @@ export const ThemeStoreModel = types
     yellow: types.optional(types.string, '#FFDF00'),
     silver: types.optional(types.string, '#afb3b1'),
     purple: types.optional(types.string, '#6289FD'),
-    orange: types.optional(types.string, '#f0665b'),
-    orangeSecondary: types.optional(types.string, '#e45e53'),
+    orange: types.optional(types.string, '#0C1762'),
+    orangeSecondary: types.optional(types.string, '#23255E'),
 
     badge: types.optional(types.string, '#f50057'),
     accent: types.optional(types.string, '#0a84ff'),

@@ -53,8 +53,7 @@ export function connectWebSocket(
 
   io.on('message', (data) => {
     display({
-      name: 'message',
-      important: true,
+      name: '[ws] message',
       preview: 'Websocket message received',
       value: data,
     })

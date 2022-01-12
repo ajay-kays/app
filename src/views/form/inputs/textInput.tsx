@@ -36,7 +36,7 @@ export default function TheTextInput({
       maxHeight: 50,
     }
   }
-
+  const numberOfLinesProp = numberOfLines ? { numberOfLines } : {}
   return (
     <>
       <Typography size={14} color={theme.title}>
@@ -59,9 +59,9 @@ export default function TheTextInput({
         placeholderTextColor={theme.placeholder}
         underlineColor={theme.border}
         multiline={multiline}
-        numberOfLines={numberOfLines}
         textAlignVertical='auto'
         inputAccessoryViewID={name}
+        {...numberOfLinesProp}
       />
       {hasAccessoryView && <InputAccessoryView nativeID={name} />}
     </>
@@ -70,7 +70,7 @@ export default function TheTextInput({
 
 TheTextInput.defaultProps = {
   mode: 'flat',
-  handleBlur: () => {},
+  handleBlur: () => { },
   error: false,
   displayOnly: false,
   required: false,

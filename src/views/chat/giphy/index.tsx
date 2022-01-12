@@ -3,6 +3,7 @@ import MasonryList from '@react-native-seoul/masonry-list'
 import { Modalize } from 'react-native-modalize'
 import { Portal } from 'react-native-portalize'
 import { useKeyboard } from '@react-native-community/hooks'
+import { ActivityIndicator } from 'react-native-paper'
 import { useTheme } from 'store'
 import { GiphyProps } from './type'
 import styles from './styles'
@@ -19,10 +20,11 @@ import Item from './item'
  * @param {Function} setSearchGif - callback function that return the text value to search
  * @param {Function} onSendGifHandler - callback function that return the selected gif
  * @param {Function} onSubmitEditing - function that search the type of gifs
+ * @param {Function} isSearchCompleted - boolean to show loader while data is being fetched
  */
 const Giphy = React.forwardRef<Modalize | null, GiphyProps>(
   (
-    { gifs, open, onClose, searchGif, onSendGifHandler, setSearchGif, getGifsBySearch },
+    { gifs, open, onClose, searchGif, onSendGifHandler, setSearchGif, getGifsBySearch, isSearchCompleted },
     modalizeRef
   ) => {
     const { keyboardHeight } = useKeyboard()
@@ -52,12 +54,15 @@ const Giphy = React.forwardRef<Modalize | null, GiphyProps>(
           FooterComponent={Footer}
           modalStyle={{ backgroundColor: theme.main }}
         >
-          <MasonryList
-            contentContainerStyle={styles.mansoryContainer}
-            numColumns={3}
-            data={gifs}
-            renderItem={Item(onSendGifHandler)}
-          />
+          {
+            isSearchCompleted && gifs?.length ? <MasonryList
+              contentContainerStyle={styles.mansoryContainer}
+              numColumns={3}
+              data={gifs}
+              renderItem={Item(onSendGifHandler)}
+            /> : <ActivityIndicator />
+          }
+
         </Modalize>
       </Portal>
     )

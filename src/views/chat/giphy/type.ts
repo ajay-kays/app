@@ -6,4 +6,5 @@ export interface GiphyProps {
   onSendGifHandler: any
   setSearchGif: any
   getGifsBySearch: any
+  isSearchCompleted?: boolean
 }

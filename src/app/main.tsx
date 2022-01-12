@@ -18,6 +18,7 @@ import ModalsN from 'views/common/Modals'
 import Root from 'nav/root-navigator'
 import { display } from 'lib/logging'
 import { useApn } from 'store/contexts/apn'
+import { cryptotest } from 'lib/crypto/cryptotest'
 
 export default function Main() {
   const { contacts, msg, details, user, meme, ui } = useStores()
@@ -143,7 +144,8 @@ export default function Main() {
       await contacts.getContacts()
     }
 
-    await msg.getMessages2()
+    await msg.getMessages3()
+    // await msg.getMessages2()
     // await msg.getDirectMessages() // should we wait for this or not
 
     ui.setLoadingHistory(false)

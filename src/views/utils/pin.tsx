@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { ActivityIndicator } from 'react-native-paper'
 import EncryptedStorage from 'react-native-encrypted-storage'
@@ -19,11 +19,11 @@ export default function PIN(props) {
   const [chosenPin, setChosenPin] = useState('')
   const [checking, setChecking] = useState(false)
   const [err, setErr] = useState(false)
-  const [mode, setMode] = useState('choose')
+  const [mode, setMode] = useState(props?.mode || 'choose')
   const theme = useTheme()
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       if (props.forceEnterMode) {
         setMode('enter')
         return
@@ -32,8 +32,16 @@ export default function PIN(props) {
       const storedPin = await EncryptedStorage.getItem('pin')
 
       if (storedPin) setMode('enter')
+      if (storedPin && mode === 'change') setMode(mode)
     })()
   }, [])
+
+  const pinChangeSuccessCall = async (thePin) => {
+    setChecking(true)
+    await setPinCode(thePin)
+    props.onFinish()
+    user.setIsPinChanged(true)
+  }
 
   async function check(thePin) {
     if (props.forceEnterMode) {
@@ -47,11 +55,18 @@ export default function PIN(props) {
     if (mode === 'choose') {
       if (chosenPin) {
         if (thePin === chosenPin) {
-          // success!
-          setChecking(true)
-          await setPinCode(thePin)
+          if (props?.mode === 'change') {
+            Alert.alert("Confirm", "Are you sure you want to change you PIN?", [
+              { text: "OK", onPress: () => pinChangeSuccessCall(thePin) },
+              {
+                text: "Cancel", onPress: () => onBack()
+              }
+            ])
+            return
+          }
+          // success! 
+          pinChangeSuccessCall(thePin)
 
-          props.onFinish()
         } else {
           setErr(true)
           setPin('')
@@ -61,6 +76,12 @@ export default function PIN(props) {
         setChosenPin(thePin)
         setPin('')
       }
+    }
+    if (mode === 'change') {
+      const storedPin = await EncryptedStorage.getItem('pin')
+      if (storedPin === thePin) setMode('choose')
+      setPin('')
+      setChosenPin('')
     }
     if (mode === 'enter') {
       setChecking(true)
@@ -72,6 +93,7 @@ export default function PIN(props) {
           AsyncStorage.setItem('pin_entered', ts())
 
           props.onFinish()
+          user.setIsPinChanged(true)
         } else {
           setErr(true)
           setPin('')
@@ -98,9 +120,19 @@ export default function PIN(props) {
   let txt = 'ENTER PIN'
   if (mode === 'choose') {
     txt = 'CHOOSE PIN'
+    if (props?.mode === 'change') txt = 'ENTER NEW PIN'
     if (chosenPin) txt = 'CONFIRM PIN'
   }
+  if (mode === 'change') txt = 'ENTER CURRENT PIN'
   if (err) txt = 'TRY AGAIN!'
+
+
+  const onBack = () => {
+    props.onBack()
+    setChosenPin("")
+    setPin('')
+    setMode("change")
+  }
 
   return (
     <View
@@ -109,6 +141,9 @@ export default function PIN(props) {
         backgroundColor: theme.blue,
       }}
     >
+      {props.onBack && <View style={{ marginTop: "10%", marginLeft: 20, position: "absolute", zIndex: 9 }}>
+        <Icon name='chevron-left' size={25} color={theme.white} onPress={onBack} />
+      </View>}
       <View style={{ ...styles.top, height: SCREEN_HEIGHT / 3 }}>
         <View style={styles.lock}>
           <Icon name='lock-outline' size={25} color={theme.white} />

@@ -17,6 +17,7 @@ import PIN, { wasEnteredRecently } from 'views/utils/pin'
 import * as utils from 'views/utils/utils'
 import Main from './main'
 import APNManager from 'store/contexts/apn'
+import { cryptotest } from 'lib/crypto/cryptotest'
 // import { testRealm } from 'services/realm/testing'
 
 // This is the first component where we can assume an initialized rootStore.
@@ -38,6 +39,8 @@ const RootComponentFC = () => {
   const isDarkMode = useDarkMode()
 
   useEffect(() => {
+    cryptotest()
+
     if (theme.mode === 'System') {
       theme.setDark(isDarkMode)
     } else {

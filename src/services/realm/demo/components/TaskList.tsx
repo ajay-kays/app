@@ -12,8 +12,6 @@ interface TaskListProps {
 }
 
 function TaskList({ tasks, onToggleTaskStatus, onDeleteTask }: TaskListProps) {
-  console.log('TaskList tasks:', tasks)
-  // return null
   return (
     <View style={styles.listContainer}>
       <FlatList

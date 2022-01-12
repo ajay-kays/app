@@ -1,4 +1,5 @@
 // https://github.com/masterial/react-native-rncryptor
+import { display } from 'lib/logging'
 import RNCryptor from 'react-native-rncryptor'
 import { reportError } from '../errorHelper'
 
@@ -33,8 +34,21 @@ export async function encryptFromBase64(b64, pwd): Promise<string> {
 }
 
 export async function decrypt(txt, pwd): Promise<string> {
+  display({
+    name: 'aes crypto',
+    value: { txt, pwd },
+    important: true,
+    preview: 'what is this #1',
+  })
   try {
     const dec = await RNCryptor.decrypt(txt, pwd)
+    display({
+      name: 'aes crypto',
+      value: { dec, txt, pwd },
+      important: true,
+      preview: 'what is this #2',
+    })
+    console.log('DEC:', txt, pwd)
     return dec
   } catch (e) {
     reportError(e)

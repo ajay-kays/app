@@ -40,7 +40,7 @@ export const restoreMessages = async (self: MsgStore) => {
         display({
           name: 'restoreMessages',
           preview: `Fetched with offset ${offset}`,
-          value: { msgs },
+          value: { msgs, decodedMsgs },
         })
       } else {
         done = true

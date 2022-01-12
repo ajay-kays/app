@@ -16,15 +16,15 @@ const MSGS_PER_CHAT = 350
 export const getMessagesForChat = async (self: MsgStore, chatId: number, limit: number = 0) => {
   display({
     name: 'getMessagesForChat',
-    preview: `Loading getMessagesForChat ${chatId} from Realm`,
+    preview: `Loading getMessagesForChat id ${chatId} from Realm`,
   })
   // return
-  await sleep(1000)
+  // await sleep(1000)
 
   const messages = getRealmMessagesForChat({ id: chatId, schema: 'Message' }) as Msg[]
 
   const root = getRoot(self) as RootStore
-  // root.ui.setChatMsgsLoading(chatId)
+  root.ui.setChatMsgsLoading(chatId)
   // const messages = getRealmMessagesForChatId(chatId)
 
   display({

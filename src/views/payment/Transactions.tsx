@@ -192,7 +192,7 @@ function Payment(props: PaymentProps) {
     if (shouldSkipFetchOfPodcast) {
       return // skip
     }
-    ;(async () => {
+    ; (async () => {
       if (!chat) return // ?
       const tr = await chats.getTribeDetails(chat.host, chat.uuid)
       const params = await chats.loadFeed(chat.host, chat.uuid, tr.feed_url)
@@ -248,52 +248,55 @@ function Payment(props: PaymentProps) {
   const { earned, spent } = useMemoizedIncomingPaymentsFromPodcast(podId, user.myid)
   const p = params[type]
   return (
-    <View style={{ backgroundColor: p.background }}>
-      <View style={{ ...styles.paymentBox, borderBottomColor: theme.border }}>
-        <View style={{ ...styles.payment }}>
-          <MaterialCommunityIcon
-            name={p.icon}
-            color={p.color}
-            size={28}
-            style={{ marginLeft: 10 }}
-          />
-          <View style={styles.mid}>
-            <Icon name='Invoice' fill={theme.icon} size={14} />
-            <Typography style={{ marginLeft: 10 }} numberOfLines={1}>
-              {text}
-            </Typography>
+    <>
+      {user?.publicKey !== chat?.owner_pubkey ? <View style={{ backgroundColor: p.background }}>
+        <View style={{ ...styles.paymentBox, borderBottomColor: theme.border }}>
+          <View style={{ ...styles.payment }}>
+            <MaterialCommunityIcon
+              name={p.icon}
+              color={p.color}
+              size={28}
+              style={{ marginLeft: 10 }}
+            />
+            <View style={styles.mid}>
+              <Icon name='Invoice' fill={theme.icon} size={14} />
+              <Typography style={{ marginLeft: 10 }} numberOfLines={1}>
+                {text}
+              </Typography>
+            </View>
+            <View style={styles.amountWrap}>
+              <Typography
+                size={14}
+                style={{
+                  marginRight: 10,
+                }}
+              >
+                {/* `spent` is > 0 if only if `earned` = 0 */}
+                {/* `earned` is > 0 if only if `spent` = 0 */}
+                {amount + spent + earned}
+              </Typography>
+              <Typography fw='600' color={theme.subtitle}>
+                sat
+              </Typography>
+            </View>
           </View>
-          <View style={styles.amountWrap}>
-            <Typography
-              size={14}
+          {showTime && (
+            <View
               style={{
-                marginRight: 10,
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
               }}
             >
-              {/* `spent` is > 0 if only if `earned` = 0 */}
-              {/* `earned` is > 0 if only if `spent` = 0 */}
-              {amount + spent + earned}
-            </Typography>
-            <Typography fw='600' color={theme.subtitle}>
-              sat
-            </Typography>
-          </View>
+              <Typography color={theme.subtitle} size={12}>
+                {transactionDate}
+              </Typography>
+            </View>
+          )}
         </View>
-        {showTime && (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <Typography color={theme.subtitle} size={12}>
-              {transactionDate}
-            </Typography>
-          </View>
-        )}
-      </View>
-    </View>
+      </View> : null}
+    </>
+
   )
 }
 
