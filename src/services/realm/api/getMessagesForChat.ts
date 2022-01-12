@@ -14,19 +14,20 @@ export default (props: Get) => {
     const filteredMessages = messages.filtered(`chat_id == ${id}`)
 
     display({
-      name: 'REALM GETMESSGSEGSODSF',
-      preview: `FOUND ${filteredMessages.length} MESSAGES FOR CHAT ${id}`,
+      name: 'getMessagesForChat',
+      preview: `Found ${filteredMessages.length} messages for chat ${id}`,
       important: true,
+      value: { filteredMessages },
     })
 
-    let wat = 0
-    filteredMessages.forEach((m) => {
-      wat++
-      console.log('HERES 1 M', wat)
-      console.log('-----')
-      console.log(m.keys())
-      // console.log(m.toJSON())
-    })
+    // let wat = 0
+    // filteredMessages.forEach((m) => {
+    //   wat++
+    //   console.log('HERES 1 M', wat)
+    //   console.log('-----')
+    //   console.log(m.keys())
+    //   // console.log(m.toJSON())
+    // })
 
     // display({
     //   name: 'REALM GETMESSGSEGSODSF',

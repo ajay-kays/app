@@ -29,7 +29,6 @@ export default function Typography(props) {
   } else {
     lineHeight = 20
   }
-
   return (
     <Text
       allowFontScaling={allowFontScaling}
@@ -43,6 +42,7 @@ export default function Typography(props) {
         letterSpacing: ls,
         lineHeight: lh ? lh : lineHeight,
         textAlign,
+        fontFamily: fw === 700 ? 'Montserrat-Bold' : 'Montserrat-Regular',
       }}
       numberOfLines={numberOfLines}
     >

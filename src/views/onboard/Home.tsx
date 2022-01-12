@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
 import { useNavigation } from '@react-navigation/native'
 import { useTheme } from 'store'
@@ -15,7 +15,7 @@ export default function Home() {
     <View style={{ ...styles.wrap }} accessibilityLabel='onboard-code'>
       <RadialGradient
         style={styles.gradient}
-        colors={[theme.orange, theme.orangeSecondary]}
+        colors={[theme.orangeSecondary, theme.orange]}
         stops={[0.1, 1]}
         center={[80, 40]}
         radius={400}
@@ -28,8 +28,8 @@ export default function Home() {
             }}
           >
             <Image
-              source={require('../../assets/zion-dark-theme.png')}
-              style={{ width: 140, height: 100 }}
+              source={require('../../assets/Zion-Logo-White.png')}
+              style={{ width: 220, height: 100 }}
               resizeMode={'contain'}
             />
           </View>
@@ -45,7 +45,9 @@ export default function Home() {
             onPress={() => navigate('Invite')}
           >
             <Typography color={theme.white} fw='700'>
-              Subscribe to the waitlist
+              <Text style={{ color: 'white', fontFamily: 'Montserrat-Medium' }}>
+                Subscribe to the waitlist
+              </Text>
             </Typography>
           </Button>
           <Button
@@ -55,7 +57,7 @@ export default function Home() {
             style={{ marginTop: 15 }}
             onPress={() => navigate('Onboard', { codeType: 'invite' })}
           >
-            Enter access key
+            <Text style={{ fontFamily: 'Montserrat-Medium' }}>Enter access key</Text>
           </Button>
           <Button
             fw='500'
@@ -64,7 +66,7 @@ export default function Home() {
             style={{ marginTop: 15 }}
             onPress={() => navigate('Onboard', { codeType: 'backup' })}
           >
-            Enter backup key
+            <Text style={{ fontFamily: 'Montserrat-Medium' }}>Enter backup key</Text>
           </Button>
         </View>
       </RadialGradient>

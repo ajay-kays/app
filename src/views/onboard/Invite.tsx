@@ -106,7 +106,7 @@ export default function Invite() {
               color={theme.white}
               size={20}
               textAlign='center'
-              lh={29}
+              lh={23}
               style={{
                 marginTop: 15,
                 maxWidth: 310,

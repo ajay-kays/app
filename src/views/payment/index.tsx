@@ -11,6 +11,7 @@ import QR from '../common/Accessories/QR'
 import Typography from '../common/Typography'
 import { setTint } from '../common/StatusBar'
 import AddSats from './AddSats'
+import { display } from 'lib/logging'
 
 function PaymentFC() {
   const [scanning, setScanning] = useState(false)
@@ -47,7 +48,12 @@ function PaymentFC() {
 
   async function fetchPayments() {
     const ps = await details.getPayments()
-
+    display({
+      name: 'fetchPayments',
+      important: true,
+      preview: 'wwat?',
+      value: { ps },
+    })
     if (!isMsgs(ps)) return
     setPayments(ps)
   }

@@ -10,27 +10,27 @@ import { Update } from './types/update.interface'
  */
 export default (props: Update) => {
   const { schema, id = 1, body } = props
-  display({
-    name: 'realm UPSERT',
-    preview: 'In realm UPSERT with...',
-    important: true,
-    value: { props, schema, id, body },
-  })
+  // display({
+  //   name: 'realm UPSERT',
+  //   preview: 'In realm UPSERT with...',
+  //   important: true,
+  //   value: { props, schema, id, body },
+  // })
   let response: any = null
   try {
     const existsObject = realm.objectForPrimaryKey(schema, id)
-    display({
-      name: 'realm UPSERT',
-      preview: `EXISTS OBJECT ${schema} ID ${id}??`,
-      important: true,
-      value: { existsObject },
-    })
+    // display({
+    //   name: 'realm UPSERT',
+    //   preview: `EXISTS OBJECT ${schema} ID ${id}??`,
+    //   important: true,
+    //   value: { existsObject },
+    // })
 
     if (!existsObject) {
       realm.write(() => {
         response = realm.create(schema, body)
         console.log(`Created object in schema: ${schema}`)
-        console.log('response: ', response)
+        // console.log('response: ', response)
       })
     }
 
