@@ -33,8 +33,8 @@ function Header({ border = false }) {
           <Image
             source={
               theme.dark
-                ? require('../../../assets/zion-dark-theme.png')
-                : require('../../../assets/zion.png')
+                ? require('../../../assets/Zion-Logo-White.png')
+                : require('../../../assets/Zion-Logo-Blue.jpg')
             }
             style={styles.brand}
             resizeMode={'contain'}
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   brand: {
-    width: 70,
-    height: 70,
+    width: 90,
+    height: 90,
     maxWidth: 70,
   },
   status: {
