@@ -141,8 +141,8 @@ android {
         applicationId "com.getzion.zion"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11802
-        versionName "1.18.0"
+        versionCode 11810
+        versionName "1.18.1"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
@@ -208,6 +208,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     // implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    // implementation 'com.github.yqritc:Android-ScalableVideoView:Tag'
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
