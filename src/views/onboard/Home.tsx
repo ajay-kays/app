@@ -45,9 +45,7 @@ export default function Home() {
             onPress={() => navigate('Invite')}
           >
             <Typography color={theme.white} fw='700'>
-              <Text style={{ color: 'white', fontFamily: 'Montserrat-Medium' }}>
-                Subscribe to the waitlist
-              </Text>
+              <Text style={{ color: 'white', fontFamily: 'Montserrat-Medium' }}>Join waitlist</Text>
             </Typography>
           </Button>
           <Button

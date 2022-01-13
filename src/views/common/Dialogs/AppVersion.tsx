@@ -26,8 +26,8 @@ function AppVersionUpdate({ visible, close }) {
         <Image
           source={
             theme.dark
-              ? require('../../../assets/zion-dark-theme.png')
-              : require('../../../assets/zion.png')
+              ? require('../../../assets/Zion-Logo-White.png')
+              : require('../../../assets/Zion-Logo-Blue.jpg')
           }
           style={{ width: 120, height: 120 }}
           resizeMode={'contain'}
