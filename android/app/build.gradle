@@ -141,8 +141,8 @@ android {
         applicationId "com.getzion.zion"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11811
-        versionName "1.18.1"
+        versionCode 11820
+        versionName "1.18.2"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
