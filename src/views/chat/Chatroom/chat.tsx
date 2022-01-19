@@ -10,7 +10,7 @@ import { constants } from 'lib/constants'
 import { contactForConversation } from './utils'
 import EE, { LEFT_GROUP } from 'lib/ee'
 import { StreamPayment } from 'store/feed'
-import { ActivityIndicator, KeyboardAvoidingView, View } from 'react-native'
+import { ActivityIndicator, KeyboardAvoidingView, View, Platform } from 'react-native'
 import Header from './header'
 import BottomBar from '../BottomBar/bottomBar'
 import Podcast from '../../podcast'
@@ -154,9 +154,10 @@ const ChatroomFC = () => {
   //   value: { chat, msgs, pricePerMessage, chatID, route },
   // })
 
+  const behavior = Platform.OS === 'ios' ? { behavior: 'padding' } : {}
   return (
     <KeyboardAvoidingView
-      behavior='padding'
+      {...behavior}
       style={{ flex: 1, backgroundColor: theme.bg }}
       keyboardVerticalOffset={1}
     >
