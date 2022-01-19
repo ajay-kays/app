@@ -1,7 +1,13 @@
 import { Config } from './type'
+import { Platform } from 'react-native'
+
+const appstore =
+  Platform.OS === 'ios'
+    ? 'https://apps.apple.com/us/app/zion-create-openly/id1556918256'
+    : 'https://play.google.com/store/apps/details?id=com.getzion.zion'
 
 const config: Config = {
-  host: 'https://hub.n2n2.chat',
+  host: 'https://shop.getzion.com/',
   domain: 'zion.chat',
   hub: {
     api: 'https://hub.n2n2.chat/api/v1/',
@@ -22,7 +28,7 @@ const config: Config = {
   inviter: {
     key: '03fc010914cd0b9950f128f1e91c83da9d718b688aa86c5ed5b8bbf521a2f41fc1',
   },
-  appstore: 'https://apps.apple.com/us/app/zion-create-openly/id1556918256',
+  appstore,
 }
 
 export const DEFAULT_HOST = config.host

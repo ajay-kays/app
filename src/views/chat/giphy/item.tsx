@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Image, TouchableOpacity } from 'react-native'
+import { Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import styles from './styles'
 
@@ -20,37 +20,39 @@ interface ItemProps {
 
 const Item =
   (onSendGifHandler: (item: any) => void) =>
-  ({ item, i }: ItemProps) => {
-    const [imgAspectRatio, setImgAspectRatio] = useState(0)
+    ({ item, i }: ItemProps) => {
+      const [imgAspectRatio, setImgAspectRatio] = useState(0)
 
-    const thumb = item.images.original.url.replace(/giphy.gif/g, '100w.gif')
+      const thumb = item.images.original.url.replace(/giphy.gif/g, '100w.gif')
 
-    useEffect(() => {
-      const getImageRatio = async () => {
-        const imageSize = await getOriginalImageSize(thumb)
-        if (!imageSize) return
-        setImgAspectRatio(
-          imageSize.height > imageSize.width
-            ? imageSize.height / imageSize.width
-            : imageSize.width / imageSize.height
-        )
-      }
-      getImageRatio()
-    }, [thumb])
+      useEffect(() => {
+        const getImageRatio = async () => {
+          const imageSize = await getOriginalImageSize(thumb)
+          if (!imageSize) return
+          setImgAspectRatio(
+            imageSize.height > imageSize.width
+              ? imageSize.height / imageSize.width
+              : imageSize.width / imageSize.height
+          )
+        }
+        getImageRatio()
+      }, [thumb])
 
-    return (
-      <TouchableOpacity
-        key={item.id}
-        style={styles.gifWrapper}
-        onPress={() => onSendGifHandler(item)}
-      >
-        <FastImage
-          resizeMode='contain'
-          source={{ uri: thumb }}
-          style={{ ...styles.gif, aspectRatio: imgAspectRatio }}
-        />
-      </TouchableOpacity>
-    )
-  }
+      return (
+        <TouchableOpacity
+          key={item.id}
+          style={styles.gifWrapper}
+          onPress={() => onSendGifHandler(item)}
+        >
+          {
+            !imgAspectRatio ? <ActivityIndicator /> : <FastImage
+              resizeMode='contain'
+              source={{ uri: thumb }}
+              style={{ ...styles.gif, aspectRatio: imgAspectRatio }}
+            />
+          }
+        </TouchableOpacity>
+      )
+    }
 
 export default Item

@@ -13,11 +13,11 @@ export const getContacts = async (self: ContactsStore) => {
   const userStore = root.user
   try {
     const r = await relay?.get('contacts')
-    display({
-      name: 'getContacts',
-      preview: `Returned with...`,
-      value: { r },
-    })
+    // display({
+    //   name: 'getContacts',
+    //   preview: `Returned with...`,
+    //   value: { r },
+    // })
 
     if (!r) return
     if (r.contacts) {

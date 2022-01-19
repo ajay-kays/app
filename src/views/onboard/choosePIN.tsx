@@ -4,10 +4,10 @@ import Slider from '../utils/slider'
 import PIN from '../utils/pin'
 
 function ChoosePIN(props) {
-  const { onDone, z, show } = props
+  const { mode = 'choose', onDone, z, show, onBack } = props
   return (
     <Slider z={z} show={show} accessibilityLabel='onboard-PIN'>
-      <PIN mode='choose' onFinish={onDone} />
+      <PIN mode={mode} onFinish={onDone} onBack={onBack} />
     </Slider>
   )
 }

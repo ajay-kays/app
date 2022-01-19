@@ -53,7 +53,7 @@ const Community = ({ route }) => {
     } else {
       console.log('NO CHATID...?')
     }
-  }, [isFocused])
+  }, []) // removing this: isFocused - do it ONCE ONLY
 
   const onEditCommunityPress = useCallback(() => {
     navigate('EditCommunity', { tribe })

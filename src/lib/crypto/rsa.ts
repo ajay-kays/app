@@ -4,12 +4,13 @@ import { Buffer } from 'buffer'
 import EncryptedStorage from 'react-native-encrypted-storage'
 import { reportError } from 'lib/errorHelper'
 import { display } from 'lib/logging'
+import { decryptSimple } from './cryptotest'
 
 const KEY_SIZE = 2048
 const KEY_TAG = 'sphinx'
 
 const BLOCK_SIZE = 256
-const MAX_CHUNK_SIZE = BLOCK_SIZE - 11 // 11 is the PCKS1 padding
+const MAX_CHUNK_SIZE = BLOCK_SIZE - 12 // 11 is the PCKS1 padding
 
 export async function generateKeyPair(): Promise<{
   private: string
@@ -58,39 +59,32 @@ export async function setPrivateKey(priv) {
 
 export async function decrypt(data) {
   try {
-    // const config = { service: 'sphinx_encryption_key' }
-    // const priv = await SecureStorage.getItem('private', config)
-
     const priv = await EncryptedStorage.getItem('private')
-
-    const key = privcert(priv)
-
-    const buf = Buffer.from(data, 'base64')
-
-    // display({
-    //   name: 'decrypt',
-    //   value: { priv, key, data, buf },
-    //   important: true,
-    // })
-
-    let dataArray: any[] = []
-    let finalDec = ''
-    const n = Math.ceil(buf.length / BLOCK_SIZE)
-    const arr = Array(n).fill(0)
-    arr.forEach((_, i) => {
-      dataArray.push(buf.subarray(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE).toString('base64'))
+    const wrappedPrivKey = privcert(priv)
+    const decryptedMessage = await RSA.decrypt(data, wrappedPrivKey)
+    display({
+      name: 'decrypt',
+      preview: `Decrypted?: ${decryptedMessage}`,
+      value: { wrappedPrivKey, priv, decryptedMessage, data },
     })
-
-    await asyncForEach(dataArray, async (d) => {
-      const dec = await RSA.decrypt(d, key)
-      finalDec += dec
-    })
-
-    return finalDec
+    return decryptedMessage
   } catch (e) {
-    console.log('DECRYPTION ERROR')
+    console.log(e)
+    display({
+      name: 'decrypt',
+      value: { data },
+      preview: 'Decryption Error',
+      important: true,
+    })
     reportError(e)
   }
+  display({
+    name: 'decrypt',
+    value: { data },
+    preview: 'Decryption - Returning empty',
+    important: true,
+  })
+  console.log('returning empty...')
   return ''
 }
 
@@ -116,23 +110,27 @@ export async function getPublicKey() {
 export async function encrypt(data, pubkey) {
   const key = pubcert(pubkey)
   try {
-    const buf = Buffer.from(data)
-    let dataArray: any[] = []
-    let finalBuf = Buffer.from([])
-    const n = Math.ceil(buf.length / MAX_CHUNK_SIZE)
-    const arr = Array(n).fill(0)
-    arr.forEach((_, i) => {
-      const sub = buf
-        .subarray(i * MAX_CHUNK_SIZE, i * MAX_CHUNK_SIZE + MAX_CHUNK_SIZE)
-        .toString('utf8')
-      dataArray.push(sub)
-    })
-    await asyncForEach(dataArray, async (d) => {
-      const enc = await RSA.encrypt(d, key)
-      const encBuf = Buffer.from(enc.replace(/[\r\n]+/gm, ''), 'base64')
-      finalBuf = Buffer.concat([finalBuf, encBuf])
-    })
-    return finalBuf.toString('base64')
+    const final = await RSA.encrypt(data, key)
+    console.log('encrypted:', final)
+    return final
+
+    // const buf = Buffer.from(data)
+    // let dataArray: any[] = []
+    // let finalBuf = Buffer.from([])
+    // const n = Math.ceil(buf.length / MAX_CHUNK_SIZE)
+    // const arr = Array(n).fill(0)
+    // arr.forEach((_, i) => {
+    //   const sub = buf
+    //     .subarray(i * MAX_CHUNK_SIZE, i * MAX_CHUNK_SIZE + MAX_CHUNK_SIZE)
+    //     .toString('utf8')
+    //   dataArray.push(sub)
+    // })
+    // await asyncForEach(dataArray, async (d) => {
+    //   const enc = await RSA.encrypt(d, key)
+    //   const encBuf = Buffer.from(enc.replace(/[\r\n]+/gm, ''), 'base64')
+    //   finalBuf = Buffer.concat([finalBuf, encBuf])
+    // })
+    // return finalBuf.toString('base64')
   } catch (e) {
     reportError(e)
   }
@@ -183,7 +181,7 @@ function pubuncert(key) {
 function pubcert(key) {
   return '-----BEGIN RSA PUBLIC KEY-----\n' + key + '\n' + '-----END RSA PUBLIC KEY-----'
 }
-function privcert(key) {
+export function privcert(key) {
   return '-----BEGIN RSA PRIVATE KEY-----\n' + key + '\n' + '-----END RSA PRIVATE KEY-----'
 }
 function privuncert(key) {

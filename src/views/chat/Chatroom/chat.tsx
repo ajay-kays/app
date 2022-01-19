@@ -62,7 +62,7 @@ const ChatroomFC = () => {
       if (isTribe) {
         //&& !isTribeAdmin) {
         setAppMode(true)
-        setLoadingChat(true)
+        // setLoadingChat(true) - disabling this for now
         const params = await chats.getTribeDetails(chat.host, chat.uuid)
         if (params) {
           const price = params.price_per_message + params.escrow_amount

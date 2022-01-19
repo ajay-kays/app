@@ -24,7 +24,7 @@ function ChatList(props) {
 
     setRefreshing(true)
     await contacts.getContacts()
-    await msg.getMessages2()
+    await msg.getMessages3()
     await details.getBalance()
     setRefreshing(false)
   }, [refreshing])
@@ -37,11 +37,12 @@ function ChatList(props) {
   const renderItem: any = ({ item, index }) => {
     const chatID = (item.id || rando()) + ''
     console.log(item)
-    // display({
-    //   name: 'ChatList renderItem',
-    //   preview: `${item.name} - chatID ${chatID}`,
-    //   value: { item, chatID },
-    // })
+    display({
+      name: 'ChatList renderItem',
+      preview: `${item.name} - chatID ${chatID}`,
+      value: { item, chatID },
+      important: true,
+    })
     let showInvite = false
     if (item.invite && item.invite.status !== 4) showInvite = true
     if (showInvite) return <InviteRow key={`invite_${index}`} {...item} />
@@ -50,6 +51,13 @@ function ChatList(props) {
 
   const chatsToUse = useChats()
   const chatsToShow = useSearchChats(chatsToUse)
+
+  display({
+    name: 'ChatList',
+    preview: `herewithwat`,
+    value: { chatsToUse, chatsToShow },
+    important: true,
+  })
 
   return (
     <View style={{ width: '100%', flex: 1 }} accessibilityLabel='chatlist'>
@@ -89,7 +97,7 @@ function ChatRowFC(props) {
   const onSeeChatHandler = () => {
     requestAnimationFrame(() => {
       msg.seeChat(props.id)
-      msg.getMessages2()
+      msg.getMessages3() // ?
       navigate('Chat', { ...props })
     })
   }

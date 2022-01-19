@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { observer } from 'mobx-react-lite'
 import { useNavigation } from '@react-navigation/native'
@@ -23,6 +23,10 @@ const Intro = ({ tribe }) => {
   const [uploadPercent, setUploadedPercent] = useState(0)
   const [photoModal, setPhotoModal] = useState(false)
   const [community, setCommunity] = useState(tribe)
+
+  useEffect(() => {
+    setCommunity(tribe)
+  }, [tribe])
 
   async function tookPic(img) {
     setUploading(true)

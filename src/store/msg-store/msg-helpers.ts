@@ -9,7 +9,6 @@ import { Msg, MAX_MSGS_PER_CHAT } from './msg-models'
 import { RootStore } from 'store'
 import { Contact } from 'store/contacts-store'
 import { display } from 'lib/logging'
-import { isBase64 } from 'lib/crypto/Base64'
 
 // import { Msg, MAX_MSGS_PER_CHAT } from './msg'
 
@@ -104,31 +103,10 @@ export async function decodeSingle(m: Msg) {
   }
   const msg = m
   try {
-    if (m.message_content && m.message_content === '') {
-      console.log(`MSG ${m.id} BEGINS W EMPTY MSG CONTENT, SKIPPING DECRYPT?`)
-      return msg
-    }
-    if (m.message_content && m.message_content !== '') {
+    if (m.message_content) {
       const dcontent = await e2e.decryptPrivate(m.message_content)
 
-      if (dcontent === '') {
-        display({
-          name: 'fuck',
-          important: true,
-          preview: `DCONTENT fucked: ${m.id}. chat: ${m.chat.name}. sender: ${m.sender_alias}`,
-          value: {
-            isBase64: isBase64(m.message_content),
-            dcontent,
-            m,
-            msg,
-          },
-        })
-        console.log('DCONTENT:', dcontent)
-      } else {
-        // ?
-        msg.message_content = dcontent as string
-      }
-
+      msg.message_content = dcontent as string
       // msg.message_content = ''
     }
   } catch (e) {
@@ -147,12 +125,12 @@ export async function decodeSingle(m: Msg) {
     const dmediakey = await e2e.decryptPrivate(m.media_key)
     msg.media_key = dmediakey as string
   }
-  display({
-    name: 'decodeSingle',
-    preview: `RETURNING ${m.id} - ${m.type} - ${m.message_content}`,
-    value: { m, msg },
-    important: true,
-  })
+  // display({
+  //   name: 'decodeSingle',
+  //   preview: `RETURNING ${m.id} - ${m.type} - ${m.message_content}`,
+  //   value: { m, msg },
+  //   important: true,
+  // })
   return msg
 }
 
@@ -176,12 +154,12 @@ export async function decodeMessages(messages: Msg[]) {
   for (const m of messages) {
     if (typesToDecrypt.includes(m.type)) {
       const msg = await decodeSingle(m)
-      // display({
-      //   name: 'decodeMessages',
-      //   preview: `Decoded msg ${msg.id}: ${msg.message_content}`,
-      //   value: { m, msg },
-      //   important: true,
-      // })
+      display({
+        name: 'decodeMessages',
+        preview: `Decoded msg ${msg.id}, type ${msg.type}: ${msg.message_content}`,
+        value: { m, msg },
+        important: true,
+      })
       msgs.push(msg)
     } else {
       // display({
@@ -276,9 +254,9 @@ export function putIn(orged, msg, chatID) {
       // Add to the beginning of the chat array a skinnier version of this message (no chat obj or remote_message_content)
       orged[chatID].unshift(skinny(msg))
       // If this chatroom now exceeds the number of max_msgs, remove one
-      // if (orged[chatID].length > MAX_MSGS_PER_CHAT) {
-      //   orged[chatID].pop() // remove the oldest msg if too many
-      // }
+      if (orged[chatID].length > MAX_MSGS_PER_CHAT) {
+        orged[chatID].pop() // remove the oldest msg if too many
+      }
     } else {
       orged[chatID][idx] = skinny(msg)
     }

@@ -4,6 +4,12 @@ import { decodeSingle } from '../msg-helpers'
 import { MsgStore } from '../msg-store'
 
 export const gotNewMessageFromWS = async (self: MsgStore, m: any) => {
+  // display({
+  //   name: 'gotNewMessageFromWS',
+  //   preview: `Ignoring message from WS - ${m?.id}`,
+  //   value: { m },
+  // })
+
   let newMsg = await decodeSingle(m)
   const normalizedMessage = normalizeMessage(newMsg)
 

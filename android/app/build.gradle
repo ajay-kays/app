@@ -79,7 +79,7 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+    enableHermes: true,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -141,8 +141,8 @@ android {
         applicationId "com.getzion.zion"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11705
-        versionName "1.17.0"
+        versionCode 11820
+        versionName "1.18.2"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {
@@ -208,6 +208,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     // implementation 'com.google.firebase:firebase-analytics:17.3.0'
+    // implementation 'com.github.yqritc:Android-ScalableVideoView:Tag'
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules

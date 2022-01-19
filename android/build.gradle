@@ -27,7 +27,22 @@ allprojects {
     repositories {
         mavenCentral()
         mavenLocal()
-        jcenter()  // TEMPORARY https://stackoverflow.com/questions/68835157/error-when-trying-to-run-my-react-native-app-on-android/68841906#68841906 and https://github.com/react-native-video/react-native-video/issues/2454
+        // 1. Now this no longer works - jcenter has been fully deprecated
+        // jcenter()  // TEMPORARY https://stackoverflow.com/questions/68835157/error-when-trying-to-run-my-react-native-app-on-android/68841906#68841906 and https://github.com/react-native-video/react-native-video/issues/2454
+
+        jcenter() {
+            content {
+                excludeGroup "com.facebook.react"
+                excludeGroup "org.cryptonode.jncryptor"
+                excludeGroup "com.nimbusds"
+                excludeGroup "net.minidev"
+                // includeModule("com.yqritc", "android-scalablevideoview")
+                // includeModule("com.google.android.exoplayer", "exo-player-core")
+            }
+        }
+
+        // 2. Workaround:
+       // https://github.com/react-native-video/react-native-video/issues/2454#issuecomment-994313577
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
@@ -38,6 +53,6 @@ allprojects {
         }
 
         google()
-        maven { url 'https://www.jitpack.io' }
+        // maven { url 'https://www.jitpack.io' }
     }
 }

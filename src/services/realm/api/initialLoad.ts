@@ -11,73 +11,76 @@ export default (props: InitialLoad) => {
   let response: any = null
   try {
     const hasRealmData = hasData()
-    if (contacts && !hasRealmData.contacts) {
-      // Object.values requires that input parameter not be null or undefined
-      display({
-        name: 'initialLoad',
-        preview: 'ATTEMPTING CONTACT CREATE WITH:',
-        value: { contacts },
-        important: true,
-      })
-      contacts.forEach((contact: any) => {
-        create({
-          schema: 'Contacts',
-          body: {
-            ...contact,
-            deleted: +contact.deleted,
-            is_owner: +contact.is_owner,
-            from_group: +contact.from_group,
-            private_photo: +contact.private_photo,
-          },
-        })
-      })
-      display({
-        name: 'initialLoad',
-        preview: 'Contact create succeeded?',
-        important: true,
-      })
-    }
+    // if (contacts && !hasRealmData.contacts) {
+    //   // Object.values requires that input parameter not be null or undefined
+    //   display({
+    //     name: 'initialLoad',
+    //     preview: 'ATTEMPTING CONTACT CREATE WITH:',
+    //     value: { contacts },
+    //     important: true,
+    //   })
+    //   contacts.forEach((contact: any) => {
+    //     create({
+    //       schema: 'Contacts',
+    //       body: {
+    //         ...contact,
+    //         deleted: +contact.deleted,
+    //         is_owner: +contact.is_owner,
+    //         from_group: +contact.from_group,
+    //         private_photo: +contact.private_photo,
+    //       },
+    //     })
+    //   })
+    //   display({
+    //     name: 'initialLoad',
+    //     preview: 'Contact create succeeded?',
+    //     important: true,
+    //   })
+    // }
 
-    if (chats && !hasRealmData.chats) {
-      display({
-        name: 'initialLoad',
-        preview: 'ATTEMPTING CHAT CREATE WITH:',
-        value: { chats },
-        important: true,
-      })
-      chats.forEach((chat: any) => {
-        create({
-          schema: 'Chats',
-          body: {
-            ...chat,
-            deleted: +chat.deleted,
-            is_muted: +chat.is_muted,
-            private: +chat.private,
-            status: parseInt(chat.status).toString(),
-            unlisted: +chat.unlisted,
-          },
-        })
-      })
-      display({
-        name: 'initialLoad',
-        preview: 'Chat create succeeded?',
-        important: true,
-      })
-    }
+    // if (chats && !hasRealmData.chats) {
+    //   display({
+    //     name: 'initialLoad',
+    //     preview: 'ATTEMPTING CHAT CREATE WITH:',
+    //     value: { chats },
+    //     important: true,
+    //   })
+    //   chats.forEach((chat: any) => {
+    //     console.log(chat.contact_ids)
+    //     create({
+    //       schema: 'Chats',
+    //       body: {
+    //         ...chat,
+    //         contact_ids: Array.from(chat.contact_ids),
+    //         pending_contact_ids: Array.from(chat.pending_contact_ids),
+    //         deleted: +chat.deleted,
+    //         is_muted: +chat.is_muted,
+    //         private: +chat.private,
+    //         status: parseInt(chat.status).toString(),
+    //         unlisted: +chat.unlisted,
+    //       },
+    //     })
+    //   })
+    //   display({
+    //     name: 'initialLoad',
+    //     preview: 'Chat create succeeded?',
+    //     important: true,
+    //   })
+    // }
 
-    display({
-      name: 'initialLoad',
-      preview: 'Msg wat.',
-      value: {
-        msg,
-        messages: msg.messages,
-        messagesArray: Array.from(msg.messages),
-        wat: hasRealmData.msg,
-        hasRealmData,
-        // messagesObject: Object.values(msg.messages),
-      },
-      important: true,
-    })
+    // display({
+    //   name: 'initialLoad',
+    //   preview: 'Msg wat.',
+    //   value: {
+    //     msg,
+    //     messages: msg.messages,
+    //     messagesArray: Array.from(msg.messages),
+    //     wat: hasRealmData.msg,
+    //     hasRealmData,
+    //     // messagesObject: Object.values(msg.messages),
+    //   },
+    //   important: true,
+    // })
 
     if (msg && !hasRealmData.msg) {
       // && msg.messages

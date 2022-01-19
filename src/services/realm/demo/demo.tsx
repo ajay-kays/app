@@ -13,10 +13,6 @@ import colors from './styles/colors'
 function App() {
   // The tasks will be set once the realm has opened and the collection has been queried.
   const [tasks, setTasks] = useState<Realm.Results<Task> | []>([])
-  useEffect(() => {
-    console.log('tasks changed:')
-    console.log('they are:', tasks)
-  }, [tasks])
   // We store a reference to our realm using useRef that allows us to access it via
   // realmRef.current for the component's lifetime without causing rerenders if updated.
   const realmRef = useRef<Realm | null>(null)
@@ -25,7 +21,6 @@ function App() {
   const subscriptionRef = useRef<Realm.Results<Task> | null>(null)
 
   const openRealm = useCallback(async (): Promise<void> => {
-    console.log('attempting to open realm...')
     try {
       // Open a local realm file with the schema(s) that are a part of this realm.
       const config = {
@@ -39,13 +34,11 @@ function App() {
       // the realm will be opened synchronously when calling "Realm.open"
       const realm = await Realm.open(config)
       realmRef.current = realm
-      console.log('realm open?', realm)
 
       // When querying a realm to find objects (e.g. realm.objects('Tasks')) the result we get back
       // and the objects in it are "live" and will always reflect the latest state.
       const tasksResults: Realm.Results<Task> = realm.objects('Task')
       if (tasksResults?.length) {
-        console.log('tasksResults:', tasksResults)
         setTasks(tasksResults)
       }
 
@@ -149,7 +142,6 @@ function App() {
     [realmRef]
   )
 
-  console.log('tasks', tasks)
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.content}>

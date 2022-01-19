@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
+import { CommonActions } from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Clipboard from '@react-native-community/clipboard'
 import Toast from 'react-native-simple-toast'
@@ -21,13 +22,16 @@ import BackHeader from '../common/BackHeader'
 import Typography from '../common/Typography'
 import { setTint } from '../common/StatusBar'
 import { reportError } from 'lib/errorHelper'
+import ChangePIN from '../onboard/choosePIN'
 
-function Security() {
+function Security(props: any) {
   const modalizeRef = useRef<Modalize>(null)
   const [pinTimeout, setPinTimeout] = useState(12)
   const [initialPinTimeout, setInitialPinTimeout] = useState(12)
   const theme = useTheme()
   const { user, contacts, ui } = useStores()
+  const [isChangePin, setIsChangePin] = useState<boolean>(false)
+  const [isPinChanged, setIsPinChanged] = useState<boolean>(false)
 
   async function loadPinTimeout() {
     const pt = await getPinTimeout()
@@ -81,6 +85,7 @@ function Security() {
 
       Clipboard.setString(final)
       Toast.showWithGravity('Export Keys Copied.', TOAST_DURATION, Toast.CENTER)
+      return true
     } catch (e) {
       showError((e as any).message || e)
       reportError(e)
@@ -99,20 +104,43 @@ function Security() {
       {
         title: 'Set Pin',
         icon: 'ChevronRight',
-        action: () => console.log(''),
+        action: () => setIsChangePin(true),
       },
     ],
   ]
 
-  function finish(pin) {
-    exportKeys(pin)
+  async function finish(pin) {
+    let isDone = await exportKeys(pin)
     modalizeRef?.current?.close()
-    setTint(theme.dark ? 'dark' : 'light')
+    if (isDone) {
+      user.setIsPinChanged(false)
+      setTint(theme.dark ? 'dark' : 'light')
+      props.navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: 'Communities' }],
+        })
+      )
+    }
   }
+
+  const onPinChanged = () => {
+    setIsChangePin(false)
+    setIsPinChanged(true)
+    Toast.showWithGravity(
+      'Your PIN has been updated. Please re-export your keys using this new PIN.',
+      Toast.LONG,
+      Toast.TOP
+    )
+  }
+
+  // useEffect(() => {
+  //     if (user.isPinChanged) Alert.alert(`Your PIN has been updated. Please re-export your keys using this new PIN`)
+  // }, [user.isPinChanged])
 
   return (
     <View style={{ ...styles.wrap, backgroundColor: theme.bg }}>
-      <BackHeader title='Security' />
+      <BackHeader title='Security' backDisabled={user.isPinChanged} />
       <ActionMenu items={items} />
       <View style={{ padding: 18 }}>
         <View style={styles.pinTimeoutTextWrap}>
@@ -166,7 +194,12 @@ function Security() {
           </View>
         </View>
       </View>
-
+      <ChangePIN
+        mode='change'
+        onDone={onPinChanged}
+        show={isChangePin}
+        onBack={() => setIsChangePin(false)}
+      />
       <Modalize
         scrollViewProps={{
           scrollEnabled: false,
