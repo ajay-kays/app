@@ -115,12 +115,15 @@ function Security(props: any) {
     if (isDone) {
       user.setIsPinChanged(false)
       setTint(theme.dark ? 'dark' : 'light')
-      props.navigation.dispatch(
-        CommonActions.reset({
-          index: 1,
-          routes: [{ name: 'Communities' }],
-        })
-      )
+      // props.navigation.dispatch(
+      //   CommonActions.reset({
+      //     index: 1,
+      //     routes: [{ name: 'Communities' }],
+      //   })
+      // )
+      Alert.alert("Notice", "Your backup key copied, keep it safe with you", [
+        { text: "OK", onPress: () => props.onDone() },
+      ])
     }
   }
 

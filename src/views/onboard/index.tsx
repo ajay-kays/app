@@ -9,6 +9,7 @@ import Ready from './ready'
 import PIN from './choosePIN'
 import ProfilePic from './profilePic'
 import SuggestToUserToBackupTheirKeys from './suggestToUserToBackupTheirKeys'
+import { Security } from 'views/account'
 // TODO: remove this lien import Backup from './Backup'
 
 const steps = [
@@ -18,6 +19,7 @@ const steps = [
   NameAndKey, // set my nickname (and RSA pubkey!)
   SuggestToUserToBackupTheirKeys, // Presents a a video saying to user backup their keys
   // ProfilePic, // SuggestToUserToBackupTheirKeys
+  Security,
   Ready, // set my profile pic
 ]
 
