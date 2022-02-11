@@ -141,6 +141,7 @@ function PaymentFC({ visible, close }) {
       destination_key: addy,
       amt: amtToPay,
       memo: '',
+      isContactLess: true
     })
     setLoading(false)
     close()

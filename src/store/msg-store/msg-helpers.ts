@@ -14,10 +14,10 @@ import { display } from 'lib/logging'
 
 export async function encryptText(
   root: RootStore,
-  { contact_id, text }: { contact_id: number; text: string }
+  { contact_id, text }: { contact_id: any; text: string }
 ) {
   if (!text) return ''
-  const contact = root.contacts.contacts.get(contact_id.toString())
+  const contact = contact_id ? root.contacts.contacts.get(contact_id.toString()) : ''
   if (!contact || !contact?.contact_key) return ''
   const encText = await e2e.encryptPublic(text, contact.contact_key) // contact.contact_key === null
   // display({

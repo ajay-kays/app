@@ -7,12 +7,12 @@ import { MsgStore } from '../msg-store'
 
 export const sendPayment = async (
   self: MsgStore,
-  { contact_id, amt, chat_id, destination_key, memo }: SendPaymentParams
+  { contact_id, amt, chat_id, destination_key, memo, isContactLess }: SendPaymentParams
 ) => {
   const root = getRoot(self) as RootStore
   try {
     const myid = root.user.myid
-    if (!contact_id) {
+    if (!contact_id && !isContactLess) {
       Alert.alert('Error: No contact id')
       return
     }
@@ -41,4 +41,5 @@ export interface SendPaymentParams {
   chat_id: number | null
   destination_key: string
   memo: string
+  isContactLess?: boolean
 }
