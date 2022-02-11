@@ -39,12 +39,13 @@ export const getMessagesForChat = async (self: MsgStore, chatId: number, limit: 
   // for (const chat of sortedChats) {
   // const msgs = await decodeMessages(chat[1])
   const msgsToSave: Msg[] = []
-  messages.forEach((msg) => {
-    const normMsg = normalizeMessage(msg)
-    if (normMsg) {
-      msgsToSave.push(normMsg)
-    }
-  })
+  if (messages && messages.length)
+    messages.forEach((msg) => {
+      const normMsg = normalizeMessage(msg)
+      if (normMsg) {
+        msgsToSave.push(normMsg)
+      }
+    })
   normalizedMsgs[chatId] = msgsToSave
   // }
 

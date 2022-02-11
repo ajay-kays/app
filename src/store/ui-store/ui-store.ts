@@ -29,6 +29,7 @@ export const UiStoreModel = types
       types.enumeration('PayMode', ['', 'invoice', 'payment', 'loopout']),
       ''
     ),
+    isPayModeFromWallet: false,
     /** When paying in a chat - needs testing */
     chatForPayModal: types.maybe(types.reference(ChatModel)),
     /** Set community UUID for ShareGroup modal */
@@ -117,6 +118,9 @@ export const UiStoreModel = types
       }
       self.showPayModal = true
     },
+    setIsPayModeFromWallet(bool: boolean = false) {
+      self.isPayModeFromWallet = bool
+    },
     async clearPayModal() {
       try {
         self.showPayModal = false
@@ -193,7 +197,7 @@ export const UiStoreModel = types
   }))
 
 type UiStoreType = Instance<typeof UiStoreModel>
-export interface UiStore extends UiStoreType {}
+export interface UiStore extends UiStoreType { }
 type UiStoreSnapshotType = SnapshotOut<typeof UiStoreModel>
-export interface UiStoreSnapshot extends UiStoreSnapshotType {}
+export interface UiStoreSnapshot extends UiStoreSnapshotType { }
 export const createUiStoreDefaultModel = () => types.optional(UiStoreModel, {})

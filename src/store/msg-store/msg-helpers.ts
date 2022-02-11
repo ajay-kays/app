@@ -182,22 +182,23 @@ export async function decodeMessages(messages: Msg[]) {
 
 export function orgMsgs(messages: Msg[]) {
   const orged: { [k: number]: Msg[] } = {}
-  messages.forEach((msg) => {
-    if (msg.chat_id) {
-      putIn(orged, msg, msg.chat_id)
-    }
-  })
+  if (messages && messages.length)
+    messages.forEach((msg) => {
+      if (msg.chat_id) {
+        putIn(orged, msg, msg.chat_id)
+      }
+    })
   return orged
 }
 
 export function orgMsgsFromExisting(allMsgs: { [k: number]: Msg[] }, messages: Msg[]) {
   const allms: { [k: number]: Msg[] } = JSON.parse(JSON.stringify(allMsgs))
-
-  messages.forEach((msg) => {
-    if (msg.chat_id || msg.chat_id === 0) {
-      putIn(allms, msg, msg.chat_id) // THIS IS TOO HEAVY in a for each
-    }
-  })
+  if (messages && messages.length)
+    messages.forEach((msg) => {
+      if (msg.chat_id || msg.chat_id === 0) {
+        putIn(allms, msg, msg.chat_id) // THIS IS TOO HEAVY in a for each
+      }
+    })
   // limit to 50 each?
   return allms
 }
