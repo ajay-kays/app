@@ -20,6 +20,7 @@ function PaymentWrap() {
 
   function close() {
     ui.clearPayModal()
+    ui.isPayModeFromWallet && ui.setIsPayModeFromWallet()
   }
 
   return (
@@ -154,20 +155,21 @@ function PaymentFC({ visible, close }) {
     })
   }
   async function confirmOrContinue(amt, text) {
-    if (!chat) {
+    if (!chat || ui.payMode === 'loopout' || ui.isPayModeFromWallet) {
       sendContactless(amt, text)
       // setTimeout(() => setTint('dark'), 150)
       return
     }
-    if (ui.payMode === 'loopout') {
-      sendContactless(amt, text)
-      // setTimeout(() => setTint('dark'), 150)
-      return
-    }
+    // if (ui.payMode === 'loopout') {
+    //   sendContactless(amt, text)
+    //   // setTimeout(() => setTint('dark'), 150)
+    //   return
+    // } Removed by Ajay as the statement is same for the above condition so added the loopout condition to above one 
     if (ui.payMode === 'payment') await sendPayment(amt, text)
     if (ui.payMode === 'invoice') await sendInvoice(amt, text)
     if (loading) return
     // setTimeout(() => setTint('light'), 150)
+    ui.isPayModeFromWallet && ui.setIsPayModeFromWallet()
     clearOut()
   }
 
@@ -189,8 +191,8 @@ function PaymentFC({ visible, close }) {
       <ModalHeader title={label} onClose={handleOnClose} />
       {main && (
         <Main
-          contactless={!chat ? true : false}
-          contact={isLoopout ? null : contact}
+          contactless={!chat || ui.isPayModeFromWallet ? true : false}
+          contact={isLoopout || ui.isPayModeFromWallet ? null : contact}
           loading={loading}
           confirmOrContinue={confirmOrContinue}
         />
