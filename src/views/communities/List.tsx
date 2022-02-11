@@ -36,8 +36,8 @@ function ListFC(props) {
           ListEmptyComponent={listEmpty}
           refreshing={refreshing}
           onRefresh={onRefresh && onRefresh}
-          // This causes a blank screen on Android:
-          // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
+        // This causes a blank screen on Android:
+        // refreshControl={<RefreshLoading refreshing={refreshing} onRefresh={onRefresh} />}
         />
       )}
     </View>
@@ -66,7 +66,7 @@ function Item(props) {
     const host = chats.getDefaultTribeServer().host
     const tribeParams = await chats.getTribeDetails(host, uuid)
     setJoinTribe({
-      visible: true,
+      visible: tribeParams ? true : false,
       tribe: tribeParams,
     })
   }
