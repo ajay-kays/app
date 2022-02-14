@@ -38,8 +38,8 @@ function JoinTribe(props) {
   const [videoVisible, setVideoVisible] = useState(false)
   const [alias, setAlias] = useState('')
 
-  const uuid = tribe.uuid
-  const tribeToCheck = chats.communities.get(uuid)
+  const uuid = tribe?.uuid
+  const tribeToCheck = uuid ? chats.communities.get(uuid) : null
 
   let joined = true
   if (tribeToCheck) {

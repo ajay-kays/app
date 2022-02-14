@@ -36,7 +36,6 @@ function ChatList(props) {
    */
   const renderItem: any = ({ item, index }) => {
     const chatID = (item.id || rando()) + ''
-    console.log(item)
     display({
       name: 'ChatList renderItem',
       preview: `${item.name} - chatID ${chatID}`,
@@ -46,7 +45,7 @@ function ChatList(props) {
     let showInvite = false
     if (item.invite && item.invite.status !== 4) showInvite = true
     if (showInvite) return <InviteRow key={`invite_${index}`} {...item} />
-    return <ChatRow key={chatID} {...item} />
+    return <ChatRow key={chatID} id={item.contact_ids.find((id) => id !== myid) || null} {...item} />
   }
 
   const chatsToUse = useChats()
@@ -106,7 +105,7 @@ function ChatRowFC(props) {
   let uri = useChatPicSrc(props)
   const hasImg = uri ? true : false
 
-  const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(props.id)
+  const { lastMsgText, lastMsgDate, hasLastMsg, unseenCount, hasUnseen } = useChatRow(id)
 
   return (
     <TouchableOpacity

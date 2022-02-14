@@ -17,7 +17,8 @@ export default function AccountDetails() {
   const nativeID = 'tipAmount'
 
   useEffect(() => {
-    setIsEnabled(me?.private_photo || false)
+    const privatePhotoStatus = me?.private_photo ? false : true
+    setIsEnabled(privatePhotoStatus)
   }, [])
 
   const theme = useTheme()
@@ -28,7 +29,7 @@ export default function AccountDetails() {
   }
 
   function toggleSwitch() {
-    setIsEnabled((previousState) => !previousState)
+    setIsEnabled(!isEnabled)
     shareContactKey()
   }
 
@@ -46,7 +47,7 @@ export default function AccountDetails() {
     const contact_key = me?.contact_key
 
     if (!contact_key) return
-    await contacts.updateContact(user.myid, { contact_key })
+    await contacts.updateContact(user.myid, { contact_key, private_photo: isEnabled })
   }
 
   return (
@@ -62,8 +63,8 @@ export default function AccountDetails() {
           initialValues={
             user
               ? {
-                  public_key: user.publicKey,
-                }
+                public_key: user.publicKey,
+              }
               : {}
           }
           readOnlyFields={'public_key'}
