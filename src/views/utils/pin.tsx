@@ -41,6 +41,10 @@ export default function PIN(props) {
     await setPinCode(thePin)
     props.onFinish()
     user.setIsPinChanged(true)
+    setChecking(false)
+    setChosenPin("")
+    setPin('')
+    setMode("change")
   }
 
   async function check(thePin) {

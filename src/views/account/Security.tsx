@@ -122,7 +122,7 @@ function Security(props: any) {
       //   })
       // )
       Alert.alert("Notice", "Your backup key copied, keep it safe with you", [
-        { text: "OK", onPress: () => props.onDone() },
+        { text: "OK", onPress: () => props?.onDone ? props?.onDone() : {} },
       ])
     }
   }

@@ -154,7 +154,7 @@ const ChatroomFC = () => {
   //   value: { chat, msgs, pricePerMessage, chatID, route },
   // })
 
-  const behavior = Platform.OS === 'ios' ? { behavior: 'padding' } : {}
+  const behavior: any = Platform.OS === 'ios' ? { behavior: 'padding' } : {}
   return (
     <KeyboardAvoidingView
       {...behavior}

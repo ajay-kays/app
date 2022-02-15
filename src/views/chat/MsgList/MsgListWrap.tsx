@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/core'
 import Toast from 'react-native-simple-toast'
 import { useMsgs, useStores } from 'store'
@@ -18,8 +18,6 @@ export const MsgListWrap = ({
   const { msg, user, chats, details } = useStores()
   const [limit, setLimit] = useState(40)
   const navigation = useNavigation()
-
-  console.log(`chat.id ${chat.id} limit: ${limit}`)
 
   function onLoadMoreMsgs() {
     setLimit((c) => c + 40)
@@ -80,19 +78,22 @@ export const MsgListWrap = ({
 
   const msgs = useMsgs(chat, limit)
 
-  try {
-    if (!msgs || (msgs && msgs.length === 0)) {
-      display({
-        name: 'MsgListWrap',
-        preview: `Fetching messages for chat ID ${chat.id}`,
-        important: true,
-        value: { chat, msgs, pricePerMessage, chatID: chat.id },
-      })
-      msg.getMessagesForChat(chat.id)
+  useEffect(() => {
+    try {
+      if (!msgs || (msgs && msgs.length === 0)) {
+        display({
+          name: 'MsgListWrap',
+          preview: `Fetching messages for chat ID ${chat.id}`,
+          important: true,
+          value: { chat, msgs, pricePerMessage, chatID: chat.id },
+        })
+        msg.getMessagesForChat(chat.id)
+      }
+    } catch (e) {
+      reportError(e)
     }
-  } catch (e) {
-    reportError(e)
-  }
+  }, [chat, limit])
+
 
   return (
     <MsgListFC
